@@ -1,0 +1,1 @@
+{"version":3,"file":"mutations.js","sourceRoot":"","sources":["../../src/schema/mutations.ts"],"names":[],"mappings":";;AAAA,qCASiB;AAEjB,iDAA4C;AAC5C,mDAA8C;AAE9C,MAAM,QAAQ,GAAG,IAAI,2BAAiB,CAAC;IACnC,IAAI,EAAE,UAAU;IAChB,MAAM,EAAE;QACJ,OAAO,EAAP,iBAAO;QACP,QAAQ,EAAR,mBAAQ;KACX;CACJ,CAAC,CAAA;AAEM,4BAAQ"}

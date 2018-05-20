@@ -20,6 +20,8 @@
     "express-graphql": "^0.6.12",
     "firebase-admin": "~5.8.1",
     "firebase-functions": "^0.8.1",
+    "graphql": "^0.13.2",
+    "neo4j-driver": "^1.6.1",
     "raw-body": "^2.3.2"
   },
   "devDependencies": {
