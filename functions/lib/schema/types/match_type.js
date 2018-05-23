@@ -21,15 +21,12 @@ const MatchType = new graphql_1.GraphQLObjectType({
             type: graphql_1.GraphQLList(message_type_1.MessageType),
             resolve(parentValue, _) {
                 return __awaiter(this, void 0, void 0, function* () {
-                    console.log('parentValue matchType: ', parentValue);
                     if (!parentValue.matchId) {
                         return [];
                     }
                     const data = yield firestore_1.db.collection(`matches/${parentValue.matchId}/messages`).get();
                     return data.docs.map(doc => {
                         const docData = doc.data();
-                        console.log('docData: ', docData);
-                        // placeholder
                         return {
                             id: docData.id,
                             name: docData.name,

@@ -18,6 +18,7 @@ yarn-error.log*
 
 #firebase
 functions/node_modules
+functions/lib
 
 #Variables
 src/variables/sensitive.js
