@@ -16,6 +16,7 @@ import  {
     GraphQLFloat,
     GraphQLBoolean,
   } from 'graphql';
+  import {MatchType} from './match_type';
 
   const session = driver.session();
   
@@ -38,6 +39,7 @@ import  {
         longitude: {type: GraphQLFloat},
         minAgePreference: {type: GraphQLInt},
         maxAgePreference: {type: GraphQLInt},
+        match: {type: GraphQLBoolean},
         pics: {type: GraphQLList(GraphQLString)},
         likes: {
             type: GraphQLList(UserType),
@@ -61,12 +63,22 @@ import  {
             }
         },
         matches: {
-            type: GraphQLList(UserType),
+            type: GraphQLList(MatchType),
             resolve(parentValue, args) {
+                const query = `MATCH(a:User{id:'${parentValue.id}'})-[r:LIKES]->(b:User) where r.matchId IS NOT NULL RETURN b,r.matchId`;
                 return session
-                    .run(`MATCH(a:User{id:'${parentValue.id}'}),(b:User) where (a)-[:LIKES]->(b) AND (a)<-[:LIKES]-(b) RETURN b`)
-                        .then(result => result.records)
-                        .then(records => records.map(record => record._fields[0].properties))
+                    .run(query)
+                        .then(result => {
+                            return result.records
+                        })
+                        .then(records => {
+                            return records.map(record => {
+                                return {
+                                user: record._fields[0].properties,
+                                matchId: record._fields[1]
+                                }
+                            })
+                        })
                         .catch(e => console.log('error: ',e))
             }
         },
@@ -85,7 +97,6 @@ import  {
                         .catch(e => console.log('error: ',e))
             }
         },
-
     })
   });
 

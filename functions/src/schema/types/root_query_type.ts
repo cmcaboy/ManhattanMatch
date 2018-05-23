@@ -19,14 +19,10 @@ const RootQueryType = new GraphQLObjectType({
       type: UserType,
       args: { id: { type: new GraphQLNonNull(GraphQLID)}},
       resolve(parentValue, args) {
-        console.log('parentValue: ',parentValue);
-        console.log('args: ',args);
-        console.log(`id: ${args.id}`);
 
         return session.run(`Match (n:User {id: '${args.id}'}) RETURN n`)
           .then(result => result.records)
           .then(records => {
-            console.log('records: ',records);
             const properties =  records[0]._fields[0].properties;
             return {
               ...properties,

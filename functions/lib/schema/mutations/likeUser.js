@@ -10,14 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const neo4j_1 = require("../../db/neo4j");
 const graphql_1 = require("graphql");
-//import { UserType } from '../types/user_type';
-const like_user_type_1 = require("../types/like_user_type");
+const user_type_1 = require("../types/user_type");
 const uuid = require('node-uuid');
 const firestore_1 = require("../../db/firestore");
 const moment = require('moment');
 const session = neo4j_1.driver.session();
 const likeUser = {
-    type: like_user_type_1.LikeUserType,
+    type: user_type_1.UserType,
     args: {
         id: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLID) },
         likedId: { type: new graphql_1.GraphQLNonNull(graphql_1.GraphQLID) }
@@ -36,7 +35,6 @@ const likeUser = {
             const resultMatch = yield session.run(query);
             // Check to see if the like is mutual
             if (resultMatch.records.length > 0) {
-                //const likedUser = result.records[0]._fields[0].properties;
                 const matchId = uuid.v1();
                 try {
                     yield session.run(`MATCH (a:User {id:'${args.id}'})<-[r:LIKES]-(b:User {id:'${args.likedId}'}) SET r.matchId='${matchId}'`);
@@ -50,13 +48,9 @@ const likeUser = {
                 catch (e) {
                     console.log('error creating match: ', e);
                 }
-                console.log('likedId: ', args.likedId);
-                console.log('name: ', user.name);
-                return { likedId: args.likedId, name: user.name, match: true };
+                return { id: args.likedId, name: user.name, match: true };
             }
-            console.log('likedId: ', args.likedId);
-            console.log('name: ', user.name);
-            return { likedId: args.likedId, name: user.name, match: false };
+            return { id: args.likedId, name: user.name, match: false };
         });
     }
 };

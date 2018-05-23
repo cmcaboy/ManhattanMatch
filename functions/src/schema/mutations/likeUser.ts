@@ -3,7 +3,7 @@ import {
     GraphQLNonNull,
     GraphQLID,
 } from 'graphql';
-import { LikeUserType } from '../types/like_user_type';
+import { UserType } from '../types/user_type';
 const uuid = require('node-uuid');
 import {db} from '../../db/firestore';
 const moment = require('moment');
@@ -11,7 +11,7 @@ const moment = require('moment');
 const session = driver.session();
 
 const likeUser = {
-    type: LikeUserType,
+    type: UserType,
     args: {
         id: { type: new GraphQLNonNull(GraphQLID)},
         likedId: { type: new GraphQLNonNull(GraphQLID)}
@@ -47,9 +47,9 @@ const likeUser = {
             } catch(e) {
                 console.log('error creating match: ',e)
             }
-            return { likedId: args.likedId, name: user.name, match: true}
+            return { id: args.likedId, name: user.name, match: true}
         }
-        return { likedId: args.likedId, name: user.name, match: false}
+        return { id: args.likedId, name: user.name, match: false}
     }
 }
 
