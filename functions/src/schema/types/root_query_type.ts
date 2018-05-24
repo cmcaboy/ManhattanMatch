@@ -4,10 +4,8 @@ import {driver} from '../../db/neo4j';
 import {UserType} from './user_type';
 import {
   GraphQLObjectType,
-  GraphQLSchema,
   GraphQLNonNull,
   GraphQLID,
-  GraphQLInt
 } from 'graphql';
 
 const session = driver.session();

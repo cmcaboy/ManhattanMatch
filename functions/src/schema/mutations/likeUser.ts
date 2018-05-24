@@ -17,7 +17,6 @@ const likeUser = {
         likedId: { type: new GraphQLNonNull(GraphQLID)}
     },
     async resolve(parentValue, args) {
-        const isBoolean = val => 'boolean' === typeof val;
 
         // command to create like
         const mutate = `MATCH (a:User {id:'${args.id}'}), (b:User {id:'${args.likedId}'}) MERGE (a)-[r:LIKES]->(b) return b`;

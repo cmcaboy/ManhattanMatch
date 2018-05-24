@@ -1,7 +1,6 @@
 
 import {driver} from '../../db/neo4j';
 import { 
-    GraphQLObjectType,
     GraphQLString,
     GraphQLNonNull,
     GraphQLID,
@@ -39,24 +38,28 @@ const editUser = {
         const isBoolean = val => 'boolean' === typeof val;
         console.log('args: ',args)
         let query = `MATCH(a:User{id: '${args.id}'}) SET `;
-        !!args.name && (query = query+ `a.name='${args.name}'`)
-        isBoolean(args.active) && (query = query+ `,a.active=${args.active}`)
-        !!args.email && (query = query+ `,a.email='${args.email}'`)
-        !!args.gender && (query = query+ `,a.gender='${args.gender}'`)
-        !!args.age && (query = query+ `,a.age=${args.age}`)
-        !!args.description && (query = query+ `,a.description='${args.description}'`)
-        !!args.school && (query = query+ `,a.school='${args.school}'`)
-        !!args.work && (query = query+ `,a.work='${args.work}'`)
-        !!args.token && (query = query+ `,a.token='${args.token}'`)
-        isBoolean(args.sendNotifications) && (query = query+ `,a.sendNotifications=${args.sendNotifications}`)
-        !!args.distance && (query = query+ `,a.distance=${args.distance}`)
-        !!args.latitude && (query = query+ `,a.latitude=${args.latitude}`)
-        !!args.longitude && (query = query+ `,a.longitude=${args.longitude}`)
-        !!args.minAgePreference && (query = query+ `,a.minAgePreference=${args.minAgePreference}`)
-        !!args.maxAgePreference && (query = query+ `,a.maxAgePreference=${args.maxAgePreference}`)
-        !!args.pics && (query = query+ `,a.pics=${args.pics}`)
+        !!args.name && (query = query+ `a.name='${args.name}',`)
+        isBoolean(args.active) && (query = query+ `a.active=${args.active},`)
+        !!args.email && (query = query+ `a.email='${args.email}',`)
+        !!args.gender && (query = query+ `a.gender='${args.gender}',`)
+        !!args.age && (query = query+ `a.age=${args.age},`)
+        !!args.description && (query = query+ `a.description='${args.description}',`)
+        !!args.school && (query = query+ `a.school='${args.school}',`)
+        !!args.work && (query = query+ `a.work='${args.work}',`)
+        !!args.token && (query = query+ `a.token='${args.token}',`)
+        isBoolean(args.sendNotifications) && (query = query+ `a.sendNotifications=${args.sendNotifications},`)
+        !!args.distance && (query = query+ `a.distance=${args.distance},`)
+        !!args.latitude && (query = query+ `a.latitude=${args.latitude},`)
+        !!args.longitude && (query = query+ `a.longitude=${args.longitude},`)
+        !!args.minAgePreference && (query = query+ `a.minAgePreference=${args.minAgePreference},`)
+        !!args.maxAgePreference && (query = query+ `a.maxAgePreference=${args.maxAgePreference},`)
+        !!args.pics && (query = query+ `a.pics=[${args.pics.map(pic => `"${pic}"`)}],`)
+
+        console.log('query slice: ',query.slice(0,-1));
+        query = query.slice(-1) === ','? query.slice(0,-1) : query;
         query = query + ` RETURN a`;
         console.log('query: ',query);
+        
         return session
             .run(query)
             .then(result => {
