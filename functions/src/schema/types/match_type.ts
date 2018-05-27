@@ -13,7 +13,7 @@ import  {
         matchId: {type: GraphQLString},
         user: {type: UserType},
         messages: {
-            type: GraphQLList(MessageType),
+            type: new GraphQLList(MessageType),
             async resolve(parentValue,_) {
                 if(!parentValue.matchId) {
                     return [];

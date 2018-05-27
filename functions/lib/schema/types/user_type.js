@@ -28,9 +28,10 @@ const UserType = new graphql_1.GraphQLObjectType({
         minAgePreference: { type: graphql_1.GraphQLInt },
         maxAgePreference: { type: graphql_1.GraphQLInt },
         match: { type: graphql_1.GraphQLBoolean },
-        pics: { type: graphql_1.GraphQLList(graphql_1.GraphQLString) },
+        pics: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) },
+        profilePic: { type: graphql_1.GraphQLString },
         likes: {
-            type: graphql_1.GraphQLList(UserType),
+            type: new graphql_1.GraphQLList(UserType),
             resolve(parentValue, args) {
                 return session
                     .run(`MATCH(a:User{id:'${parentValue.id}'})-[r:LIKES]->(b:User) RETURN b`)
@@ -41,7 +42,7 @@ const UserType = new graphql_1.GraphQLObjectType({
             }
         },
         dislikes: {
-            type: graphql_1.GraphQLList(UserType),
+            type: new graphql_1.GraphQLList(UserType),
             resolve(parentValue, args) {
                 return session
                     .run(`MATCH(a:User{id:'${parentValue.id}'})-[r:DISLIKES]->(b:User) RETURN b`)
@@ -51,7 +52,7 @@ const UserType = new graphql_1.GraphQLObjectType({
             }
         },
         matches: {
-            type: graphql_1.GraphQLList(match_type_1.MatchType),
+            type: new graphql_1.GraphQLList(match_type_1.MatchType),
             resolve(parentValue, args) {
                 const query = `MATCH(a:User{id:'${parentValue.id}'})-[r:LIKES]->(b:User) where r.matchId IS NOT NULL RETURN b,r.matchId`;
                 return session
@@ -71,7 +72,7 @@ const UserType = new graphql_1.GraphQLObjectType({
             }
         },
         queue: {
-            type: graphql_1.GraphQLList(UserType),
+            type: new graphql_1.GraphQLList(UserType),
             resolve(parentValue, args) {
                 // Should add distance calculation here
                 return session

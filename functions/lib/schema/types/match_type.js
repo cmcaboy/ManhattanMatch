@@ -18,7 +18,7 @@ const MatchType = new graphql_1.GraphQLObjectType({
         matchId: { type: graphql_1.GraphQLString },
         user: { type: user_type_1.UserType },
         messages: {
-            type: graphql_1.GraphQLList(message_type_1.MessageType),
+            type: new graphql_1.GraphQLList(message_type_1.MessageType),
             resolve(parentValue, _) {
                 return __awaiter(this, void 0, void 0, function* () {
                     if (!parentValue.matchId) {

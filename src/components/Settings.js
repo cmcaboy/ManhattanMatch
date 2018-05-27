@@ -1,105 +1,132 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Platform, Dimensions } from 'react-native';
 import {CirclePicture,Card,MyAppText} from './common';
-import {connect} from 'react-redux';
-import {startLogout} from '../actions/auth';
 import {MaterialCommunityIcons,Ionicons,MaterialIcons} from '@expo/vector-icons';
 import { PRIMARY_COLOR, PLACEHOLDER_PHOTO } from '../variables';
+import {firebase} from '../firebase';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
+const GET_PROFILE = gql`
+{
+    user(id: 13) {
+        name
+        work
+        school
+        profilePic
+    }
+}
+`
 
 const ICON_OPACITY = 0.75;
 const ICON_SIZE = Dimensions.get('window').height *0.05;
 
-const Settings = (props) => {
-    const {profilePic = PLACEHOLDER_PHOTO,name,work,school} = props;
-    // console.log('work: ',work);
-    // console.log('school: ',school);
-    // console.log('school: ',!!school);
-    // console.log('work: ',!!work);
+class Settings extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
-    const renderSubheading = () => {
+    startLogout = () => firebase.auth().signOut();
+
+    renderSubheading = (work,school) => {
         if (work || school) {
             if(school) {
                 return (
                     <View style={styles.subHeading}>
                         <Ionicons name="md-school" size={14} color="black" style={styles.schoolText}/>
-                        <MyAppText style={[styles.schoolText,{paddingLeft:4}]}>{school}</MyAppText>
+                        <Text style={[styles.schoolText,{paddingLeft:4}]}>{school}</Text>
                     </View>
                 )
             } else {
                 return (
                     <View style={styles.subHeading}>
                         <MaterialIcons name="work" size={14} color="black" style={styles.schoolText}/>
-                        <MyAppText style={[styles.schoolText,{paddingLeft:4}]}>{work}</MyAppText>
+                        <Text style={[styles.schoolText,{paddingLeft:4}]}>{work}</Text>
                     </View>
                 )
             }
         }
     }
 
-    return (
-        <View style={styles.settingsContainer}>
-            
-            <View style={styles.miniProfile}> 
-                <CirclePicture size='large' imageURL={profilePic} auto={true}/>
-                <View style={styles.profileText}>
-                    <MyAppText style={styles.nameText}>{name}</MyAppText>
-                    {renderSubheading()}
-                    
+    renderContent({profilePic = '', name = '', work = '', school = ''}) {
+        console.log('profilePic: ',profilePic);
+        console.log('name: ',name);
+        console.log('work: ',work);
+        console.log('school: ',school);
+        return (
+            <View style={styles.settingsContainer}>
+                <View style={styles.miniProfile}> 
+                    <CirclePicture size='large' imageURL={profilePic} auto={true}/>
+                    <View style={styles.profileText}>
+                        <Text style={styles.nameText}>{name}</Text>
+                        {this.renderSubheading(work, school)}
+                    </View>
+                    <View style={styles.horizontalLine}/>
                 </View>
-                <View style={styles.horizontalLine}/>
+                <View style={styles.options}>
+                    <TouchableOpacity 
+                        onPress={() => this.props.navigation.navigate('EditSettings')}
+                        style={styles.buttons}
+                    >
+                        <Ionicons 
+                            name="md-settings"
+                            size={ICON_SIZE}
+                            color="black"
+                            style={{opacity:ICON_OPACITY}}
+                        />
+                        <Text style={styles.optionText}>
+                            Settings
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                        onPress={() => this.props.navigation.navigate('EditProfile')}
+                        style={styles.buttons}
+                    >
+                        <MaterialCommunityIcons 
+                            name="account-edit"
+                            size={ICON_SIZE}
+                            color="black"
+                            style={{opacity:ICON_OPACITY}}
+                        />
+                        <Text style={styles.optionText}>
+                            Edit Info
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                <View>
+                    <TouchableOpacity
+                        onPress={() => this.startLogout()}
+                        style={styles.buttons}
+                    >
+                        <MaterialCommunityIcons 
+                            name="logout"
+                            size={ICON_SIZE}
+                            color="black"
+                            style={{opacity:ICON_OPACITY}}
+                        />
+                        <Text style={styles.optionText}>
+                        Log out
+                        </Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-            
-            <View style={styles.options}>
-                
-                <TouchableOpacity 
-                    onPress={() => props.navigation.navigate('EditSettings')}
-                    style={styles.buttons}
-                >
-                    <Ionicons 
-                        name="md-settings"
-                        size={ICON_SIZE}
-                        color="black"
-                        style={{opacity:ICON_OPACITY}}
-                    />
-                    <MyAppText style={styles.optionText}>
-                        Settings
-                    </MyAppText>
-                </TouchableOpacity>
-                <TouchableOpacity 
-                    onPress={() => props.navigation.navigate('EditProfile')}
-                    style={styles.buttons}
-                >
-                    <MaterialCommunityIcons 
-                        name="account-edit"
-                        size={ICON_SIZE}
-                        color="black"
-                        style={{opacity:ICON_OPACITY}}
-                    />
-                    <MyAppText style={styles.optionText}>
-                        Edit Info
-                    </MyAppText>
-                </TouchableOpacity>
-            </View>
-            <View>
-                <TouchableOpacity
-                    onPress={() => props.startLogout()}
-                    style={styles.buttons}
-                >
-                    <MaterialCommunityIcons 
-                        name="logout"
-                        size={ICON_SIZE}
-                        color="black"
-                        style={{opacity:ICON_OPACITY}}
-                    />
-                    <MyAppText style={styles.optionText}>
-                    Log out
-                    </MyAppText>
-                </TouchableOpacity>
-            </View>
-        
-        </View>
-    )
+        )
+    }
+    render() {
+        return (
+            <Query query={GET_PROFILE}>
+                {({loading, error, data}) => {
+                    console.log('loading: ',loading);
+                    console.log('error: ',error);
+                    console.log('data: ',data);
+                    if(loading) return <Text>Loading...</Text>
+                    if(error) return <Text>Error! {error.message}</Text>
+    
+                    return this.renderContent(data.user)
+                }}
+            </Query>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
@@ -144,7 +171,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         color: PRIMARY_COLOR,
         textAlign:'center',
-        fontFamily:'oxygen-regular'
+        //fontFamily:'oxygen-regular'
     },
     schoolText: {
         fontSize: 14,
@@ -167,19 +194,4 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        startLogout: () => dispatch(startLogout())
-    }
-}
-
-const mapStateToProps = (state,ownProps) => {
-    return {
-        profilePic: state.profileReducer.profilePic,
-        name: state.profileReducer.name,
-        work: state.profileReducer.work,
-        school: state.profileReducer.school
-    }
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(Settings);
+export default Settings;

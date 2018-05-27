@@ -24,6 +24,7 @@ const RootQueryType = new GraphQLObjectType({
             const properties =  records[0]._fields[0].properties;
             return {
               ...properties,
+              profilePic: properties.pics[0]
             }
           })
           .catch(e => console.log('error: ',e))

@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import { Font } from 'expo';
 import {Header, Button, Spinner, CardSection} from './common';
 import LoginForm from './LoginForm';
+import Settings from './Settings';
 import { Constants } from 'expo';
 import MainNavigator from '../navigator';
 import { firebase } from '../firebase';
@@ -21,22 +22,25 @@ function UdaciStatusBar ({backgroundColor, ...props}) {
 
 class Authentication extends React.Component {
 
-  state = { fontLoading: true}
+  state = { 
+    fontLoading: true,
+    loggedIn: false
+  }
   
   componentWillMount() {
     // Firebase authentication details gathered from my firebase account.
     firebase.auth().onAuthStateChanged((user) => {
+      console.log('user: ',user);
       if(user) {
-        this.props.login(user.uid);
+        //this.props.login(user.uid);
 
-        //this.setState({loggedIn: true});
+        this.setState({loggedIn: true});
         //console.log('firebase auth: ',firebase.auth());
         //console.log('firebase uid: ',firebase.auth().currentUser.uid);
 
         // We can use the firebase.auth().currentUSer.uid for our unique identifier.
       } else {
-        this.props.logout();
-        this.props.resetStore();
+        this.setState({loggedIn: false});
         
         //this.setState({loggedIn: false});
       }
@@ -54,13 +58,14 @@ class Authentication extends React.Component {
 
   renderContent() {
     // use a switch statement to render a login screen, logout screen, or a spinner
-    console.log('loggedIn: ',this.props.loggedIn);
-    switch(this.props.loggedIn) {
+    console.log('loggedIn: ',this.state.loggedIn);
+    switch(this.state.loggedIn) {
       case true:
         if(this.state.fontLoading) {
           <View style={styles.spinnerStyle}><Spinner size="large"/></View>
         } else {
-          return <MainNavigator />
+          //return <MainNavigator />
+          return <Settings />
         }
             //<CardSection><Button onPress={() => firebase.auth().signOut()}>Log Out</Button></CardSection>
       case false:
@@ -91,20 +96,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-      login:  (id) => dispatch(login(id)),
-      logout: () => dispatch(logout()),
-      resetStore: () => dispatch(resetStore()),
- }
-}
-
-
-
-const mapStateToProps = (state,ownProps) => {
-  return {
-      loggedIn: state.authReducer.loggedIn
-  }
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(Authentication);
+export default Authentication;

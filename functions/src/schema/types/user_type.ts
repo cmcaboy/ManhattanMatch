@@ -40,9 +40,10 @@ import  {
         minAgePreference: {type: GraphQLInt},
         maxAgePreference: {type: GraphQLInt},
         match: {type: GraphQLBoolean},
-        pics: {type: GraphQLList(GraphQLString)},
+        pics: {type: new GraphQLList(GraphQLString)},
+        profilePic: {type: GraphQLString},
         likes: {
-            type: GraphQLList(UserType),
+            type: new GraphQLList(UserType),
             resolve(parentValue, args) {
                 return session
                     .run(`MATCH(a:User{id:'${parentValue.id}'})-[r:LIKES]->(b:User) RETURN b`)
@@ -53,7 +54,7 @@ import  {
             }
         },
         dislikes: {
-            type: GraphQLList(UserType),
+            type: new GraphQLList(UserType),
             resolve(parentValue, args) {
                 return session
                     .run(`MATCH(a:User{id:'${parentValue.id}'})-[r:DISLIKES]->(b:User) RETURN b`)
@@ -63,7 +64,7 @@ import  {
             }
         },
         matches: {
-            type: GraphQLList(MatchType),
+            type: new GraphQLList(MatchType),
             resolve(parentValue, args) {
                 const query = `MATCH(a:User{id:'${parentValue.id}'})-[r:LIKES]->(b:User) where r.matchId IS NOT NULL RETURN b,r.matchId`;
                 return session
@@ -83,7 +84,7 @@ import  {
             }
         },
         queue: {
-            type: GraphQLList(UserType),
+            type: new GraphQLList(UserType),
             resolve(parentValue, args) {
                 // Should add distance calculation here
                 return session
