@@ -17,7 +17,7 @@ const RootQueryType = new graphql_1.GraphQLObjectType({
                     .then(result => result.records)
                     .then(records => {
                     const properties = records[0]._fields[0].properties;
-                    return Object.assign({}, properties, { profilePic: properties.pics[0] });
+                    return Object.assign({}, properties, { profilePic: !!properties.pics ? properties.pics[0] : null });
                 })
                     .catch(e => console.log('error: ', e));
             }

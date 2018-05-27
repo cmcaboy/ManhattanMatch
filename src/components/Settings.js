@@ -8,8 +8,8 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 const GET_PROFILE = gql`
-{
-    user(id: 13) {
+query user($id: ID!) {
+    user(id: $id) {
         name
         work
         school
@@ -17,6 +17,13 @@ const GET_PROFILE = gql`
     }
 }
 `
+
+const GET_ID = gql`
+query {
+    user @client {
+        id
+    }
+}`
 
 const ICON_OPACITY = 0.75;
 const ICON_SIZE = Dimensions.get('window').height *0.05;
@@ -48,7 +55,9 @@ class Settings extends React.Component {
         }
     }
 
-    renderContent({profilePic = '', name = '', work = '', school = ''}) {
+    renderContent(user) {
+        const profilePic = !!user.profilePic? user.profilePic : PLACEHOLDER_PHOTO
+        const {work, school, name } = user;
         console.log('profilePic: ',profilePic);
         console.log('name: ',name);
         console.log('work: ',work);
@@ -114,17 +123,27 @@ class Settings extends React.Component {
     }
     render() {
         return (
-            <Query query={GET_PROFILE}>
-                {({loading, error, data}) => {
-                    console.log('loading: ',loading);
-                    console.log('error: ',error);
-                    console.log('data: ',data);
-                    if(loading) return <Text>Loading...</Text>
-                    if(error) return <Text>Error! {error.message}</Text>
-    
-                    return this.renderContent(data.user)
-                }}
-            </Query>
+            <Query query={GET_ID}>
+            {({ loading, error, data}) => {
+                console.log('local data: ',data);
+                console.log('local error: ',error);
+                console.log('local loading: ',loading);
+                const id = data.user.id;
+                return (
+                    <Query query={GET_PROFILE} variables={{id}}>
+                        {({loading, error, data}) => {
+                            console.log('loading: ',loading);
+                            console.log('error: ',error);
+                            console.log('data: ',data);
+                            if(loading) return <Text>Loading...</Text>
+                            if(error) return <Text>Error! {error.message}</Text>
+            
+                            return this.renderContent(data.user)
+                        }}
+                    </Query>
+                )
+            }}
+          </Query>
         )
     }
 }

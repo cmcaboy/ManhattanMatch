@@ -14,12 +14,31 @@ import Authentication from './src/components/Authentication';
 const cache = new InMemoryCache();
 
 const defaults = {
-    id: null
+    user: {
+      __typename: 'user',
+      id: 13
+    }
 };
+
+const typeDefs = `
+  type user {
+    id: Int!
+  }
+
+  type Mutation {
+    alterId(id: Int!): user
+  }
+
+  type Query {
+    visibilityFilter: String
+    getUser: user
+  }
+  `
 
 const stateLink = withClientState({
   cache,
-  defaults
+  defaults,
+//  typeDefs
 });
 
  const client = new ApolloClient({
@@ -30,12 +49,6 @@ const stateLink = withClientState({
    cache
  });
 
-// const client = new ApolloClient({
-//   uri: `https://us-central1-manhattanmatch-9f9fe.cloudfunctions.net/graphql/graphql`,
-//   clientState: {
-//     defaults: defaultState
-//   }
-// })
 
 export default class App extends React.Component {
   render() {
