@@ -1,5 +1,8 @@
 import gql from 'graphql-tag'
 
-export default gql`{
-    	id @client
-}`;
+export default gql`
+query {
+    user @client {
+        id
+    }
+}`

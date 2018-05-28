@@ -6,6 +6,7 @@ import { PRIMARY_COLOR, PLACEHOLDER_PHOTO } from '../variables';
 import {firebase} from '../firebase';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import GET_ID from '../queries/getId';
 
 const GET_PROFILE = gql`
 query user($id: ID!) {
@@ -18,12 +19,14 @@ query user($id: ID!) {
 }
 `
 
-const GET_ID = gql`
-query {
-    user @client {
-        id
-    }
-}`
+// Moved to separate file
+// ----------------------
+// const GET_ID = gql`
+// query {
+//     user @client {
+//         id
+//     }
+// }`
 
 const ICON_OPACITY = 0.75;
 const ICON_SIZE = Dimensions.get('window').height *0.05;
@@ -128,7 +131,11 @@ class Settings extends React.Component {
                 console.log('local data: ',data);
                 console.log('local error: ',error);
                 console.log('local loading: ',loading);
+                if(loading) return <Text>Loading...</Text>
+                if(error) return <Text>Error! {error.message}</Text>
+                
                 const id = data.user.id;
+                
                 return (
                     <Query query={GET_PROFILE} variables={{id}}>
                         {({loading, error, data}) => {

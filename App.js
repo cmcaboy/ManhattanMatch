@@ -8,15 +8,56 @@ import { ApolloProvider, graphql } from 'react-apollo';
 import { withClientState } from 'apollo-link-state';
 import { ApolloLink } from 'apollo-link';
 import Settings from './src/components/Settings';
+import EditSettings from './src/components/EditSettings';
 
 import Authentication from './src/components/Authentication';
 
 const cache = new InMemoryCache();
 
+export const resolvers = {
+  Mutation: {
+    updateAgePreference: (_, { minAge, maxAge }, { cache, getCacheKey }) => {
+
+      const query = gql`
+        query getAgePreference {
+          user {
+            settings {
+              minAgePreference
+              maxAgePreference
+            }
+          }
+        }
+      `
+      
+      const previous = cache.readQuery({query});
+      
+      const data = {
+        ...previous,
+        user: {
+          settings: {
+            minAgePreference: minAge,
+            maxAgePreference: maxAge
+          }
+        }
+      };
+
+      
+      cache.writeData({query,data})
+    }
+  }
+}
+
 const defaults = {
     user: {
       __typename: 'user',
-      id: 13
+      id: 13,
+      settings: {
+        __typename: 'settings',
+        minAgePreference: 18,
+        maxAgePreference: 25,
+        distance: 15,
+        sendNotifications: true
+      } 
     }
 };
 
@@ -38,6 +79,7 @@ const typeDefs = `
 const stateLink = withClientState({
   cache,
   defaults,
+  resolvers,
 //  typeDefs
 });
 
@@ -55,7 +97,7 @@ export default class App extends React.Component {
     return (
       <ApolloProvider client={client}>
           {/*<Authentication />*/}
-          <Settings />
+          <EditSettings />
       </ApolloProvider>
     );
   }
