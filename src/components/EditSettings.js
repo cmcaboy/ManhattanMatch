@@ -10,7 +10,7 @@ import gql from 'graphql-tag';
 import GET_ID from '../queries/getId';
 import { Query, Mutation } from 'react-apollo';
 
-const SLIDER_WIDTH = Dimensions.get('window').width * 0.87;
+const SLIDER_WIDTH = Dimensions.get('window').width * 0.85;
 
 const GET_SETTINGS = gql`
 query user($id: ID!) {
@@ -26,23 +26,55 @@ query user($id: ID!) {
 const GET_AGE_PREFERENCE = gql`
 query {
   user @client {
-      settings {
-        minAgePreference
-        maxAgePreference
-      }
+      minAgePreference
+      maxAgePreference
+  }
+}
+`;
+const GET_DISTANCE = gql`
+query {
+  user @client {
+      distance
   }
 }
 `;
 
 // last left off
-const SET_AGE_PREFERENCE = gql`
-mutation updateAgePreference($id: ID!, $minAge: Int!,$maxAge: Int!) {
-  updateAgePreference(id: $id, minAge: $minAge, maxAge: $maxAge) @client {
+const SET_AGE_PREFERENCE_LOCAL = gql`
+mutation updateAgePreferenceLocal($id: ID!, $minAge: Int!,$maxAge: Int!) {
+  updateAgePreferenceLocal(id: $id, minAge: $minAge, maxAge: $maxAge) @client {
     id
-    settings {
+    minAgePreference
+    maxAgePreference
+    __typename
+  }
+}
+`;
+
+const SET_AGE_PREFERENCE = gql`
+mutation editUser($id: ID!, $minAgePreference: Int, $maxAgePreference: Int ) {
+  editUser(id: $id, minAgePreference: $minAgePreference, maxAgePreference: $maxAgePreference) {
+    	id
       minAgePreference
       maxAgePreference
-    }
+  }
+}
+`;
+const SET_DISTANCE_LOCAL = gql`
+mutation updateDistanceLocal($id: ID!, $distance: Int!) {
+  updateDistanceLocal(id: $id, distance: $distance) @client {
+    id
+    distance
+    __typename
+  }
+}
+`;
+
+const SET_DISTANCE = gql`
+mutation editUser($id: ID!, $distance: Int ) {
+  editUser(id: $id, distance: $distance) {
+    	id
+      distance
   }
 }
 `;
@@ -89,8 +121,8 @@ class EditSettings extends Component {
     })
   }
 
-  renderContent(user) {
-    console.log('user: ',user);
+  renderContent(id) {
+    console.log('id: ',id);
     // this.setState({
     //   ageValues: [
     //     !!user.minAgePreference? user.minAgePreference : 18,
@@ -111,7 +143,7 @@ class EditSettings extends Component {
           if(loading) return <Text>Loading...</Text>
           if(error) return <Text>Error! {error.message}</Text>
 
-          const { minAgePreference, maxAgePreference } = data.user.settings;
+          const { minAgePreference, maxAgePreference } = data.user;
           console.log('minAge: ',minAgePreference);
           console.log('maxAge: ',maxAgePreference);
 
@@ -122,24 +154,34 @@ class EditSettings extends Component {
                 <Text>{minAgePreference} - {maxAgePreference}</Text>
               </View>
               <View style={{paddingTop:20,width:SLIDER_WIDTH}}>
-                <Mutation mutation={SET_AGE_PREFERENCE}>
-                  {(updateAgePreference, { data }) => {
+                <Mutation mutation={SET_AGE_PREFERENCE_LOCAL}>
+                  {(updateAgePreferenceLocal, { data }) => {
                     console.log('data: ',data);
                     return (
-                      <MultiSlider 
-                        containerStyle={{height: 12}}
-                        markerOffsetX={10}
-                        sliderLength={SLIDER_WIDTH}
-                        markerStyle={styles.markerStyle}
-                        step={1}
-                        values={[minAgePreference,maxAgePreference]}
-                        max={45}
-                        min={18}
-                        onValuesChange={(ageValues) => updateAgePreference({variables: {minAge: ageValues[0], maxAge:ageValues[1]}})}
-                        onValuesChangeFinish={(ageValues) => console.log(ageValues)}
-                    />
-                    )
-                  }
+                      <Mutation mutation={SET_AGE_PREFERENCE}>
+                      {(updateAgePreference, { data }) => {
+                        return (
+                          <MultiSlider 
+                            containerStyle={{height: 12}}
+                            markerOffsetX={10}
+                            sliderLength={SLIDER_WIDTH}
+                            markerStyle={styles.markerStyle}
+                            step={1}
+                            values={[minAgePreference,maxAgePreference]}
+                            max={45}
+                            min={18}
+                            onValuesChange={(ageValues) => updateAgePreferenceLocal({variables: {id, minAge: ageValues[0], maxAge:ageValues[1]}})}
+                            onValuesChangeFinish={(ageValues) => {
+                              console.log('remote id: ',id);
+                              console.log('remote minAge: ',minAgePreference);
+                              console.log('remote maxAge: ',maxAgePreference);
+                              return updateAgePreference({variables: {id, minAgePreference: ageValues[0], maxAgePreference:ageValues[1]}})}
+                            }
+                        />
+                        )}
+                      }
+                      </Mutation>
+                    )}
                 }
                 </Mutation>
               </View>
@@ -150,23 +192,48 @@ class EditSettings extends Component {
         
     </Card>
     <Card>
-    <View style={styles.sliderContainer}>
-      <View style={styles.titleSlider}>
-        <Text>Search Distance</Text>
-        <Text>{distance}</Text>
-      </View>
-      <View style={{width:SLIDER_WIDTH}}>
-    <Slider 
-      step={1}
-      value={distance}
-      maximumValue={50}
-      minimumValue={0}
-      disabled={false}
-      onValueChange={(distance) => this.setState({distance:distance})}
-      onSlidingComplete={(distance) => console.log(distance)}
-    />
-    </View>
-    </View>
+      <Query query={GET_DISTANCE}>
+          {({loading, error, data}) => {
+            if(loading) return <Text>Loading...</Text>
+            if(error) return <Text>Error! {error.message}</Text>
+
+            const { distance } = data.user;
+            console.log('distance: ',distance);
+
+            return (
+              <View style={styles.sliderContainer}>
+                <View style={styles.titleSlider}>
+                  <Text>Search Distance</Text>
+                  <Text>{distance}</Text>
+                </View>
+                <View style={{width:SLIDER_WIDTH}}>
+                  <Mutation mutation={SET_DISTANCE_LOCAL}>
+                  {(updateDistanceLocal, { data }) => {
+                    return (
+                      <Mutation mutation={SET_DISTANCE}>
+                        {(updateDistance, { data }) => {
+                          return (
+                            <Slider 
+                              step={1}
+                              value={distance}
+                              maximumValue={50}
+                              minimumValue={0}
+                              disabled={false}
+                              onValueChange={(distance) => updateDistanceLocal({variables: {id, distance}})}
+                              onSlidingComplete={(distance) => updateDistance({variables: {id, distance}})}
+                            />
+                          )
+                          }
+                        }
+                      </Mutation>
+                    )
+                  }}
+                  </Mutation>
+                </View>    
+              </View>
+
+          )}}
+        </Query>
     </Card>
     <Card>
     <View style={styles.titleSlider}>

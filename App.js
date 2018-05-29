@@ -16,34 +16,58 @@ const cache = new InMemoryCache();
 
 export const resolvers = {
   Mutation: {
-    updateAgePreference: (_, { minAge, maxAge }, { cache, getCacheKey }) => {
+    updateAgePreferenceLocal: (_, { minAge, maxAge }, { cache, getCacheKey }) => {
 
       const query = gql`
-        query getAgePreference {
-          user {
-            settings {
+        query getAgePreferenceLocal {
+          user @client {
+              id
+              __typename
               minAgePreference
               maxAgePreference
-            }
           }
         }
       `
-      
       const previous = cache.readQuery({query});
-      
+
       const data = {
-        ...previous,
         user: {
-          settings: {
-            minAgePreference: minAge,
-            maxAgePreference: maxAge
+          ...previous.user,
+          //id: previous.user.id,
+          minAgePreference: minAge,
+          maxAgePreference: maxAge
+        }
+      };
+      
+      cache.writeQuery({query,data});
+      return null;
+    },
+    updateDistanceLocal: (_, { id, distance }, { cache, getCacheKey }) => {
+
+      const query = gql`
+        query getDistanceLocal {
+          user @client {
+              id
+              __typename
+              distance
           }
+        }
+      `
+      const previous = cache.readQuery({query});
+
+      const data = {
+        user: {
+          ...previous.user,
+          distance: distance
         }
       };
 
+      console.log('previous: ',previous);
+      console.log('data: ',data);
       
-      cache.writeData({query,data})
-    }
+      cache.writeQuery({query,data})
+      return null;
+    },
   }
 }
 
@@ -51,13 +75,10 @@ const defaults = {
     user: {
       __typename: 'user',
       id: 13,
-      settings: {
-        __typename: 'settings',
-        minAgePreference: 18,
-        maxAgePreference: 25,
-        distance: 15,
-        sendNotifications: true
-      } 
+      minAgePreference: 18,
+      maxAgePreference: 25,
+      distance: 15,
+      sendNotifications: true
     }
 };
 
