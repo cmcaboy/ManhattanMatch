@@ -38,6 +38,13 @@ query {
   }
 }
 `;
+const GET_NOTIFICATIONS = gql`
+query {
+  user @client {
+      sendNotifications
+  }
+}
+`;
 
 // last left off
 const SET_AGE_PREFERENCE_LOCAL = gql`
@@ -75,6 +82,24 @@ mutation editUser($id: ID!, $distance: Int ) {
   editUser(id: $id, distance: $distance) {
     	id
       distance
+  }
+}
+`;
+const SET_NOTIFICATIONS_LOCAL = gql`
+mutation updateSendNotificationsLocal($id: ID!, $sendNotifications: Boolean!) {
+  updateSendNotificationsLocal(id: $id, sendNotifications: $sendNotifications) @client {
+    id
+    sendNotifications
+    __typename
+  }
+}
+`;
+
+const SET_NOTIFICATIONS = gql`
+mutation editUser($id: ID!, $sendNotifications: Boolean ) {
+  editUser(id: $id, sendNotifications: $sendNotifications) {
+    	id
+      sendNotifications
   }
 }
 `;
@@ -122,31 +147,15 @@ class EditSettings extends Component {
   }
 
   renderContent(id) {
-    console.log('id: ',id);
-    // this.setState({
-    //   ageValues: [
-    //     !!user.minAgePreference? user.minAgePreference : 18,
-    //     !!user.maxAgePreference? user.maxAgePreference : 24
-    //   ],
-    //   distance: !!user.distance? user.distance : 15,
-    //   //sendNotifications: isBoolean(user.sendNotifications)? user.sendNotifications : true
-    // })
     const {ageValues,distance,sendNotifications} = this.state;
   return (
     <View style={styles.containerStyle}>
     <Card>
       <Query query={GET_AGE_PREFERENCE}>
         {({loading, error, data}) => {
-          console.log('data: ',data);
-          console.log('error: ',error);
-          console.log('loading: ',loading);
           if(loading) return <Text>Loading...</Text>
           if(error) return <Text>Error! {error.message}</Text>
-
           const { minAgePreference, maxAgePreference } = data.user;
-          console.log('minAge: ',minAgePreference);
-          console.log('maxAge: ',maxAgePreference);
-
           return (
             <View style={styles.sliderContainer}>
               <View style={styles.titleSlider}>
@@ -156,7 +165,6 @@ class EditSettings extends Component {
               <View style={{paddingTop:20,width:SLIDER_WIDTH}}>
                 <Mutation mutation={SET_AGE_PREFERENCE_LOCAL}>
                   {(updateAgePreferenceLocal, { data }) => {
-                    console.log('data: ',data);
                     return (
                       <Mutation mutation={SET_AGE_PREFERENCE}>
                       {(updateAgePreference, { data }) => {
@@ -172,9 +180,6 @@ class EditSettings extends Component {
                             min={18}
                             onValuesChange={(ageValues) => updateAgePreferenceLocal({variables: {id, minAge: ageValues[0], maxAge:ageValues[1]}})}
                             onValuesChangeFinish={(ageValues) => {
-                              console.log('remote id: ',id);
-                              console.log('remote minAge: ',minAgePreference);
-                              console.log('remote maxAge: ',maxAgePreference);
                               return updateAgePreference({variables: {id, minAgePreference: ageValues[0], maxAgePreference:ageValues[1]}})}
                             }
                         />
@@ -189,17 +194,13 @@ class EditSettings extends Component {
           )
         }}
       </Query>
-        
     </Card>
     <Card>
       <Query query={GET_DISTANCE}>
           {({loading, error, data}) => {
             if(loading) return <Text>Loading...</Text>
             if(error) return <Text>Error! {error.message}</Text>
-
             const { distance } = data.user;
-            console.log('distance: ',distance);
-
             return (
               <View style={styles.sliderContainer}>
                 <View style={styles.titleSlider}>
@@ -236,13 +237,36 @@ class EditSettings extends Component {
         </Query>
     </Card>
     <Card>
-    <View style={styles.titleSlider}>
-    <Text>Send Notifications</Text> 
-      <Switch 
-        onValueChange={() => this.setState((prevState) => ({sendNotifications:!prevState.sendNotifications}) )}
-        value={this.state.sendNotifications}
-      />
-    </View>
+      <Query query={GET_NOTIFICATIONS}>
+        {({loading, error, data}) => {
+          if(loading) return <Text>Loading...</Text>
+          if(error) return <Text>Error! {error.message}</Text>
+          const { sendNotifications } = data.user;
+          return (
+            <View style={styles.titleSlider}>
+            <Text>Send Notifications</Text> 
+            <Mutation mutation={SET_NOTIFICATIONS_LOCAL}>
+            {(updateSendNotificationsLocal, { data }) => {
+              return (
+                <Mutation mutation={SET_NOTIFICATIONS}>
+                  {(updateSendNotifications, { data }) => {
+                    return (
+                      <Switch 
+                        onValueChange={() => {
+                          const newSendNotifications = !sendNotifications;
+                          updateSendNotifications({variables: {id, sendNotifications: newSendNotifications}})
+                          updateSendNotificationsLocal({variables: {id, sendNotifications: newSendNotifications}})
+                        }}
+                        value={sendNotifications}
+                      />
+                    )}}
+                    </Mutation>
+                  )}}
+            </Mutation>
+            </View>
+            )
+          }}
+      </Query>
     </Card>
     <Card style={{display: 'none'}}>
       <Button 

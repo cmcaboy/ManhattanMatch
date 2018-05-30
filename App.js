@@ -9,6 +9,7 @@ import { withClientState } from 'apollo-link-state';
 import { ApolloLink } from 'apollo-link';
 import Settings from './src/components/Settings';
 import EditSettings from './src/components/EditSettings';
+import EditProfile from './src/components/EditProfile';
 
 import Authentication from './src/components/Authentication';
 
@@ -68,6 +69,32 @@ export const resolvers = {
       cache.writeQuery({query,data})
       return null;
     },
+    updateSendNotificationsLocal: (_, { id, sendNotifications }, { cache, getCacheKey }) => {
+
+      const query = gql`
+        query getSendNotificationsLocal {
+          user @client {
+              id
+              __typename
+              sendNotifications
+          }
+        }
+      `
+      const previous = cache.readQuery({query});
+
+      const data = {
+        user: {
+          ...previous.user,
+          sendNotifications: sendNotifications
+        }
+      };
+
+      console.log('previous: ',previous);
+      console.log('data: ',data);
+      
+      cache.writeQuery({query,data})
+      return null;
+    },
   }
 }
 
@@ -118,7 +145,7 @@ export default class App extends React.Component {
     return (
       <ApolloProvider client={client}>
           {/*<Authentication />*/}
-          <EditSettings />
+          <EditProfile />
       </ApolloProvider>
     );
   }

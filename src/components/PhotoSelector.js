@@ -47,16 +47,16 @@ class PhotoSelector extends React.Component {
       }, async (uri) => {
         const url = await uploadImage(uri);
         //console.log('i: ',i);
-        if(i===0) {
-          this.props.startProfilePicture(url);
-        } else {
-          const urlList = this.state.urlList.splice(1).map((item,index) => {
+        // if(i===0) {
+        //   this.props.startProfilePicture(url);
+        // } else {
+          const urlList = this.state.urlList.map((item,index) => {
             //console.log('item: ',item);
             //console.log('index: ',index);
-            return index === i-1 ? url : item
+            return index === i ? url : item
           });
-          this.props.startChangeAncillaryPictures(urlList);
-        }
+          this.props.startChangePics(urlList);
+        // }
         
         
         this.setState(prevState => ({isLoading: prevState.isLoading.map((item,index) => index===i? false:item)}));
@@ -87,12 +87,13 @@ class PhotoSelector extends React.Component {
     const tempItem = temp[a];
     temp[a] = temp[b];
     temp[b] = tempItem;
-    if(a === 0 || b === 0) {
-      this.props.startProfilePicture(temp[0]);
-      this.props.startChangeAncillaryPictures(temp.slice(1))
-    } else {
-      this.props.startChangeAncillaryPictures(temp.slice(1));
-    }
+    // if(a === 0 || b === 0) {
+      // this.props.startProfilePicture(temp[0]);
+      // this.props.startChangeAncillaryPictures(temp.slice(1))
+      this.props.startChangePics(temp);
+    // } else {
+    //   this.props.startChangeAncillaryPictures(temp.slice(1));
+    // }
   }
 
   resetSelected() {
@@ -178,11 +179,11 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-      startProfilePicture: (profilePic) => dispatch(startProfilePicture(profilePic)),
-      startChangeAncillaryPictures: (urlList) => dispatch(startChangeAncillaryPictures(urlList)),
-  }
-}
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//       startProfilePicture: (profilePic) => dispatch(startProfilePicture(profilePic)),
+//       startChangeAncillaryPictures: (urlList) => dispatch(startChangeAncillaryPictures(urlList)),
+//   }
+// }
 
-export default connect(undefined,mapDispatchToProps)(PhotoSelector);
+export default PhotoSelector;
