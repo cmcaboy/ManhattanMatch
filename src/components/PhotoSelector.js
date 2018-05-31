@@ -11,12 +11,7 @@ import {
 } from 'react-native';
 import uploadImage from '../firebase/uploadImage';
 import {Spinner,CardSection} from './common';
-import {
-  startProfilePicture,
-  startChangeAncillaryPictures,
-} from '../actions/profile';
 import {ImagePicker} from 'expo';
-import {connect} from 'react-redux';
 
 const placeholderURL = 'https://firebasestorage.googleapis.com/v0/b/stagg-test.appspot.com/o/add_pic.png?alt=media&token=5328312a-bd1a-4328-b355-2c80210b96ed'
 
@@ -83,17 +78,19 @@ class PhotoSelector extends React.Component {
   }
 
   switchPicPosition = (a,b) => {
-    let temp = this.state.urlList;
-    const tempItem = temp[a];
-    temp[a] = temp[b];
-    temp[b] = tempItem;
-    // if(a === 0 || b === 0) {
-      // this.props.startProfilePicture(temp[0]);
-      // this.props.startChangeAncillaryPictures(temp.slice(1))
-      this.props.startChangePics(temp);
-    // } else {
-    //   this.props.startChangeAncillaryPictures(temp.slice(1));
-    // }
+    
+    const temp = this.state.urlList.map((item,i) => {
+      if(i === a) {
+        return this.state.urlList[b]
+      } else if(i === b) {
+        return this.state.urlList[a]
+      } else {
+        return item;
+      }
+    })
+
+    this.props.startChangePics(temp);
+
   }
 
   resetSelected() {
@@ -178,12 +175,5 @@ const styles = StyleSheet.create({
       borderWidth: 0
     }
 });
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//       startProfilePicture: (profilePic) => dispatch(startProfilePicture(profilePic)),
-//       startChangeAncillaryPictures: (urlList) => dispatch(startChangeAncillaryPictures(urlList)),
-//   }
-// }
 
 export default PhotoSelector;

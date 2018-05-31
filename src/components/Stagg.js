@@ -27,6 +27,43 @@ import {Location,Permissions,Notifications} from 'expo';
 import {Foundation,Ionicons} from '@expo/vector-icons';
 import StaggCard from './StaggCard';
 import registerForNotifications from '../services/push_notifications';
+import GET_ID from '../queries/getId';
+
+const GET_MATCHES = gql`
+query user($id: ID!) {
+    user(id: $id) {
+        matches {
+            user:
+                name
+                pics
+                age
+                description
+                work
+                school
+        }
+    }
+  }
+`
+
+const LIKE = gql`
+mutation likeUser($id: ID!, $likedId: ID!) {
+    likeUser(id: $id, likedId: $likedId) {
+        id
+        name
+    }
+}
+`;
+const DISLIKE = gql`
+mutation dislikeUser($id: ID!, $dislikedId: ID!) {
+    dislikeUser(id: $id, dislikedId: $dislikedId) {
+        id
+        name
+    }
+}
+`;
+
+// Need to set this up on the server.
+const SET_COORDS = gql``;
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -228,7 +265,7 @@ class Stagg extends Component {
                 work={prospect.work}
                 school={prospect.school}
                 description={prospect.description}
-                distanceApart={prospect.distanceApart}
+                //distanceApart={prospect.distanceApart}
                 cacheImages={!!cacheImages}
                 navigation={this.props.navigation}
             />
@@ -259,8 +296,8 @@ class Stagg extends Component {
         )
     }
 
-    renderGranted = () => {
-        if (this.props.prospectiveList.length === 0) {
+    renderGranted = (matches) => {
+        if (matches.length === 0) {
             if(this.props.isMatchLoading) {
                 return <Spinner />
             } else {
@@ -269,7 +306,7 @@ class Stagg extends Component {
         }
         return (
             <Animated.View style={styles.staggContainer}>
-                {this.props.prospectiveList.map((prospect,i) => {
+                {matches.map((prospect,i) => {
                     console.log('i',i);
                     console.log('state index: ',this.state.index);
                     if(i < this.state.index) { return null }
@@ -299,9 +336,9 @@ class Stagg extends Component {
             )
     }
 
-    renderContent() {
+    renderContent(matches) {
         if(this.state.status === 'granted'){
-            return this.renderGranted();
+            return this.renderGranted(matches);
         } else if(this.state.status === 'denied') {
             return (
                 <View style={styles.center}>
@@ -336,11 +373,30 @@ class Stagg extends Component {
         // Implement Loading here
         //console.log('isMatchLoading: ',this.props.isMatchLoading);
         //console.log('status: ',this.state.status);
-        if(this.props.isMatchLoading) {
-            return <Spinner />
-        } else {
-            return this.renderContent();
-        }
+        return (
+            <Query query={GET_ID}>
+                {({loading, error, data}) => {
+                console.log('local data: ',data);
+                console.log('local error: ',error);
+                console.log('local loading: ',loading);
+                if(loading) return <Spinner />
+                if(error) return <Text>Error! {error.message}</Text>
+                const { id } = data.user;
+                return (
+                    <Query query={GET_MATCHES} variables={{id}}>
+                    {({loading, error, data}) => {
+                        console.log('data: ',data);
+                        console.log('error: ',error);
+                        console.log('loading: ',loading);
+                        if(loading) return <Spinner />
+                        if(error) return <Text>Error! {error.message}</Text>
+                        return this.renderContent(data.user.matches);
+                    }}
+                    </Query>
+                ) 
+                }}
+            </Query>
+          )
     }
 }
 
@@ -433,27 +489,32 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        startLike: (id) => dispatch(startLike(id)),
-        startDislike: (id) => dispatch(startDislike(id)),
-        startMatch: (id) => dispatch(startMatch(id)),
-        startNewQueue: (boo) => dispatch(startNewQueue(boo)),
-        startSetCoords: (coords) => dispatch(startSetCoords(coords)),
-        matchLoading: (matchLoading) => dispatch(matchLoading(matchLoading))
-    }
-}
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+    query user($id: ID!) {
+        user(id: $id) {
+            id
+            pics
+            name
+            age
+            school
+            work
+            description
+        }
+      }
+//     }
+// }
 
-const mapStateToProps = (state,ownProps) => {
-    //console.log('state at stagg -- ',state);
-    return {
-        prospectiveList: state.matchListReducer.queue,
-        likeList: state.matchListReducer.likeList,
-        dislikeList: state.matchListReducer.dislikeList,
-        matchList: state.matchListReducer.matches,
-        isMatchLoading: state.authReducer.matchLoading,
-        id: state.authReducer.uid
-    }
-}
+// const mapStateToProps = (state,ownProps) => {
+//     //console.log('state at stagg -- ',state);
+//     return {
+//         prospectiveList: state.matchListReducer.queue,
+//         likeList: state.matchListReducer.likeList,
+//         dislikeList: state.matchListReducer.dislikeList,
+//         matchList: state.matchListReducer.matches,
+//         isMatchLoading: state.authReducer.matchLoading,
+//         id: state.authReducer.uid
+//     }
+// }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Stagg);
+export default Stagg;
