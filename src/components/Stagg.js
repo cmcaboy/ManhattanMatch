@@ -17,10 +17,7 @@ import {
     Alert,
     Button
 } from 'react-native';
-import {connect} from 'react-redux';
-import {startLike,startDislike,startMatch,startNewQueue} from '../actions/matchList';
 import {startSetCoords} from '../actions/profile';
-import {matchLoading} from '../actions/auth';
 //import {Card} from 'react-native-elements';
 import {Card,Spinner,MyAppText} from './common';
 import {Location,Permissions,Notifications} from 'expo';
