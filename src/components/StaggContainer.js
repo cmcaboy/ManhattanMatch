@@ -21,6 +21,16 @@ query user($id: ID!) {
   }
 `
 
+const SET_COORDS = gql`
+mutation editUser($id: ID!, $latitude: Float, $longtitude: Float) {
+    editUser(id: $id, latitude: $latitude, longitude: $longitude) {
+        id
+        latitude
+        longitude
+    }
+}
+`
+
 const LIKE = gql`
 mutation likeUser($id: ID!, $likedId: ID!) {
     likeUser(id: $id, likedId: $likedId) {
@@ -58,15 +68,23 @@ class StaggContainer extends Component {
                         console.log('loading: ',loading);
                         if(loading) return <Spinner />
                         if(error) return <Text>Error! {error.message}</Text>
-                        return <Mutation mutation={Like}>
+                        return <Mutation mutation={LIKE}>
                         {({likeUser}) => {
                             return <Mutation mutation={DISLIKE}>
                             {({dislikeUser}) => {
-                                return <Stagg 
-                                    matches={data.user.matches} 
-                                    likeUser={likeUser}
-                                    dislikeUser={dislikeUser}
-                                />
+                                return <Mutation mutation={SET_COORDS}>
+                                {({setCoords}) => {
+                                    const startSetCoords = (lat,lon) => setCoords(id,lat,lon);
+                                    const startLikeUser = (likedId) => likeUser(id, likedId);
+                                    const startDislikeUser = (dislikedId) => dislikeUser(id, dislikedId);
+                                        return <Stagg 
+                                            matches={data.user.matches} 
+                                            likeUser={startLikeUser}
+                                            dislikeUser={startDislikeUser}
+                                            startSetCoords={startSetCoords}
+                                        />
+                                    }}
+                                </Mutation> 
                             }}
                             </Mutation>
                         }}

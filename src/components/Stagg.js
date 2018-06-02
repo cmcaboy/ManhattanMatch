@@ -26,26 +26,10 @@ import StaggCard from './StaggCard';
 import registerForNotifications from '../services/push_notifications';
 import GET_ID from '../queries/getId';
 
-const GET_MATCHES = gql`
-query user($id: ID!) {
-    user(id: $id) {
-        matches {
-            user:
-                name
-                pics
-                age
-                description
-                work
-                school
-        }
-    }
-  }
-`
-
-
-
 // Need to set this up on the server.
-const SET_COORDS = gql``;
+const SET_COORDS = gql`
+
+`;
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -54,10 +38,6 @@ const SWIPE_OUT_DURATION = 100;
 const MIN_QUEUE_LENGTH = 10;
 
 class Stagg extends Component {
-    /*static defaultProps = {
-        onSwipeRight: (id) => {this.props.startLike(id)},
-        onSwipeLeft:  (id) => {this.props.startDislike(id)}
-    }*/
     constructor(props) {
         super(props);
 
@@ -91,7 +71,6 @@ class Stagg extends Component {
     }
 
     componentDidMount() {
-
         // Ask user for notifications permissions
         registerForNotifications(this.props.id);
         
@@ -156,7 +135,7 @@ class Stagg extends Component {
             distanceInterval: 1000
         }, ({coords}) => {
             //console.log('coords: ',coords);
-            this.props.startSetCoords((coords));
+            this.props.startSetCoords(coords[0],coords[1]);
             //this.setState({status:'granted'})
         })
     }
@@ -214,7 +193,6 @@ class Stagg extends Component {
         //console.log('stagg ancillary: ',prospect.ancillaryPics);
 
         return (
-            //<Text>{prospect.name}</Text>
             
             <StaggCard 
                 key={prospect.id}
@@ -235,29 +213,29 @@ class Stagg extends Component {
     noProspects() {
         return (
             <View style={styles.noProspects}>
-                    <Ionicons 
-                        name="md-sad"
-                        size={100}
-                        color="black"
-                    />
-                    <Text>There is no one new in your area.</Text>
-                    <Text>Try again later.</Text>
+                <Ionicons 
+                    name="md-sad"
+                    size={100}
+                    color="black"
+                />
+                <Text>There is no one new in your area.</Text>
+                <Text>Try again later.</Text>
 
-                    <TouchableOpacity 
-                        onPress={() => this.props.startNewQueue(true)} 
-                        style={styles.noProspectsButton}
-                    >
-                        <MyAppText style={styles.noProspectsText}>
-                            Search Again
-                        </MyAppText>
-                    </TouchableOpacity>
+                <TouchableOpacity 
+                    onPress={() => this.props.startNewQueue(true)} 
+                    style={styles.noProspectsButton}
+                >
+                    <MyAppText style={styles.noProspectsText}>
+                        Search Again
+                    </MyAppText>
+                </TouchableOpacity>
             </View>
         )
     }
 
     renderGranted = () => {
         if (this.props.matches.length === 0) {
-                return this.noProspects();
+            return this.noProspects();
         }
         return (
             <Animated.View style={styles.staggContainer}>
@@ -413,17 +391,5 @@ const styles = StyleSheet.create({
         elevation: 1,
     }
 });
-
-// const mapStateToProps = (state,ownProps) => {
-//     //console.log('state at stagg -- ',state);
-//     return {
-//         prospectiveList: state.matchListReducer.queue,
-//         likeList: state.matchListReducer.likeList,
-//         dislikeList: state.matchListReducer.dislikeList,
-//         matchList: state.matchListReducer.matches,
-//         isMatchLoading: state.authReducer.matchLoading,
-//         id: state.authReducer.uid
-//     }
-// }
 
 export default Stagg;
