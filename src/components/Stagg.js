@@ -17,19 +17,13 @@ import {
     Alert,
     Button
 } from 'react-native';
-import {startSetCoords} from '../actions/profile';
-//import {Card} from 'react-native-elements';
 import {Card,Spinner,MyAppText} from './common';
 import {Location,Permissions,Notifications} from 'expo';
 import {Foundation,Ionicons} from '@expo/vector-icons';
 import StaggCard from './StaggCard';
 import registerForNotifications from '../services/push_notifications';
 import GET_ID from '../queries/getId';
-
-// Need to set this up on the server.
-const SET_COORDS = gql`
-
-`;
+import gql from 'graphql-tag';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -72,7 +66,7 @@ class Stagg extends Component {
 
     componentDidMount() {
         // Ask user for notifications permissions
-        registerForNotifications(this.props.id);
+        registerForNotifications(this.props.id,this.props.startSetPushToken);
         
         // Listen for notifications
         Notifications.addListener((notification) => {
@@ -96,6 +90,7 @@ class Stagg extends Component {
     }
 
     componentWillMount() {
+        console.log('component will mount');
         // Permissions function keeps track of whether the user accepted the 
         // permissions or not. It it has not asked, it will prompt the user.
         Permissions.getAsync(Permissions.LOCATION)
@@ -143,6 +138,7 @@ class Stagg extends Component {
     forceSwipe(direction) {
         // same as spring, but the animation plays out slightly differently. Timing is more linear while
         // spring is more bouncy.
+        console.log('force swipe ',direction);
         Animated.timing(this.state.position, {
             toValue: { x:direction==='right'?SCREEN_WIDTH+150:-SCREEN_WIDTH-150, y:0},
             duration: SWIPE_OUT_DURATION
@@ -151,14 +147,17 @@ class Stagg extends Component {
     }
     onSwipeComplete(direction) {
         // data is the array the comes in through props. It is the list of cards
-        const {onSwipeLeft,onSwipeRight,matches} = this.props;
-        const item = matches[this.state.index]
+        const {onSwipeLeft,onSwipeRight,queue} = this.props;
+        const item = queue[this.state.index]
 
         direction === 'right' ? this.onSwipeRight(item.id) : this.onSwipeLeft(item.id);
         // Reset the card's position to be in default onscreen position
+
+        this.setState((prev) => ({index:prev.index + 1}));
+
         this.state.position.setValue({x:0,y:0});
         
-        console.log('match length: ', matches.length);
+        console.log('queue length: ', queue.length);
         console.log('index: ', (this.state.index + 1));
         
     } 
@@ -197,7 +196,7 @@ class Stagg extends Component {
             <StaggCard 
                 key={prospect.id}
                 id={prospect.id}
-                pics={[prospect.pics]}
+                pics={prospect.pics}
                 name={prospect.name}
                 work={prospect.work}
                 school={prospect.school}
@@ -225,21 +224,22 @@ class Stagg extends Component {
                     onPress={() => this.props.startNewQueue(true)} 
                     style={styles.noProspectsButton}
                 >
-                    <MyAppText style={styles.noProspectsText}>
+                    <Text style={styles.noProspectsText}>
                         Search Again
-                    </MyAppText>
+                    </Text>
                 </TouchableOpacity>
             </View>
         )
     }
 
     renderGranted = () => {
-        if (this.props.matches.length === 0) {
+        console.log('queue: ', this.props.queue);
+        if (this.props.queue.length === 0) {
             return this.noProspects();
         }
         return (
             <Animated.View style={styles.staggContainer}>
-                {matches.map((prospect,i) => {
+                {this.props.queue.map((prospect,i) => {
                     console.log('i',i);
                     console.log('state index: ',this.state.index);
                     if(i < this.state.index) { return null }
@@ -270,17 +270,19 @@ class Stagg extends Component {
     }
 
     render() {
+        console.log('props: ',this.props);
         if(this.state.status === 'granted'){
             return this.renderGranted();
         } else if(this.state.status === 'denied') {
-            return (
-                <View style={styles.center}>
-                    <Foundation name='alert' size={50}/>
-                    <Text style={{textAlign:'center'}}>
-                        You denied your location. You can fix this by visiting your settings and enabling location services for this app.
-                    </Text>
-                </View>
-            )
+            return this.renderGranted();
+            // return (
+            //     <View style={styles.center}>
+            //         <Foundation name='alert' size={50}/>
+            //         <Text style={{textAlign:'center'}}>
+            //             You denied your location. You can fix this by visiting your settings and enabling location services for this app.
+            //         </Text>
+            //     </View>
+            // )
         } else if (this.state.status === 'undetermined') {
             return (
                 <View style={styles.center}>

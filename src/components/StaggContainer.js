@@ -4,18 +4,19 @@ import React,{Component} from 'react';
 import { Query, Mutation } from 'react-apollo';
 import GET_ID from '../queries/getId';
 import Stagg from './Stagg';
+import gql from 'graphql-tag';
 
-const GET_MATCHES = gql`
+const GET_QUEUE = gql`
 query user($id: ID!) {
     user(id: $id) {
-        matches {
-            user:
-                name
-                pics
-                age
-                description
-                work
-                school
+        queue {
+            id
+            name
+            pics
+            age
+            description
+            work
+            school
         }
     }
   }
@@ -27,6 +28,14 @@ mutation editUser($id: ID!, $latitude: Float, $longtitude: Float) {
         id
         latitude
         longitude
+    }
+}
+`
+const SET_PUSH_TOKEN = gql`
+mutation editUser($id: ID!, $token: String) {
+    editUser(id: $id, token: $token) {
+        id
+        token
     }
 }
 `
@@ -61,7 +70,7 @@ class StaggContainer extends Component {
                 if(error) return <Text>Error! {error.message}</Text>
                 const { id } = data.user;
                 return (
-                    <Query query={GET_MATCHES} variables={{id}}>
+                    <Query query={GET_QUEUE} variables={{id}}>
                     {({loading, error, data}) => {
                         console.log('data: ',data);
                         console.log('error: ',error);
@@ -69,21 +78,27 @@ class StaggContainer extends Component {
                         if(loading) return <Spinner />
                         if(error) return <Text>Error! {error.message}</Text>
                         return <Mutation mutation={LIKE}>
-                        {({likeUser}) => {
+                        {(likeUser) => {
                             return <Mutation mutation={DISLIKE}>
-                            {({dislikeUser}) => {
+                            {(dislikeUser) => {
                                 return <Mutation mutation={SET_COORDS}>
-                                {({setCoords}) => {
-                                    const startSetCoords = (lat,lon) => setCoords(id,lat,lon);
-                                    const startLikeUser = (likedId) => likeUser(id, likedId);
-                                    const startDislikeUser = (dislikedId) => dislikeUser(id, dislikedId);
-                                        return <Stagg 
-                                            matches={data.user.matches} 
-                                            likeUser={startLikeUser}
-                                            dislikeUser={startDislikeUser}
-                                            startSetCoords={startSetCoords}
-                                        />
+                                {(setCoords) => {
+                                    return <Mutation mutation={SET_PUSH_TOKEN}>
+                                    {(setPushToken) => {
+                                        const startSetCoords = (lat,lon) =>         setCoords({variables: {id,lat,lon}});
+                                        const startSetPushToken = (token) =>        setPushToken({variables: {id,token}});
+                                        const startLikeUser = (likedId) =>          likeUser({variables: {id, likedId}});
+                                        const startDislikeUser = (dislikedId) =>    dislikeUser({variables: {id, dislikedId}});
+                                            return <Stagg 
+                                                queue={data.user.queue} 
+                                                likeUser={startLikeUser}
+                                                dislikeUser={startDislikeUser}
+                                                startSetCoords={startSetCoords}
+                                                startSetPushToken={startSetPushToken}
+                                            />
                                     }}
+                                    </Mutation>
+                                }}
                                 </Mutation> 
                             }}
                             </Mutation>

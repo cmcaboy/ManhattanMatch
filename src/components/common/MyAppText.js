@@ -13,7 +13,7 @@ class MyAppText extends Component {
 
 const styles = StyleSheet.create({
   textStyle: {
-    fontFamily: 'oxygen-regular'
+    //fontFamily: 'oxygen-regular'
   }
 });
 

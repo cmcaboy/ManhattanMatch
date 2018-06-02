@@ -119,7 +119,6 @@ class EditProfile extends Component {
   }
 
   renderContent({name,age,school,work,description,pics = [],id}) {
-    console.log('ancillaryPics: ',this.props.ancillaryPics);
     return (
       <ScrollView contentContainerStyle={styles.settingsContainer}>
       <KeyboardAvoidingView
@@ -132,8 +131,6 @@ class EditProfile extends Component {
                 <PhotoSelector 
                   urlList={pics}
                   startChangePics={startChangePics}
-                  //switchPicPosition={(a,b) => this.switchPicPosition(a,b)}
-                  //pickImage={this.pickImage}
                 />
               )}}
             </Mutation>
@@ -277,34 +274,5 @@ const styles = StyleSheet.create({
       height: 150
     }
 });
-
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         startChangeAge: (age) => dispatch(startChangeAge(age)),
-//         startChangeGender: (gender) => dispatch(startChangeGender(gender)),
-//         startProfilePicture: (profilePic) => dispatch(startProfilePicture(profilePic)),
-//         startChangeAncillaryPictures: (urlList) => dispatch(startChangeAncillaryPictures(urlList)),
-//         startChangeName: (name) => dispatch(startChangeName(name)),
-//         startChangeSchool: (school) => dispatch(startChangeSchool(school)),
-//         startChangeWork: (work) => dispatch(startChangeWork(work)),
-//         startRemoveProfile: () => dispatch(startRemoveProfile()),
-//         startLogout: () => dispatch(startLogout()),
-//         startChangeDescription: (description) => dispatch(startChangeDescription(description))
-//     }
-// }
-
-// const mapStateToProps = (state,ownProps) => {
-//   //console.log('state: ',state);
-//     return {
-//         profilePic: state.profileReducer.profilePic,
-//         name: state.profileReducer.name,
-//         work: state.profileReducer.work,
-//         school: state.profileReducer.school,
-//         description: state.profileReducer.description,
-//         gender: state.profileReducer.gender,
-//         age: state.profileReducer.age,
-//         ancillaryPics: expandArrayToFive(state.profileReducer.ancillaryPics)
-//     }
-// }
 
 export default EditProfile;
