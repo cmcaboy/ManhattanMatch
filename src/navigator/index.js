@@ -20,7 +20,7 @@ const Tabs = TabNavigator({
             tabBarIcon: ({ tintColor }) => <MaterialCommunityIcons name='account' size={24} color={tintColor} />
           }
     },
-    Stagg: {
+    StaggContainer: {
         screen: StaggContainer,
         navigationOptions: {
             tabBarLabel: 'StaggContainer',
