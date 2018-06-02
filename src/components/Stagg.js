@@ -42,22 +42,7 @@ query user($id: ID!) {
   }
 `
 
-const LIKE = gql`
-mutation likeUser($id: ID!, $likedId: ID!) {
-    likeUser(id: $id, likedId: $likedId) {
-        id
-        name
-    }
-}
-`;
-const DISLIKE = gql`
-mutation dislikeUser($id: ID!, $dislikedId: ID!) {
-    dislikeUser(id: $id, dislikedId: $dislikedId) {
-        id
-        name
-    }
-}
-`;
+
 
 // Need to set this up on the server.
 const SET_COORDS = gql``;
@@ -104,23 +89,8 @@ class Stagg extends Component {
         this.position = position;
         this.state = {panResponder, position,index:0, status: null}
     }
-/*
-    componentWillReceiveProps(nextProps) {
-        console.log('receiveProps');
-        // If we receive a new list, we should reset the index back to 0.
-        if(nextProps.prospectiveList !== this.props.prospectiveList) {
-            console.log('receiveProps reset index');
-            this.setState({index:0});
-        }
-        
-    }
-*/
+
     componentDidMount() {
-        console.log('queue length: ',(this.state.index + 1 + MIN_QUEUE_LENGTH));
-        console.log('prospective length: ',this.props.prospectiveList.length);
-        if(this.props.prospectiveList.length < 1) {
-            this.props.startNewQueue(false);
-        }
 
         // Ask user for notifications permissions
         registerForNotifications(this.props.id);
@@ -202,26 +172,19 @@ class Stagg extends Component {
     }
     onSwipeComplete(direction) {
         // data is the array the comes in through props. It is the list of cards
-        const {onSwipeLeft,onSwipeRight,prospectiveList} = this.props;
-        const item = prospectiveList[this.state.index]
+        const {onSwipeLeft,onSwipeRight,matches} = this.props;
+        const item = matches[this.state.index]
 
         direction === 'right' ? this.onSwipeRight(item.id) : this.onSwipeLeft(item.id);
         // Reset the card's position to be in default onscreen position
         this.state.position.setValue({x:0,y:0});
         
-        console.log('prospectiveList length: ', this.props.prospectiveList.length);
+        console.log('match length: ', matches.length);
         console.log('index: ', (this.state.index + 1));
         
-        // Increment the state by one
-        //this.setState({ index: this.state.index + 1 });
-
-        if(this.props.prospectiveList.length === 0) {
-            this.props.startNewQueue(true);
-            //this.setState({index:0});
-        }
     } 
-    onSwipeRight = (id) => this.props.startLike(id);
-    onSwipeLeft  = (id) => this.props.startDislike(id);
+    onSwipeRight = (id) => this.props.likeUser(id);
+    onSwipeLeft  = (id) => this.props.dislikeUser(id);
     resetPosition() {
         Animated.spring(this.state.position, {
             toValue: {x:0, y:0}
@@ -256,8 +219,7 @@ class Stagg extends Component {
             <StaggCard 
                 key={prospect.id}
                 id={prospect.id}
-                pics={[prospect.profilePic,...prospect.ancillaryPics]}
-                //pics={[prospect.profilePic]}
+                pics={[prospect.pics]}
                 name={prospect.name}
                 work={prospect.work}
                 school={prospect.school}
@@ -293,13 +255,9 @@ class Stagg extends Component {
         )
     }
 
-    renderGranted = (matches) => {
-        if (matches.length === 0) {
-            if(this.props.isMatchLoading) {
-                return <Spinner />
-            } else {
+    renderGranted = () => {
+        if (this.props.matches.length === 0) {
                 return this.noProspects();
-            }
         }
         return (
             <Animated.View style={styles.staggContainer}>
@@ -333,9 +291,9 @@ class Stagg extends Component {
             )
     }
 
-    renderContent(matches) {
+    render() {
         if(this.state.status === 'granted'){
-            return this.renderGranted(matches);
+            return this.renderGranted();
         } else if(this.state.status === 'denied') {
             return (
                 <View style={styles.center}>
@@ -364,36 +322,6 @@ class Stagg extends Component {
                 <Spinner />
             )
         }
-    }
-
-    render() {
-        // Implement Loading here
-        //console.log('isMatchLoading: ',this.props.isMatchLoading);
-        //console.log('status: ',this.state.status);
-        return (
-            <Query query={GET_ID}>
-                {({loading, error, data}) => {
-                console.log('local data: ',data);
-                console.log('local error: ',error);
-                console.log('local loading: ',loading);
-                if(loading) return <Spinner />
-                if(error) return <Text>Error! {error.message}</Text>
-                const { id } = data.user;
-                return (
-                    <Query query={GET_MATCHES} variables={{id}}>
-                    {({loading, error, data}) => {
-                        console.log('data: ',data);
-                        console.log('error: ',error);
-                        console.log('loading: ',loading);
-                        if(loading) return <Spinner />
-                        if(error) return <Text>Error! {error.message}</Text>
-                        return this.renderContent(data.user.matches);
-                    }}
-                    </Query>
-                ) 
-                }}
-            </Query>
-          )
     }
 }
 
@@ -485,22 +413,6 @@ const styles = StyleSheet.create({
         elevation: 1,
     }
 });
-
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-    query user($id: ID!) {
-        user(id: $id) {
-            id
-            pics
-            name
-            age
-            school
-            work
-            description
-        }
-      }
-//     }
-// }
 
 // const mapStateToProps = (state,ownProps) => {
 //     //console.log('state at stagg -- ',state);

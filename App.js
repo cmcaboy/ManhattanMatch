@@ -12,6 +12,7 @@ import EditSettings from './src/components/EditSettings';
 import EditProfile from './src/components/EditProfile';
 
 import Authentication from './src/components/Authentication';
+import StaggContainer from './src/components/StaggContainer';
 
 const cache = new InMemoryCache();
 
@@ -145,7 +146,7 @@ export default class App extends React.Component {
     return (
       <ApolloProvider client={client}>
           {/*<Authentication />*/}
-          <EditProfile />
+          <StaggContainer />
       </ApolloProvider>
     );
   }
