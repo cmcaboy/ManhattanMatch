@@ -7,11 +7,37 @@ import {
     Platform, 
     ScrollView 
 } from 'react-native';
-import {connect} from 'react-redux';
-import {CirclePicture,MyAppText} from './common';
+import {CirclePicture,MyAppText,Spinner} from './common';
 import MatchListItem from './MatchListItem';
 import {Ionicons} from '@expo/vector-icons';
 import { PRIMARY_COLOR } from '../variables';
+import gql from 'graphql-tag';
+import {Query} from 'react-apollo';
+import GET_ID from '../queries/getId';
+
+const GET_MATCHES = gql`
+query user($id: ID!) {
+    user(id: $id) {
+        matches {
+            matchId
+            user {
+                id
+                name
+                pics
+                age
+                description
+                work
+                school
+            }
+            messages {
+              	message
+                name
+                date
+            }
+        }
+    }
+  }
+`;
 
 class Matches extends Component {
     constructor(props) {
@@ -30,8 +56,8 @@ class Matches extends Component {
             </View>
         )
     }
-    render() {
-        const {matches,navigation} = this.props;
+    renderContent({matches,id}) {
+        const {navigation} = this.props;
 
         if (matches.length === 0) {
             return this.noMatches();
@@ -43,21 +69,21 @@ class Matches extends Component {
                         <ScrollView
                             horizontal={true}
                         >
-                        {matches.filter(match => !match.lastMessage).map((match) => {
+                        {matches.filter(match => !match.messages.length).map((match) => {
                             return (
                                 <TouchableOpacity 
                                     onPress={() => navigation.navigate('Messenger',{
                                         matchId:match.matchId,
-                                        id:this.props.id,
-                                        otherId: match.id,
-                                        name:match.name,
-                                        pic:match.profilePic
+                                        id,
+                                        otherId: match.user.id,
+                                        name:match.user.name,
+                                        pic:match.user.pics[0]
                                     })}
-                                    key={match.id}
+                                    key={match.user.id}
                                 >
                                     <View style={styles.newMatch}>
-                                        <CirclePicture imageURL={match.profilePic} picSize="small"/>
-                                        <MyAppText>{match.name}</MyAppText>
+                                        <CirclePicture imageURL={match.user.pics[0]} picSize="small"/>
+                                        <MyAppText>{match.user.name}</MyAppText>
                                     </View>
                                 </TouchableOpacity>
                             )
@@ -67,18 +93,18 @@ class Matches extends Component {
                     <View style={styles.messagesContainer}>
                         <MyAppText style={styles.heading}>Messages</MyAppText>
                         <ScrollView>
-                            {matches.filter(match => !!match.lastMessage).map((match) => (
+                            {matches.filter(match => !!match.messages.length).map((match) => (
                             <MatchListItem 
-                                key={match.id}
-                                name={match.name} 
-                                picture={match.profilePic}
-                                lastMessage={match.lastMessage}
+                                key={match.matchId}
+                                name={match.user.name} 
+                                picture={match.user.pics[0]}
+                                lastMessage={match.messages[match.messages.length - 1].message}
                                 onPress={() => navigation.navigate('Messenger',{
                                     matchId:match.matchId,
-                                    id:this.props.id,
-                                    otherId: match.id,
-                                    name:match.name,
-                                    pic:match.profilePic
+                                    id,
+                                    otherId: match.user.id,
+                                    name:match.user.name,
+                                    pic:match.pics[0]
                                 })}
                             />
                         ))}
@@ -88,18 +114,36 @@ class Matches extends Component {
             )
     }
     }
+    render() {
+        return (
+            <Query query={GET_ID}>
+            {({loading, error, data}) => {
+              console.log('local data: ',data);
+              console.log('local error: ',error);
+              console.log('local loading: ',loading);
+              if(loading) return <Spinner />
+              if(error) return <Text>Error! {error.message}</Text>
+              const { id } = data.user;
+              return (
+                <Query query={GET_MATCHES} variables={{id}}>
+                  {({loading, error, data}) => {
+                    console.log('data: ',data);
+                    console.log('error: ',error);
+                    console.log('loading: ',loading);
+                    if(loading) return <Spinner />
+                    if(error) return <Text>Error! {error.message}</Text>
+                    return this.renderContent({matches:data.user.matches,id})
+                  }}
+                  </Query>
+              ) 
+            }}
+          </Query>
+        )
+                
+        
+    }
 }
-/*
-const Matches = (props) => {
-    return (
-        <View style={styles.matchContainer}>
-            <Text>
-                Stagg Page
-            </Text>
-        </View>
-    )
-}
-*/
+
 const styles = StyleSheet.create({
     matchContainer: {
         flex: 1,
@@ -137,13 +181,4 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = (state,ownProps) => {
-    //console.log('state at matches -- ',state);
-    //console.log('state matchList: ',state.matchListReducer);
-    return {
-        matches: state.matchListReducer.matches,
-        id: state.authReducer.uid
-    }
-}
-
-export default connect(mapStateToProps)(Matches);
+export default Matches;

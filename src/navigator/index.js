@@ -2,7 +2,7 @@ import React from 'react';
 import {TabNavigator, StackNavigator} from 'react-navigation';
 import Settings from '../components/Settings';
 import Leaderboard from '../components/Leaderboard';
-import Stagg from '../components/Stagg';
+import StaggContainer from '../components/StaggContainer';
 import Matches from '../components/Matches';
 import Messenger from '../components/Messenger';
 import EditSettings from '../components/EditSettings';
@@ -21,9 +21,9 @@ const Tabs = TabNavigator({
           }
     },
     Stagg: {
-        screen: Stagg,
+        screen: StaggContainer,
         navigationOptions: {
-            tabBarLabel: 'Stagg',
+            tabBarLabel: 'StaggContainer',
             tabBarIcon: ({ tintColor }) => <Entypo name='heart' size={24} color={tintColor} />
           }
     },
@@ -36,7 +36,7 @@ const Tabs = TabNavigator({
           }
     }
 }, {
-        initialRouteName: 'Stagg',
+        initialRouteName: 'StaggContainer',
         navigationOptions: {
           header: null
         },

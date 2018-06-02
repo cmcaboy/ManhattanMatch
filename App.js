@@ -10,6 +10,7 @@ import { ApolloLink } from 'apollo-link';
 import Settings from './src/components/Settings';
 import EditSettings from './src/components/EditSettings';
 import EditProfile from './src/components/EditProfile';
+import Matches from './src/components/Matches';
 
 import Authentication from './src/components/Authentication';
 import StaggContainer from './src/components/StaggContainer';
@@ -102,7 +103,7 @@ export const resolvers = {
 const defaults = {
     user: {
       __typename: 'user',
-      id: 13,
+      id: 5,
       minAgePreference: 18,
       maxAgePreference: 25,
       distance: 15,
@@ -146,7 +147,7 @@ export default class App extends React.Component {
     return (
       <ApolloProvider client={client}>
           {/*<Authentication />*/}
-          <StaggContainer />
+          <Matches />
       </ApolloProvider>
     );
   }
