@@ -1,17 +1,11 @@
 import React, {Component} from 'react';
 import firebase from 'firebase';
 import {View,Text} from 'react-native';
-import {connect} from 'react-redux';
 import {Card,CardSection,Button,Spinner,Input, MyAppText} from './common';
-import Expo from 'expo';
-import {
-    startEmailLogin,
-    startFacebookLogin,
-    changeEmail,
-    changePassword} from '../actions/auth';
 import { SECONDARY_COLOR, PRIMARY_COLOR, BACKGROUND_COLOR } from '../variables';
 import { ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
+import FBLoginButton from '../services/FBLoginButton';
 
 
 class LoginForm extends Component {
@@ -26,67 +20,67 @@ class LoginForm extends Component {
         }
     }
 
-    startFacebookLogin = async (client) => {
+    // startFacebookLogin = async (client) => {
 
-        console.log('logging into facebook...');
+    //     console.log('logging into facebook...');
 
-        this.setState({loading:true, error:''});
+    //     this.setState({loading:true, error:''});
 
-        const {type,token} = await Expo.Facebook.logInWithReadPermissionsAsync('1751170988304368',
-            {permissions:[
-                'public_profile',
-                'email',
-                // 'user_about_me',
-                'user_photos',
-                // 'user_education_history',
-                // 'user_work_history',
-                'user_birthday',
-                'user_hometown'
-            ]}
-        )
+    //     const {type,token} = await Expo.Facebook.logInWithReadPermissionsAsync('1751170988304368',
+    //         {permissions:[
+    //             'public_profile',
+    //             'email',
+    //             // 'user_about_me',
+    //             'user_photos',
+    //             // 'user_education_history',
+    //             // 'user_work_history',
+    //             'user_birthday',
+    //             'user_hometown'
+    //         ]}
+    //     )
 
-        console.log('type: ',type);
-        console.log('token: ',token);
+    //     console.log('type: ',type);
+    //     console.log('token: ',token);
 
-        // the /me notation will refer to the userid referenced from the access token.
-        if(type === 'success') {
-            const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`)
-            const responseData = await response.json();
+    //     // the /me notation will refer to the userid referenced from the access token.
+    //     if(type === 'success') {
+    //         const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`)
+    //         const responseData = await response.json();
 
-            console.log('responseData: ',responseData);
+    //         console.log('responseData: ',responseData);
 
-            const provider = firebase.auth.FacebookAuthProvider;
-            const credential = provider.credential(token);
-            console.log('before credential');
-            firebase.auth().signInWithCredential(credential)
-                .then(() =>  {
-                    console.log('facebook login successful');
-                    client.writeData({ data: { id: firebase.auth().currentUser.uid }});
-                    //postLogin(firebase.auth().currentUser.uid,token);
-                })
-                .catch((e) => {console.log('fb login error: ',e);this.setState({error: 'Error logging into Facebook!'})});
-        } else {
-            this.setState({error: 'Error logging into Facebook!'});
-        }
-    }
+    //         const provider = firebase.auth.FacebookAuthProvider;
+    //         const credential = provider.credential(token);
+    //         console.log('before credential');
+    //         firebase.auth().signInWithCredential(credential)
+    //             .then(() =>  {
+    //                 console.log('facebook login successful');
+    //                 client.writeData({ data: { id: firebase.auth().currentUser.uid }});
+    //                 //postLogin(firebase.auth().currentUser.uid,token);
+    //             })
+    //             .catch((e) => {console.log('fb login error: ',e);this.setState({error: 'Error logging into Facebook!'})});
+    //     } else {
+    //         this.setState({error: 'Error logging into Facebook!'});
+    //     }
+    // }
 
-    renderButtonFB() {
-        if(this.state.isLoading) {
-            return <Spinner size="small" />
-        } else {
-            return (
-                <ApolloConsumer>
-                    {client => (
-                        <Button 
-                            onPress={() => this.startFacebookLogin(client)}
-                            buttonStyleOverride={styles.buttonFBStyle}
-                            textStyleOverride={styles.buttonTextFBStyle}
-                        >Log in with Facebook</Button>
-                    )}
-                </ApolloConsumer>
-            )
-        }
-    }
+    // renderButtonFB() {
+    //     if(this.state.isLoading) {
+    //         return <Spinner size="small" />
+    //     } else {
+    //         return (
+    //             <ApolloConsumer>
+    //                 {client => (
+    //                     <Button 
+    //                         onPress={() => this.startFacebookLogin(client)}
+    //                         buttonStyleOverride={styles.buttonFBStyle}
+    //                         textStyleOverride={styles.buttonTextFBStyle}
+    //                     >Log in with Facebook</Button>
+    //                 )}
+    //             </ApolloConsumer>
+    //         )
+    //     }
+    // }
     render() {
         return (
             <View style={styles.loginContainer}>
@@ -96,7 +90,8 @@ class LoginForm extends Component {
                         {this.props.error}
                     </Text>
                     <CardSection style={{borderBottomWidth: 0}}>
-                        {this.renderButtonFB()}
+                        <FBLoginButton />
+                        {/*this.renderButtonFB()*/}
                     </CardSection>
                 </View>
                 <View style={{flex:1}}/>

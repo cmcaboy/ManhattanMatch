@@ -7,13 +7,14 @@ import gql from 'graphql-tag';
 import { ApolloProvider, graphql } from 'react-apollo';
 import { withClientState } from 'apollo-link-state';
 import { ApolloLink } from 'apollo-link';
-import Settings from './src/components/Settings';
-import EditSettings from './src/components/EditSettings';
-import EditProfile from './src/components/EditProfile';
-import Matches from './src/components/Matches';
+// import Settings from './src/components/Settings';
+// import EditSettings from './src/components/EditSettings';
+// import EditProfile from './src/components/EditProfile';
+// import Matches from './src/components/Matches';
 
-import Authentication from './src/components/Authentication';
-import StaggContainer from './src/components/StaggContainer';
+// import Authentication from './src/components/Authentication';
+// import StaggContainer from './src/components/StaggContainer';
+import LoginForm from './src/components/LoginForm';
 
 const cache = new InMemoryCache();
 
@@ -147,7 +148,7 @@ export default class App extends React.Component {
     return (
       <ApolloProvider client={client}>
           {/*<Authentication />*/}
-          <Matches />
+          <LoginForm />
       </ApolloProvider>
     );
   }

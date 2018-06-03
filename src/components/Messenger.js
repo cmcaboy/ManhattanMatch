@@ -3,6 +3,8 @@ import {View, Text, TouchableOpacity, StyleSheet, Platform, Image } from 'react-
 import {GiftedChat} from 'react-native-gifted-chat';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import {db} from '../firebase';
+import {connect} from 'react-redux';
+import {startUpdateLastMessage,startUpdateLastName} from '../actions/matchList';
 import {CirclePicture,MyAppText} from './common';
 
 class Messenger extends Component {
@@ -12,8 +14,7 @@ class Messenger extends Component {
         this.state = {
             messages: []
         }
-        
-        this.messageRef = db.collection(`matches/${this.props.navigation.state.params.matchId}/messages`);
+        this.messageRef = db.collection(`matches/${this.props.matchId}/messages`);
         this.unsubscribe;
     }
 
@@ -76,7 +77,6 @@ class Messenger extends Component {
     }
 
     onSend(messages = []) {
-        const {name,profilePic,id} = this.props.navigation.state.params;
         messages.forEach(message => {
             console.log(message);
             const now = new Date().getTime();
@@ -84,25 +84,24 @@ class Messenger extends Component {
                 _id: now,
                 text: message.text,
                 createdAt: now,
-                uid: id,
+                uid: this.props.id,
                 order: -1 * now,
-                name: name,
-                avatar: profilePic
+                name: this.props.name,
+                avatar: this.props.profilePic
             })
             // Update lastUser and lastMessage here
-            //this.props.startUpdateLastMessage(this.props.matchId,message.text);
-            //this.props.startUpdateLastName(this.props.matchId,this.props.name);
+            this.props.startUpdateLastMessage(this.props.matchId,message.text);
+            this.props.startUpdateLastName(this.props.matchId,this.props.name);
         })
     }
     
     render() {
-        const {id} = this.props.navigation.state.params;
         return (
         <View style={styles.messengerContainer}>
             <GiftedChat 
                 messages={this.state.messages}
                 onSend={(message) => this.onSend(message)}
-                user={{_id:id}}
+                user={{_id:this.props.id}}
                 showUserAvatar={false}
                 onPressAvatar={(user) => this.props.navigation.navigate('UserProfile',{id:user._id,name:user.name})}
             />
@@ -133,4 +132,20 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Messenger;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        startUpdateLastMessage: (matchId,message) => dispatch(startUpdateLastMessage(matchId,message)),
+        startUpdateLastName: (matchId,name) => dispatch(startUpdateLastName(matchId,name)),
+    }
+}
+
+const mapStateToProps = (state,ownProps) => {
+    return {
+        matchId: ownProps.navigation.state.params.matchId,
+        id: ownProps.navigation.state.params.id,
+        //otherId: ownProps.navigation.state.params.otherId,
+        name: state.profileReducer.name,
+        profilePic: state.profileReducer.profilePic
+   }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Messenger);
