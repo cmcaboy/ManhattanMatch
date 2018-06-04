@@ -4,7 +4,7 @@ import {driver} from '../../db/neo4j';
 import {UserType} from './user_type';
 import {
   GraphQLObjectType,
-  GraphQLNonNull,
+  GraphQLString,
   GraphQLID,
 } from 'graphql';
 
@@ -15,19 +15,34 @@ const RootQueryType = new GraphQLObjectType({
   fields: () => ({
     user: {
       type: UserType,
-      args: { id: { type: new GraphQLNonNull(GraphQLID)}},
+      args: { 
+        id: { type: GraphQLID},
+        token: { type: GraphQLString},
+      },
       resolve(parentValue, args) {
-
-        return session.run(`Match (n:User {id: '${args.id}'}) RETURN n`)
-          .then(result => result.records)
-          .then(records => {
-            const properties =  records[0]._fields[0].properties;
-            return {
-              ...properties,
-              profilePic: !!properties.pics? properties.pics[0]: null
-            }
-          })
-          .catch(e => console.log('error: ',e))
+        if(args.id) {
+          return session.run(`Match (n:User {id: '${args.id}'}) RETURN n`)
+            .then(result => result.records)
+            .then(records => {
+              const properties =  records[0]._fields[0].properties;
+              return {
+                ...properties,
+                profilePic: !!properties.pics? properties.pics[0]: null
+              }
+            })
+            .catch(e => console.log('error: ',e))
+          } else {
+            return session.run(`Match (n:User {token: '${args.token}'}) RETURN n`)
+              .then(result => result.records)
+              .then(records => {
+                const properties =  records[0]._fields[0].properties;
+                return {
+                  ...properties,
+                  profilePic: !!properties.pics? properties.pics[0]: null
+                }
+              })
+              .catch(e => console.log('error: ',e))
+        }
       }        
     }
   })

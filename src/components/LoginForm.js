@@ -7,6 +7,15 @@ import { ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 import FBLoginButton from '../services/FBLoginButton';
 
+const NEW_USER = gql`
+mutation editUser($id: ID!, $name: String, $active: Boolean, $email: String, $gender: String, $description: String, $school: String, $work: String, $sendNotifications: Boolean, $distance: Int, $token: String, $minAgePreference: Int, $maxAgePReference: Int, $pics: [String]) {
+  editUser(id: $id, name: $name, active: $active, email: $email, gender: $gender, description: $description, school: $school, work: $work, sendNotifications: $sendNotifications, distance: $distance, token: $token, minAgePreference: $minAgePreference, maxAgePreference: $maxAgePreference, pics: $pics) {
+    	id
+        name
+        email
+  }
+}
+`
 
 class LoginForm extends Component {
     constructor(props) {
@@ -90,7 +99,35 @@ class LoginForm extends Component {
                         {this.props.error}
                     </Text>
                     <CardSection style={{borderBottomWidth: 0}}>
-                        <FBLoginButton />
+                        <Mutation mutation={NEW_USER}>
+                        {(newUser) => {
+                            const startNewUser = (user) => {
+                                return newUser({variables: {
+                                    id: user.id,
+                                    name: user.name,
+                                    active: user.active,
+                                    email: user.email,
+                                    gender: user.gender,
+                                    description: user.description,
+                                    school: user.school,
+                                    work: user.work,
+                                    sendNotifications: user.sendNotifications,
+                                    distance: user.distance,
+                                    token: user.token,
+                                    latitude: user.latitude,
+                                    longitude: user.longitude,
+                                    minAgePreference: user.minAgePreference,
+                                    maxAgePreference: user.maxAgePreference,
+                                    pics: user.pics,
+                                }})
+                            } 
+                            return (
+                                <ApolloConsumer>
+                                    {client => <FBLoginButton client={client} startNewUser={startNewUser} />}
+                                </ApolloConsumer>
+                            )
+                        }}
+                        </Mutation>
                         {/*this.renderButtonFB()*/}
                     </CardSection>
                 </View>

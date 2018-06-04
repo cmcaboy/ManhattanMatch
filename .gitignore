@@ -26,3 +26,5 @@ functions/lib
 ios/build
 android/app/build
 functions/lib
+
+android/local.properties
