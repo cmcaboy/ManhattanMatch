@@ -64,8 +64,8 @@ class Authentication extends React.Component {
         if(this.state.fontLoading) {
           <View style={styles.spinnerStyle}><Spinner size="large"/></View>
         } else {
-          //return <MainNavigator />
-          return <Settings />
+          return <MainNavigator />
+          //return <Settings />
         }
             //<CardSection><Button onPress={() => firebase.auth().signOut()}>Log Out</Button></CardSection>
       case false:

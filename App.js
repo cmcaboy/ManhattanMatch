@@ -72,6 +72,31 @@ export const resolvers = {
       cache.writeQuery({query,data})
       return null;
     },
+    updateIdLocal: (_, { id }, { cache, getCacheKey }) => {
+
+      const query = gql`
+        query getIdLocal {
+          user @client {
+              id
+              __typename
+          }
+        }
+      `
+      //const previous = cache.readQuery({query});
+
+      const data = {
+        user: {
+          __typename: 'user',
+          id
+        }
+      };
+
+      //console.log('previous: ',previous);
+      console.log('data: ',data);
+      
+      cache.writeQuery({query,data})
+      return null;
+    },
     updateSendNotificationsLocal: (_, { id, sendNotifications }, { cache, getCacheKey }) => {
 
       const query = gql`

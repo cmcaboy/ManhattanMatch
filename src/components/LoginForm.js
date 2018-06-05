@@ -3,19 +3,28 @@ import firebase from 'firebase';
 import {View,Text} from 'react-native';
 import {Card,CardSection,Button,Spinner,Input, MyAppText} from './common';
 import { SECONDARY_COLOR, PRIMARY_COLOR, BACKGROUND_COLOR } from '../variables';
-import { ApolloConsumer } from 'react-apollo';
+import { ApolloConsumer, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import FBLoginButton from '../services/FBLoginButton';
 
 const NEW_USER = gql`
-mutation editUser($id: ID!, $name: String, $active: Boolean, $email: String, $gender: String, $description: String, $school: String, $work: String, $sendNotifications: Boolean, $distance: Int, $token: String, $minAgePreference: Int, $maxAgePReference: Int, $pics: [String]) {
-  editUser(id: $id, name: $name, active: $active, email: $email, gender: $gender, description: $description, school: $school, work: $work, sendNotifications: $sendNotifications, distance: $distance, token: $token, minAgePreference: $minAgePreference, maxAgePreference: $maxAgePreference, pics: $pics) {
+mutation newUser($id: ID!, $name: String, $active: Boolean, $email: String, $gender: String, $description: String, $school: String, $work: String, $sendNotifications: Boolean, $distance: Int, $token: String, $minAgePreference: Int, $maxAgePReference: Int, $pics: [String]) {
+  newUser(id: $id, name: $name, active: $active, email: $email, gender: $gender, description: $description, school: $school, work: $work, sendNotifications: $sendNotifications, distance: $distance, token: $token, minAgePreference: $minAgePreference, maxAgePreference: $maxAgePreference, pics: $pics) {
     	id
         name
         email
   }
 }
 `
+
+const SET_ID_LOCAL = gql`
+mutation updateIdLocal($id: ID!) {
+  updateIdLocal(id: $id) @client {
+    id
+    __typename
+  }
+}
+`;
 
 class LoginForm extends Component {
     constructor(props) {
@@ -102,6 +111,8 @@ class LoginForm extends Component {
                         <Mutation mutation={NEW_USER}>
                         {(newUser) => {
                             const startNewUser = (user) => {
+                                console.log('in startNewUser');
+                                console.log('user: ',user);
                                 return newUser({variables: {
                                     id: user.id,
                                     name: user.name,
@@ -122,9 +133,16 @@ class LoginForm extends Component {
                                 }})
                             } 
                             return (
-                                <ApolloConsumer>
-                                    {client => <FBLoginButton client={client} startNewUser={startNewUser} />}
-                                </ApolloConsumer>
+                                <Mutation mutation={SET_ID_LOCAL}>
+                                {(setId) => {
+                                    const startSetId = (id) => setId({variables: {id}})
+                                    return (
+                                        <ApolloConsumer>
+                                            {client => <FBLoginButton client={client} startNewUser={startNewUser} startSetId={startSetId}/>}
+                                        </ApolloConsumer>
+                                    )
+                                }}
+                                </Mutation>
                             )
                         }}
                         </Mutation>

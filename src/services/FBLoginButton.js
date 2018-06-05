@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { LoginButton, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 import {firebase} from '../firebase';
+import gql from 'graphql-tag';
+import uploadImage from '../firebase/uploadImage.js';
 
 const GET_EMAIL_BY_TOKEN = gql`
 query user($token: String!) {
@@ -40,9 +42,10 @@ class FBLoginButton extends Component {
 
 
                 const provider = firebase.auth.FacebookAuthProvider;
-                const credential = proivder.credential(token);
+                const credential = provider.credential(token);
 
                 const {email} = await this.props.client.query({query: GET_EMAIL_BY_TOKEN, variables: {token}})
+                console.log('email: ',email);
 
                 // If we do not have record of the user's email, this is a new user.
                 // We should build their profile from their facebook profile
@@ -51,9 +54,10 @@ class FBLoginButton extends Component {
                   const responseRaw = await fetch(`https://graph.facebook.com/me/?fields=first_name,last_name,picture.height(300),education,about,gender,email&access_token=${token}`)
                   const response = await responseRaw.json();
                   console.log('fb response: ',response);
-
+                  
                   const photosRaw = await fetch(`https://graph.facebook.com/me/photos/?fields=source.height(300)&limit=5&access_token=${token}`)
-                  const photos = await phototsRaw.response.json();
+                  const photos = await photosRaw.json();
+                  console.log('fb photo response: ',photos);
 
                   // Will the uploadImage function work for us? yes
 
@@ -64,13 +68,13 @@ class FBLoginButton extends Component {
                   const newUser = {
                     // By default the profilePic property will contain the user's profile pic along with the next
                     // 5 photos the user is tagged in.
-                    pics
+                    pics,
                     name: response.first_name,
                     school: response.education?response.education[response.education.length -1].school.name:'',
                     description: response.about,
                     gender: response.gender,
-                    email: response.email
-                    uid,
+                    email: response.email,
+                    id: token,
                     //coords: coords.coords,
                     sendNotifications: true, // default
                     distance: 15, // default
@@ -82,6 +86,8 @@ class FBLoginButton extends Component {
                   // Load up new user in our database
                   this.props.startNewUser(newUser);
                 }
+
+                this.props.startSetId(token);
 
                 // Login via Firebase Auth
                 await firebase.auth().signInWithCredential(credential);
