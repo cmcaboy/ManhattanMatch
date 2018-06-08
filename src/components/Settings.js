@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Platform, Dimensions } from 'react-native';
 import {CirclePicture,Card,MyAppText} from './common';
-//import {MaterialCommunityIcons,Ionicons,MaterialIcons} from '@expo/vector-icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

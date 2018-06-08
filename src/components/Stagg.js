@@ -19,7 +19,6 @@ import {
 } from 'react-native';
 import {Card,Spinner,MyAppText} from './common';
 import {Location,Permissions,Notifications} from 'expo';
-// import {Foundation,Ionicons} from '@expo/vector-icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import StaggCard from './StaggCard';

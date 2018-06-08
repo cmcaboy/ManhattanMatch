@@ -13,7 +13,6 @@ import {
   PanResponder
 } from 'react-native';
 import {CacheManager} from 'react-native-expo-image-cache';
-// import {FontAwesome} from '@expo/vector-icons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {PHOTO_ADD_URL} from '../variables';
 

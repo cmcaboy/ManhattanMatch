@@ -10,7 +10,6 @@ import {View,
   ScrollView,
   KeyboardAvoidingView
 } from 'react-native';
-import {ImagePicker} from 'expo';
 import {
   CirclePicture,
   Card,

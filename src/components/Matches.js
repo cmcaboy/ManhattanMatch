@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import {CirclePicture,MyAppText,Spinner} from './common';
 import MatchListItem from './MatchListItem';
-//import {Ionicons} from '@expo/vector-icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { PRIMARY_COLOR } from '../variables';
 import gql from 'graphql-tag';

@@ -11,7 +11,8 @@ import {
 } from 'react-native';
 import uploadImage from '../firebase/uploadImage';
 import {Spinner,CardSection} from './common';
-import {ImagePicker} from 'expo';
+// import {ImagePicker} from 'expo';
+import ImagePicker from 'react-native-image-picker';
 
 const placeholderURL = 'https://firebasestorage.googleapis.com/v0/b/stagg-test.appspot.com/o/add_pic.png?alt=media&token=5328312a-bd1a-4328-b355-2c80210b96ed'
 
@@ -27,54 +28,100 @@ class PhotoSelector extends React.Component {
 
   pickImage = (i) => {
     this.setState(prevState => ({isLoading: prevState.isLoading.map((item,index) => index===i? true : item)}));
-    ImagePicker.launchImageLibraryAsync({
-      allowEditting: true,
-      aspect: [2,1]
-    }).then((result) => {
-      if(result.cancelled) {
-        return
+
+    const options = {
+      title: 'Select Avatar',
+      customButtons: [
+        {name: 'fb', title: 'Choose Photo from Facebook'},
+      ],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
       }
-      ImageEditor.cropImage(result.uri, {
-        offset: {x:0,y:0},
-        size: {width: result.width, height: result.height},
-        displaySize: {width:200, height:200},
-        resizeMode: 'container'
-      }, async (uri) => {
-        const url = await uploadImage(uri);
-        //console.log('i: ',i);
-        // if(i===0) {
-        //   this.props.startProfilePicture(url);
-        // } else {
-          const urlList = this.state.urlList.map((item,index) => {
-            //console.log('item: ',item);
-            //console.log('index: ',index);
-            return index === i ? url : item
-          });
-          this.props.startChangePics(urlList);
-        // }
+    };
+
+    ImagePicker.showImagePicker(options, async (response) => {
+      console.log('Response = ', response);
+    
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      }
+      else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      }
+      else {
+        let source = { uri: response.uri };
+
+        console.log('source: ',source);
+    
+        // You can also display the image using data:
+        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        const url = await uploadImage(source);
+
+        const urlList = this.state.urlList.map((item,index) => {
+          //console.log('item: ',item);
+          //console.log('index: ',index);
+          return index === i ? url : item
+        });
+        this.props.startChangePics(urlList);
+      
+      
+      this.setState(prevState => ({isLoading: prevState.isLoading.map((item,index) => index===i? false:item)}));
+        
+      }
+    });
+    // ImagePicker.launchImageLibraryAsync({
+    //   allowEditting: true,
+    //   aspect: [2,1]
+    // }).then((result) => {
+    //   if(result.cancelled) {
+    //     return
+    //   }
+    //   ImageEditor.cropImage(result.uri, {
+    //     offset: {x:0,y:0},
+    //     size: {width: result.width, height: result.height},
+    //     displaySize: {width:200, height:200},
+    //     resizeMode: 'container'
+    //   }, async (uri) => {
+    //     const url = await uploadImage(uri);
+    //     //console.log('i: ',i);
+    //     // if(i===0) {
+    //     //   this.props.startProfilePicture(url);
+    //     // } else {
+    //       const urlList = this.state.urlList.map((item,index) => {
+    //         //console.log('item: ',item);
+    //         //console.log('index: ',index);
+    //         return index === i ? url : item
+    //       });
+    //       this.props.startChangePics(urlList);
+    //     // }
         
         
-        this.setState(prevState => ({isLoading: prevState.isLoading.map((item,index) => index===i? false:item)}));
+    //     this.setState(prevState => ({isLoading: prevState.isLoading.map((item,index) => index===i? false:item)}));
 
-        // Now that the image has been selected, we need to upload the image
-        // to firebase storage.
+    //     // Now that the image has been selected, we need to upload the image
+    //     // to firebase storage.
 
-        /*
-        console.log('uri: ',uri);
-        const storageRef = firebase.storage().ref(`profile_pictures/${uri}`);
-        let task = storageRef.put(uri);
-        task.on('state_changed',
-          (snapshot) => {
-            let percentage = snapshot.bytesTransferred / snapshot.totalBytes * 100
-            console.log(`Upload is ${percentage}% done.`)
-          },
-          (error) => console.log('error uploading file: ',error),
-          (complete) => startProfilePicture(task.snapshot.downloadURL)
-        )
-        */
-      },
-      () => console.log('Error'))
-    })
+    //     /*
+    //     console.log('uri: ',uri);
+    //     const storageRef = firebase.storage().ref(`profile_pictures/${uri}`);
+    //     let task = storageRef.put(uri);
+    //     task.on('state_changed',
+    //       (snapshot) => {
+    //         let percentage = snapshot.bytesTransferred / snapshot.totalBytes * 100
+    //         console.log(`Upload is ${percentage}% done.`)
+    //       },
+    //       (error) => console.log('error uploading file: ',error),
+    //       (complete) => startProfilePicture(task.snapshot.downloadURL)
+    //     )
+    //     */
+    //   },
+    //   () => console.log('Error'))
+    // })
   }
 
   switchPicPosition = (a,b) => {

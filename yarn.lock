@@ -5847,6 +5847,10 @@ react-native-gifted-chat@^0.3.0:
     shallowequal "1.0.2"
     uuid "3.1.0"
 
+react-native-image-picker@^0.26.10:
+  version "0.26.10"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.26.10.tgz#0bb9ab928984948c67aee0b9e64216bee007a9fc"
+
 react-native-invertible-scroll-view@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-native-invertible-scroll-view/-/react-native-invertible-scroll-view-1.1.1.tgz#43039037e6537dc8c4f29baae1cd1a223bc25d81"
@@ -5855,6 +5859,10 @@ react-native-invertible-scroll-view@^1.1.0:
     prop-types "^15.5.10"
     react-clone-referenced-element "^1.0.1"
     react-native-scrollable-mixin "^1.0.1"
+
+react-native-iphone-x-helper@^1.0.1:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.0.3.tgz#7a2f1e0574e899a0f1d426e6167fd98990083214"
 
 react-native-keyboard-spacer@^0.4.1:
   version "0.4.1"
@@ -5875,6 +5883,12 @@ react-native-parsed-text@^0.0.19:
 react-native-scrollable-mixin@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-native-scrollable-mixin/-/react-native-scrollable-mixin-1.0.1.tgz#34a32167b64248594154fd0d6a8b03f22740548e"
+
+react-native-status-bar-height@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-status-bar-height/-/react-native-status-bar-height-2.0.0.tgz#9def59bdfa162da73134aff4f480ef2fc873ee0a"
+  dependencies:
+    react-native-iphone-x-helper "^1.0.1"
 
 react-native-tab-view@^0.0.74:
   version "0.0.74"
