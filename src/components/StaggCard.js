@@ -14,7 +14,9 @@ import {
     LayoutAnimation,
     NativeModules
 } from 'react-native';
-import {MaterialIcons,Ionicons} from '@expo/vector-icons';
+// import {MaterialIcons,Ionicons} from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import UserProfilePhotos from './UserProfilePhotos';
 import Collapsible from 'react-native-collapsible';
 import {TAB_BAR_HEIGHT, PRIMARY_COLOR} from '../variables';

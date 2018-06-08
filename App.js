@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 import { ApolloProvider, graphql } from 'react-apollo';
 import { withClientState } from 'apollo-link-state';
 import { ApolloLink } from 'apollo-link';
-// import Settings from './src/components/Settings';
+import Settings from './src/components/Settings';
 // import EditSettings from './src/components/EditSettings';
 // import EditProfile from './src/components/EditProfile';
 // import Matches from './src/components/Matches';
@@ -83,18 +83,16 @@ export const resolvers = {
         }
       `
       //const previous = cache.readQuery({query});
-
+      
       const data = {
         user: {
           __typename: 'user',
           id
         }
       };
-
-      //console.log('previous: ',previous);
-      console.log('data: ',data);
       
       cache.writeQuery({query,data})
+
       return null;
     },
     updateSendNotificationsLocal: (_, { id, sendNotifications }, { cache, getCacheKey }) => {
@@ -173,7 +171,7 @@ export default class App extends React.Component {
     return (
       <ApolloProvider client={client}>
           {/*<Authentication />*/}
-          <LoginForm />
+          <Settings />
       </ApolloProvider>
     );
   }

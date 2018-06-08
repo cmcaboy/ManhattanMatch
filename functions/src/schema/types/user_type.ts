@@ -49,7 +49,7 @@ import  {
                     .run(`MATCH(a:User{id:'${parentValue.id}'})-[r:LIKES]->(b:User) RETURN b`)
                         .then(result => result.records)
                         .then(records => records.map(record => record._fields[0].properties))
-                        .catch(e => console.log('error: ',e))
+                        .catch(e => console.log('likes error: ',e))
                 //session.close();
             }
         },
@@ -60,7 +60,7 @@ import  {
                     .run(`MATCH(a:User{id:'${parentValue.id}'})-[r:DISLIKES]->(b:User) RETURN b`)
                         .then(result => result.records)
                         .then(records => records.map(record => record._fields[0].properties))
-                        .catch(e => console.log('error: ',e))
+                        .catch(e => console.log('dislikes error: ',e))
             }
         },
         matches: {
@@ -80,7 +80,7 @@ import  {
                                 }
                             })
                         })
-                        .catch(e => console.log('error: ',e))
+                        .catch(e => console.log('matches error: ',e))
             }
         },
         queue: {
@@ -95,7 +95,7 @@ import  {
                         RETURN b`)
                         .then(result => result.records)
                         .then(records => records.map(record => record._fields[0].properties))
-                        .catch(e => console.log('error: ',e))
+                        .catch(e => console.log('queue error: ',e))
             }
         },
     })

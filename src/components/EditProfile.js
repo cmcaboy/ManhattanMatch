@@ -17,7 +17,8 @@ import {
   CardSection,
   Button,
   Spinner,
-  CondInput
+  CondInput,
+  MyAppText,
 } from './common';
 // import { startLogout } from '../actions/auth';
 // import {firebase} from '../firebase';
@@ -218,8 +219,8 @@ class EditProfile extends Component {
           console.log('local data: ',data);
           console.log('local error: ',error);
           console.log('local loading: ',loading);
-          if(loading) return <Text>Loading...</Text>
-          if(error) return <Text>Error! {error.message}</Text>
+          if(loading) return <MyAppText>Loading...</MyAppText>
+          if(error) return <MyAppText>Error! {error.message}</MyAppText>
           const { id } = data.user;
           return (
             <Query query={GET_PROFILE} variables={{id}}>
@@ -227,8 +228,8 @@ class EditProfile extends Component {
                 console.log('data: ',data);
                 console.log('error: ',error);
                 console.log('loading: ',loading);
-                if(loading) return <Text>Loading...</Text>
-                if(error) return <Text>Error! {error.message}</Text>
+                if(loading) return <MyAppText>Loading...</MyAppText>
+                if(error) return <MyAppText>Error! {error.message}</MyAppText>
                 return this.renderContent(data.user);
               }}
               </Query>

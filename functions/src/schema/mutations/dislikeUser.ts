@@ -22,7 +22,7 @@ const dislikeUser = {
                 return result.records
             })
             .then(records => records[0]._fields[0].properties)
-            .catch(e => console.log('error: ',e))
+            .catch(e => console.log('disLikeUser error: ',e))
     }
 }
 

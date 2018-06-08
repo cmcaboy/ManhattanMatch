@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet} from 'react-native';
+import { Fonts } from '../../utils/Fonts';
 //import { Font } from 'expo';
 
 class MyAppText extends Component {
@@ -13,7 +14,7 @@ class MyAppText extends Component {
 
 const styles = StyleSheet.create({
   textStyle: {
-    //fontFamily: 'oxygen-regular'
+    fontFamily: Fonts.Oxygen
   }
 });
 

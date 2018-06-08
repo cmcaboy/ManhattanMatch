@@ -44,7 +44,7 @@ const likeUser = {
                     matchTime: moment().format('MMMM Do YYYY, h:mm:ss a')
                 })
             } catch(e) {
-                console.log('error creating match: ',e)
+                console.log('likeUser error creating match: ',e)
             }
             return { id: args.likedId, name: user.name, match: true}
         }

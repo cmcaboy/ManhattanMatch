@@ -1,5 +1,10 @@
 {
   "name": "functions",
+  "rnpm": {
+    "assets": [
+      "./assets/fonts"
+    ]
+  },
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "build": "tsc",

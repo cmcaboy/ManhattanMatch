@@ -19,7 +19,6 @@ class FBLoginButton extends Component {
     super(props);
   }
   render() {
-    console.log('facebook login component');
     return (
       <View>
         <LoginButton
@@ -27,25 +26,20 @@ class FBLoginButton extends Component {
           readPermissions={['public_profile','email','user_photos','user_birthday','user_hometown']}
           onLoginFinished={
             async (error, result) => {
-              console.log('fb result: ',result);
               if (error) {
                 alert("Login failed with error: " + error.message);
               } else if (result.isCancelled) {
                 alert("Login was cancelled");
               } else {
-                console.log('result: ',result);
-                //alert("Login was successful with permissions: " + result.grantedPermissions);
                 const tokenRaw = await AccessToken.getCurrentAccessToken();
                 const token = tokenRaw.accessToken.toString();
 
                 // Determine if user is registered.
 
-
                 const provider = firebase.auth.FacebookAuthProvider;
                 const credential = provider.credential(token);
 
                 const {email} = await this.props.client.query({query: GET_EMAIL_BY_TOKEN, variables: {token}})
-                console.log('email: ',email);
 
                 // If we do not have record of the user's email, this is a new user.
                 // We should build their profile from their facebook profile
@@ -53,13 +47,9 @@ class FBLoginButton extends Component {
                   // An alternative approach would be to run this all on the graphql server
                   const responseRaw = await fetch(`https://graph.facebook.com/me/?fields=first_name,last_name,picture.height(300),education,about,gender,email&access_token=${token}`)
                   const response = await responseRaw.json();
-                  console.log('fb response: ',response);
                   
                   const photosRaw = await fetch(`https://graph.facebook.com/me/photos/?fields=source.height(300)&limit=5&access_token=${token}`)
                   const photos = await photosRaw.json();
-                  console.log('fb photo response: ',photos);
-
-                  // Will the uploadImage function work for us? yes
 
                   const profilePic = await uploadImage(response.picture.data.url);
                   const ancillaryPics = await Promise.all(photos.data.map(async (datum) => {return await uploadImage(datum.source)}));
@@ -70,9 +60,10 @@ class FBLoginButton extends Component {
                     // 5 photos the user is tagged in.
                     pics,
                     name: response.first_name,
+                    active: true,
                     school: response.education?response.education[response.education.length -1].school.name:'',
                     description: response.about,
-                    gender: response.gender,
+                    gender: !!response.gender ? response.gender : 'male',
                     email: response.email,
                     id: token,
                     //coords: coords.coords,
@@ -81,17 +72,16 @@ class FBLoginButton extends Component {
                     minAgePreference: 18, // default
                     maxAgePreference: 28, // default
                   }
-                  console.log('new user: ',newUser);
 
                   // Load up new user in our database
                   this.props.startNewUser(newUser);
                 }
 
                 this.props.startSetId(token);
-
+                
                 // Login via Firebase Auth
-                await firebase.auth().signInWithCredential(credential);
-
+                firebase.auth().signInWithCredential(credential);
+                
               }
             }
           }

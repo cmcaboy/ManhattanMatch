@@ -42,7 +42,7 @@ const newUser = {
             email: '${args.email}',
             gender: '${args.gender}',`;
         !!args.age && (query = query+ `age:${args.age},`)
-        !!args.description && (query = query+ `description:'${args.description},'`)
+        !!args.description && (query = query+ `description:'${args.description}',`)
         !!args.school && (query = query+ `school:'${args.school}',`)
         !!args.work && (query = query+ `work:'${args.work}',`)
         !!args.token && (query = query+ `token:'${args.token}',`)
@@ -65,7 +65,7 @@ const newUser = {
                 return result.records
             })
             .then(records => records[0]._fields[0].properties)
-            .catch(e => console.log('error: ',e))
+            .catch(e => console.log('newUser error: ',e))
     }
 }
 

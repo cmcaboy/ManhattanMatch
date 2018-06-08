@@ -1,7 +1,10 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Platform, Dimensions } from 'react-native';
 import {CirclePicture,Card,MyAppText} from './common';
-import {MaterialCommunityIcons,Ionicons,MaterialIcons} from '@expo/vector-icons';
+//import {MaterialCommunityIcons,Ionicons,MaterialIcons} from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { PRIMARY_COLOR, PLACEHOLDER_PHOTO } from '../variables';
 import {firebase} from '../firebase';
 import { Query } from 'react-apollo';
@@ -44,14 +47,14 @@ class Settings extends React.Component {
                 return (
                     <View style={styles.subHeading}>
                         <Ionicons name="md-school" size={14} color="black" style={styles.schoolText}/>
-                        <Text style={[styles.schoolText,{paddingLeft:4}]}>{school}</Text>
+                        <MyAppText style={[styles.schoolText,{paddingLeft:4}]}>{school}</MyAppText>
                     </View>
                 )
             } else {
                 return (
                     <View style={styles.subHeading}>
                         <MaterialIcons name="work" size={14} color="black" style={styles.schoolText}/>
-                        <Text style={[styles.schoolText,{paddingLeft:4}]}>{work}</Text>
+                        <MyAppText style={[styles.schoolText,{paddingLeft:4}]}>{work}</MyAppText>
                     </View>
                 )
             }
@@ -70,7 +73,7 @@ class Settings extends React.Component {
                 <View style={styles.miniProfile}> 
                     <CirclePicture size='large' imageURL={profilePic} auto={true}/>
                     <View style={styles.profileText}>
-                        <Text style={styles.nameText}>{name}</Text>
+                        <MyAppText style={styles.nameText}>{name}</MyAppText>
                         {this.renderSubheading(work, school)}
                     </View>
                     <View style={styles.horizontalLine}/>
@@ -86,9 +89,9 @@ class Settings extends React.Component {
                             color="black"
                             style={{opacity:ICON_OPACITY}}
                         />
-                        <Text style={styles.optionText}>
+                        <MyAppText style={styles.optionText}>
                             Settings
-                        </Text>
+                        </MyAppText>
                     </TouchableOpacity>
                     <TouchableOpacity 
                         onPress={() => this.props.navigation.navigate('EditProfile')}
@@ -100,9 +103,9 @@ class Settings extends React.Component {
                             color="black"
                             style={{opacity:ICON_OPACITY}}
                         />
-                        <Text style={styles.optionText}>
+                        <MyAppText style={styles.optionText}>
                             Edit Info
-                        </Text>
+                        </MyAppText>
                     </TouchableOpacity>
                 </View>
                 <View>
@@ -116,9 +119,9 @@ class Settings extends React.Component {
                             color="black"
                             style={{opacity:ICON_OPACITY}}
                         />
-                        <Text style={styles.optionText}>
+                        <MyAppText style={styles.optionText}>
                         Log out
-                        </Text>
+                        </MyAppText>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -131,8 +134,8 @@ class Settings extends React.Component {
                 console.log('local data: ',data);
                 console.log('local error: ',error);
                 console.log('local loading: ',loading);
-                if(loading) return <Text>Loading...</Text>
-                if(error) return <Text>Error! {error.message}</Text>
+                if(loading) return <MyAppText>Loading...</MyAppText>
+                if(error) return <MyAppText>Error! {error.message}</MyAppText>
                 
                 const id = data.user.id;
                 
@@ -142,8 +145,8 @@ class Settings extends React.Component {
                             console.log('loading: ',loading);
                             console.log('error: ',error);
                             console.log('data: ',data);
-                            if(loading) return <Text>Loading...</Text>
-                            if(error) return <Text>Error! {error.message}</Text>
+                            if(loading) return <MyAppText>Loading...</MyAppText>
+                            if(error) return <MyAppText>Error! {error.message}</MyAppText>
             
                             return this.renderContent(data.user)
                         }}
