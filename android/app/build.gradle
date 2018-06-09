@@ -100,13 +100,13 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
 
     defaultConfig {
         applicationId "com.manhattanmatch"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
         ndk {
@@ -154,6 +154,9 @@ dependencies {
     compile "com.facebook.react:react-native:+"  // From node_modules
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile project(':react-native-vector-icons')
+    compile project(':react-native-background-geolocation')
+    compile project(':react-native-background-fetch')
+    compile "com.android.support:appcompat-v7:$rootProject.supportLibVersion"
 }
 
 // Run this once to be able to run the application with BUCK

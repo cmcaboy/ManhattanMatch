@@ -8,7 +8,7 @@ import {
   Dimensions, 
   ImageBackground,
   TouchableWithoutFeedback } from 'react-native';
-import {connect} from 'react-redux';
+// import {connect} from 'react-redux';
 import getUserProfile from '../selectors/getUserProfile';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';

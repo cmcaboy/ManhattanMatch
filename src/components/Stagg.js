@@ -18,13 +18,16 @@ import {
     Button
 } from 'react-native';
 import {Card,Spinner,MyAppText} from './common';
-import {Location,Permissions,Notifications} from 'expo';
+//import {Location,Notifications} from 'expo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import StaggCard from './StaggCard';
-import registerForNotifications from '../services/push_notifications';
+//import registerForNotifications from '../services/push_notifications';
 import GET_ID from '../queries/getId';
 import gql from 'graphql-tag';
+import Permissions from 'react-native-permissions';
+import BackgroundGeolocation from 'react-native-background-geolocation';
+import {FUNCTION_PATH} from '../variables/functions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -67,21 +70,21 @@ class Stagg extends Component {
 
     componentDidMount() {
         // Ask user for notifications permissions
-        registerForNotifications(this.props.id,this.props.startSetPushToken);
+        // registerForNotifications(this.props.id,this.props.startSetPushToken);
         
-        // Listen for notifications
-        Notifications.addListener((notification) => {
-            console.log('notification: ',notification);
-            const { data: { message }, origin } = notification;
-            if(origin === 'received' && message) {
+        // // Listen for notifications
+        // Notifications.addListener((notification) => {
+        //     console.log('notification: ',notification);
+        //     const { data: { message }, origin } = notification;
+        //     if(origin === 'received' && message) {
 
-                Alert.alert(
-                    'New Notification',
-                    message,
-                    [{text: 'ok' }]
-                )
-            } 
-        })
+        //         Alert.alert(
+        //             'New Notification',
+        //             message,
+        //             [{text: 'ok' }]
+        //         )
+        //     } 
+        // })
     }
 
     componentWillUpdate() {
@@ -90,50 +93,94 @@ class Stagg extends Component {
         LayoutAnimation.spring();
     }
 
-    componentWillMount() {
-        console.log('component will mount');
+    async componentWillMount() {
         // Permissions function keeps track of whether the user accepted the 
         // permissions or not. It it has not asked, it will prompt the user.
-        Permissions.getAsync(Permissions.LOCATION)
-            .then(({ status}) => {
-                console.log('status: ',status);
-                this.setState(() => ({status}))
-                if(status === 'granted') {
-                    return this.trackLocation()
-                }
-            })
-            .catch((error) => {
-                console.warn('Error getting Location permission: ',error)
-                this.setState(() => ({status: 'undetermined'}))
-            })
+
+        try {
+            const response = await Permissions.check('location');
+            console.log('Permissions Response: ',response);
+
+            this.setState(() => ({status: response}));
+
+            if(response.location === 'granted') {
+                this.trackLocation();
+            }
+        } catch(e) {
+            console.warn('Error getting Location permission: ',e)
+            this.setState(() => ({status: 'undetermined'}))
+        }
+
     }
 
-    ComponentWillUnmount = () => this.locationTracker.remove();
+    ComponentWillUnmount = () => BackgroundGeolocation.removeListeners();
+    // ComponentWillUnmount = () => this.locationTracker.remove();
 
-    askPermission = () => {
-        Permissions.askAsync(Permissions.LOCATION)
-        .then(({status}) => {
-            if(status === 'granted') {
-                return this.setLocation();
+    askPermission = async () => {
+        try {
+            const response = await Permissions.request('location');
+            console.log('location request response: ',response);
+    
+            if(response === 'granted') {
+                return this.trackLocation();
             }
-
-            this.setState(() => ({status}))
-        })
-        .catch((error) => console.warn('error asking Location permission:', error))
-
+    
+            this.setState(() => ({status:response}));
+        } catch(e) {
+            console.warn('Error getting Location permission: ',e)
+            this.setState(() => ({status: 'undetermined'}))
+        }
     }
 
     trackLocation = () => {
-        this.locationTracker = Location.watchPositionAsync({
-            // Need to look at docs to determine parameter values
-            enableHighAccuracy: false,
-            timeInterval: 1000 * 60 * 15,
-            distanceInterval: 1000
-        }, ({coords}) => {
-            //console.log('coords: ',coords);
-            this.props.startSetCoords(coords[0],coords[1]);
-            //this.setState({status:'granted'})
-        })
+
+        BackgroundGeolocation.on('location', this.onLocation, this.onError);
+
+        BackgroundGeolocation.ready({
+            // Geolocation Config
+            desiredAccuracy: 100,
+            distanceFilter: 100,
+            // Activity Recognition
+            stopTimeout: 5,
+            // Application config
+            debug: true, // <-- enable this hear sounds for background-geolocation life-cycle.
+            logLevel: BackgroundGeolocation.LOG_LEVEL_VERBOSE,
+            stopOnTerminate: false,   // <-- [Default: true] Allow the background-service to continue tracking when user closes the app.
+            startOnBoot: true,        // <-- Auto start tracking when device is powered-up.
+            // HTTP / SQLite config
+            url: FUNCTION_PATH + '/coords',
+            batchSync: false,       // <-- [Default: false] Set true to sync locations to server in a single HTTP request.
+            autoSync: true,         // <-- [Default: true] Set true to sync each location to server as it arrives.
+            // headers: {              // <-- Optional HTTP headers
+            //   "X-FOO": "bar"
+            // },
+            params: {               // <-- Optional HTTP params
+              "id": this.props.id
+            }
+          }, (state) => {
+            console.log("- BackgroundGeolocation is configured and ready: ", state.enabled);
+      
+            // If we are not currently tracking, start tracking.
+            if (!state.enabled) {
+              ////
+              // 3. Start tracking!
+              //
+              BackgroundGeolocation.start(function() {
+                console.log("- Start success");
+              });
+            }
+          });
+
+        // this.locationTracker = Location.watchPositionAsync({
+        //     // Need to look at docs to determine parameter values
+        //     enableHighAccuracy: false,
+        //     timeInterval: 1000 * 60 * 15,
+        //     distanceInterval: 1000
+        // }, ({coords}) => {
+        //     //console.log('coords: ',coords);
+        //     this.props.startSetCoords(coords[0],coords[1]);
+        //     //this.setState({status:'granted'})
+        // })
     }
 
     forceSwipe(direction) {

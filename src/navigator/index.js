@@ -8,7 +8,12 @@ import Messenger from '../components/Messenger';
 import EditSettings from '../components/EditSettings';
 import EditProfile from '../components/EditProfile';
 import UserProfile from '../components/UserProfile';
-import { FontAwesome, Ionicons, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
+// import { FontAwesome, Ionicons, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {Platform} from 'react-native';
 import {TAB_BAR_HEIGHT,PRIMARY_COLOR} from '../variables';
 

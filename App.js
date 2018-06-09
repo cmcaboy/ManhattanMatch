@@ -12,7 +12,7 @@ import Settings from './src/components/Settings';
 // import EditProfile from './src/components/EditProfile';
 // import Matches from './src/components/Matches';
 
-// import Authentication from './src/components/Authentication';
+import Authentication from './src/components/Authentication';
 // import StaggContainer from './src/components/StaggContainer';
 import LoginForm from './src/components/LoginForm';
 
@@ -171,7 +171,7 @@ export default class App extends React.Component {
     return (
       <ApolloProvider client={client}>
           {/*<Authentication />*/}
-          <Settings />
+          <Authentication />
       </ApolloProvider>
     );
   }

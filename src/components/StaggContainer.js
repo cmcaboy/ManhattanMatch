@@ -90,6 +90,7 @@ class StaggContainer extends Component {
                                         const startLikeUser = (likedId) =>          likeUser({variables: {id, likedId}});
                                         const startDislikeUser = (dislikedId) =>    dislikeUser({variables: {id, dislikedId}});
                                             return <Stagg 
+                                                id={id}
                                                 queue={data.user.queue} 
                                                 likeUser={startLikeUser}
                                                 dislikeUser={startDislikeUser}

@@ -21,7 +21,8 @@ const newMessage = {
             id: args.id,
             name: args.name,
             message: args.message,
-            date: moment().format('MMMM Do YYYY, h:mm:ss a')
+            //date: moment().format('MMMM Do YYYY, h:mm:ss a')
+            date: new Date()
         };
 
         return db.collection(`matches/${args.matchId}/messages`).add(message)
@@ -30,7 +31,6 @@ const newMessage = {
                 return message;
             })
             .catch(e => console.error(`error writing new message to ${args.matchId}: ${e}`))
-
     }
 }
 

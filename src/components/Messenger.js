@@ -4,7 +4,7 @@ import {GiftedChat} from 'react-native-gifted-chat';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import {db} from '../firebase';
 import {connect} from 'react-redux';
-import {startUpdateLastMessage,startUpdateLastName} from '../actions/matchList';
+// import {startUpdateLastMessage,startUpdateLastName} from '../actions/matchList';
 import {CirclePicture,MyAppText} from './common';
 
 class Messenger extends Component {

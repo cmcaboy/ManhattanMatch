@@ -6,7 +6,6 @@ import Settings from './Settings';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import MainNavigator from '../navigator';
 import { firebase } from '../firebase';
-import { login, logout, resetStore } from '../actions/auth';
 import { standard_font } from '../styles';
 import { STATUS_BAR_COLOR } from '../variables';
 

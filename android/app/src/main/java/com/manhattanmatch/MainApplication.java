@@ -6,6 +6,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.CallbackManager;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.react.ReactApplication;
+import com.transistorsoft.rnbackgroundgeolocation.RNBackgroundGeolocation;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
@@ -16,6 +17,9 @@ import com.facebook.soloader.SoLoader;
 
 import java.util.Arrays;
 import java.util.List;
+
+import com.transistorsoft.rnbackgroundgeolocation.*;
+import com.transistorsoft.rnbackgroundfetch.RNBackgroundFetchPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -34,7 +38,9 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
+            new MainReactPackage(),
+            new RNBackgroundGeolocation(),
+            new RNBackgroundFetchPackage(),
             new ImagePickerPackage(),
             new VectorIconsPackage(),
             new FBSDKPackage(mCallbackManager)

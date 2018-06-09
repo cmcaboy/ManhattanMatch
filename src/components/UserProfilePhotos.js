@@ -12,7 +12,6 @@ import {
   Animated,
   PanResponder
 } from 'react-native';
-import {CacheManager} from 'react-native-expo-image-cache';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {PHOTO_ADD_URL} from '../variables';
 
@@ -66,23 +65,23 @@ class UserProfilePhotos extends Component {
     }
   }
 
-  cacheImages = () => {
-      this.state.pics.map(async (pic,i) => {
-        try {
-          const newURI = await CacheManager.get(pic).getPath();
-          !!newURI && this.setState((prevState) => ({
-            pics: prevState.pics.map((picP,iP) => (i===iP) ? newURI : picP) 
-          }));
-        } catch(e) {
-          console.log('error downloading images: ',e);
-        }
-      });
-  }
+  // cacheImages = () => {
+  //     this.state.pics.map(async (pic,i) => {
+  //       try {
+  //         const newURI = await CacheManager.get(pic).getPath();
+  //         !!newURI && this.setState((prevState) => ({
+  //           pics: prevState.pics.map((picP,iP) => (i===iP) ? newURI : picP) 
+  //         }));
+  //       } catch(e) {
+  //         console.log('error downloading images: ',e);
+  //       }
+  //     });
+  // }
 
   componentDidMount = () => {
-    if (this.props.cacheImages) {
-      this.cacheImages();
-    }
+    // if (this.props.cacheImages) {
+    //   this.cacheImages();
+    // }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -95,7 +94,7 @@ class UserProfilePhotos extends Component {
 
   componentWillUnmount = async () => {
     //Platform.OS === 'ioss' && await CacheManager.clearCache();
-    await CacheManager.clearCache();
+    // await CacheManager.clearCache();
   }
 
   render() {

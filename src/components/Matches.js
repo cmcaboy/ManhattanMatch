@@ -29,7 +29,7 @@ query user($id: ID!) {
                 work
                 school
             }
-            messages {
+            lastMessage {
               	message
                 name
                 date
@@ -69,7 +69,7 @@ class Matches extends Component {
                         <ScrollView
                             horizontal={true}
                         >
-                        {matches.filter(match => !match.messages.length).map((match) => {
+                        {matches.filter(match => !match.lastMessage).map((match) => {
                             return (
                                 <TouchableOpacity 
                                     onPress={() => navigation.navigate('Messenger',{
@@ -93,12 +93,12 @@ class Matches extends Component {
                     <View style={styles.messagesContainer}>
                         <MyAppText style={styles.heading}>Messages</MyAppText>
                         <ScrollView>
-                            {matches.filter(match => !!match.messages.length).map((match) => (
+                            {matches.filter(match => !!match.lastMessage).map((match) => (
                             <MatchListItem 
                                 key={match.matchId}
                                 name={match.user.name} 
                                 picture={match.user.pics[0]}
-                                lastMessage={match.messages[match.messages.length - 1].message}
+                                lastMessage={match.lastMessage}
                                 onPress={() => navigation.navigate('Messenger',{
                                     matchId:match.matchId,
                                     id,

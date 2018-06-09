@@ -41,7 +41,7 @@ const likeUser = {
                 await db.collection(`matches`).doc(`${matchId}`).set({
                     user1: args.id,
                     user2: args.likedId,
-                    matchTime: moment().format('MMMM Do YYYY, h:mm:ss a')
+                    matchTime: new Date()
                 })
             } catch(e) {
                 console.log('likeUser error creating match: ',e)

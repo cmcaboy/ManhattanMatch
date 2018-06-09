@@ -2,27 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c21e4fcb-08ab-4afd-a1b9-9d8a9bae120e" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/App.js" afterPath="$PROJECT_DIR$/App.js" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/cache.properties.lock" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/fileHashes.bin" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/android/app/build.gradle" afterPath="$PROJECT_DIR$/android/app/build.gradle" />
+      <change beforePath="$PROJECT_DIR$/android/app/proguard-rules.pro" afterPath="$PROJECT_DIR$/android/app/proguard-rules.pro" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" />
       <change beforePath="$PROJECT_DIR$/android/app/src/main/java/com/manhattanmatch/MainApplication.java" afterPath="$PROJECT_DIR$/android/app/src/main/java/com/manhattanmatch/MainApplication.java" />
+      <change beforePath="$PROJECT_DIR$/android/build.gradle" afterPath="$PROJECT_DIR$/android/build.gradle" />
       <change beforePath="$PROJECT_DIR$/android/settings.gradle" afterPath="$PROJECT_DIR$/android/settings.gradle" />
-      <change beforePath="$PROJECT_DIR$/functions/src/schema/mutations/dislikeUser.ts" afterPath="$PROJECT_DIR$/functions/src/schema/mutations/dislikeUser.ts" />
-      <change beforePath="$PROJECT_DIR$/functions/src/schema/mutations/editUser.ts" afterPath="$PROJECT_DIR$/functions/src/schema/mutations/editUser.ts" />
-      <change beforePath="$PROJECT_DIR$/functions/src/schema/mutations/likeUser.ts" afterPath="$PROJECT_DIR$/functions/src/schema/mutations/likeUser.ts" />
-      <change beforePath="$PROJECT_DIR$/functions/src/schema/mutations/newUser.ts" afterPath="$PROJECT_DIR$/functions/src/schema/mutations/newUser.ts" />
-      <change beforePath="$PROJECT_DIR$/functions/src/schema/types/root_query_type.ts" afterPath="$PROJECT_DIR$/functions/src/schema/types/root_query_type.ts" />
-      <change beforePath="$PROJECT_DIR$/functions/src/schema/types/user_type.ts" afterPath="$PROJECT_DIR$/functions/src/schema/types/user_type.ts" />
       <change beforePath="$PROJECT_DIR$/ios/ManhattanMatch.xcodeproj/project.pbxproj" afterPath="$PROJECT_DIR$/ios/ManhattanMatch.xcodeproj/project.pbxproj" />
-      <change beforePath="$PROJECT_DIR$/ios/ManhattanMatch/Info.plist" afterPath="$PROJECT_DIR$/ios/ManhattanMatch/Info.plist" />
-      <change beforePath="$PROJECT_DIR$/src/components/LoginForm.js" afterPath="$PROJECT_DIR$/src/components/LoginForm.js" />
-      <change beforePath="$PROJECT_DIR$/src/components/Settings.js" afterPath="$PROJECT_DIR$/src/components/Settings.js" />
-      <change beforePath="$PROJECT_DIR$/src/services/FBLoginButton.js" afterPath="$PROJECT_DIR$/src/services/FBLoginButton.js" />
+      <change beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
+      <change beforePath="$PROJECT_DIR$/src/components/Stagg.js" afterPath="$PROJECT_DIR$/src/components/Stagg.js" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" afterPath="$PROJECT_DIR$/yarn.lock" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -40,8 +30,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="2201" />
-    <option name="y" value="115" />
+    <option name="x" value="162" />
+    <option name="y" value="93" />
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
@@ -62,9 +52,9 @@
     <panes>
       <pane id="Scratches" />
       <pane id="ProjectPane" />
+      <pane id="AndroidView" />
       <pane id="Scope" />
       <pane id="PackagesPane" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -189,7 +179,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="2201" y="115" width="1400" height="1000" extended-state="0" />
+    <frame x="162" y="93" width="1400" height="1000" extended-state="0" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />

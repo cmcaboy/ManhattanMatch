@@ -59,4 +59,10 @@ const api = express().use(Cors({ origin: true }));
 
 exports.api = functions.https.onRequest(api);
 
+exports.coords = functions.https.onRequest((req, res) => {
+  console.log('req query: ',req.query);
+  console.log('req params: ',req.params);
+  
+  res.send("Hello from Firebase!");
+});
 

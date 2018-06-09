@@ -2554,6 +2554,10 @@ co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
 
+cocoa-lumberjack@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/cocoa-lumberjack/-/cocoa-lumberjack-3.0.5.tgz#0b29683272ad426974a2c71c86d4de9a81029e6d"
+
 code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
@@ -3114,6 +3118,10 @@ fast-json-stable-stringify@^2.0.0:
 fast-levenshtein@~2.0.4:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
+
+fast-plist@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/fast-plist/-/fast-plist-0.1.2.tgz#a45aff345196006d406ca6cdcd05f69051ef35b8"
 
 fastfall@^1.5.1:
   version "1.5.1"
@@ -5495,7 +5503,7 @@ plist@^1.2.0:
     xmlbuilder "4.0.0"
     xmldom "0.1.x"
 
-plist@^2.1.0:
+plist@^2.0.1, plist@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/plist/-/plist-2.1.0.tgz#57ccdb7a0821df21831217a3cad54e3e146a1025"
   dependencies:
@@ -5510,6 +5518,10 @@ plist@^3.0.1:
     base64-js "^1.2.3"
     xmlbuilder "^9.0.7"
     xmldom "0.1.x"
+
+postinstall-build@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/postinstall-build/-/postinstall-build-5.0.1.tgz#b917a9079b26178d9a24af5a5cd8cb4a991d11b9"
 
 power-assert-context-formatter@^1.0.7:
   version "1.1.1"
@@ -5671,6 +5683,14 @@ prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0:
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
+prop-types@^15.6.1:
+  version "15.6.1"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.1.tgz#36644453564255ddda391191fb3a125cbdf654ca"
+  dependencies:
+    fbjs "^0.8.16"
+    loose-envify "^1.3.1"
+    object-assign "^4.1.1"
+
 protobufjs@^5.0.0:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-5.0.2.tgz#59748d7dcf03d2db22c13da9feb024e16ab80c91"
@@ -5785,6 +5805,24 @@ react-devtools-core@3.1.0:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
+react-native-background-fetch@~2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/react-native-background-fetch/-/react-native-background-fetch-2.4.3.tgz#4621cca2a8f9e96edbf0556afcd04873bd698f37"
+  dependencies:
+    fast-plist "^0.1.2"
+    plist "^2.0.1"
+    xcode "^0.9.1"
+
+react-native-background-geolocation@^2.12.2:
+  version "2.12.2"
+  resolved "https://registry.yarnpkg.com/react-native-background-geolocation/-/react-native-background-geolocation-2.12.2.tgz#2f6a267d26376a6864e7b2568472771401eeeee5"
+  dependencies:
+    cocoa-lumberjack "^3.0.5"
+    fast-plist "^0.1.2"
+    plist "^2.0.1"
+    react-native-background-fetch "~2.4.3"
+    xcode "^0.9.1"
+
 react-native-collapsible@^0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/react-native-collapsible/-/react-native-collapsible-0.10.0.tgz#3a3db2685ea4ff1b25812840e719f1225e412936"
@@ -5831,6 +5869,14 @@ react-native-fbsdk@^0.7.0:
     progress "^2.0.0"
     pump "^1.0.2"
     xcode "^0.9.3"
+
+react-native-firebase@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-4.2.0.tgz#d44b1e5b5149d65936045c0398e0acc2ebb4c7e9"
+  dependencies:
+    opencollective "^1.0.3"
+    postinstall-build "^5.0.1"
+    prop-types "^15.6.1"
 
 react-native-gifted-chat@^0.3.0:
   version "0.3.0"
@@ -5879,6 +5925,10 @@ react-native-parsed-text@^0.0.19:
   resolved "https://registry.yarnpkg.com/react-native-parsed-text/-/react-native-parsed-text-0.0.19.tgz#1aacca6f9ee82f939f60ef985df90c97bd55c45a"
   dependencies:
     prop-types "^15.5.10"
+
+react-native-permissions@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-1.1.1.tgz#4876004681ff8556454613d85249b01baff9b35b"
 
 react-native-scrollable-mixin@^1.0.1:
   version "1.0.1"
