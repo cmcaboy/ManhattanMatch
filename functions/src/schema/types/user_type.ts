@@ -15,6 +15,7 @@ import  {
     //GraphQLNonNull,
     GraphQLFloat,
     GraphQLBoolean,
+    GraphQLID,
   } from 'graphql';
   import {MatchType} from './match_type';
 
@@ -64,9 +65,17 @@ import  {
             }
         },
         matches: {
+            args: { 
+                id: { type: GraphQLID},
+              },
             type: new GraphQLList(MatchType),
             resolve(parentValue, args) {
-                const query = `MATCH(a:User{id:'${parentValue.id}'})-[r:LIKES]->(b:User) where r.matchId IS NOT NULL RETURN b,r.matchId`;
+                let query = '';
+                if(args.id) {
+                    query = `MATCH(a:User{id:'${parentValue.id}'})-[r:LIKES]->(b:User{id:'${args.id}'}) where r.matchId IS NOT NULL RETURN b,r.matchId`;
+                } else {
+                    query = `MATCH(a:User{id:'${parentValue.id}'})-[r:LIKES]->(b:User) where r.matchId IS NOT NULL RETURN b,r.matchId`;
+                }
                 return session
                     .run(query)
                         .then(result => {
