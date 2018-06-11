@@ -28,3 +28,4 @@ android/app/build
 functions/lib
 
 android/local.properties
+android/.idea

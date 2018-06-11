@@ -16,6 +16,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import UserProfilePhotos from './UserProfilePhotos';
 import { MyAppText } from './common';
 import { PRIMARY_COLOR } from '../variables';
+import gql from 'graphql-tag';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -29,6 +30,7 @@ query user($id: ID!) {
       pics
       description
   }
+}
 `
 
 class UserProfile extends Component {

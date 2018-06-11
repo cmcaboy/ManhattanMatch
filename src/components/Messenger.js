@@ -5,6 +5,7 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 import {db} from '../firebase';
 import {connect} from 'react-redux';
 import {CirclePicture,MyAppText} from './common';
+import gql from 'graphql-tag';
 
 const GET_MESSAGES = gql`
 query user($id: ID!, $matchId: ID) {
