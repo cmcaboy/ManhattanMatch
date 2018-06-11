@@ -1,5 +1,5 @@
-  import * as firebase from 'firebase';
-  import 'firebase/firestore';
+  import firebase from 'react-native-firebase';
+  //import 'firebase/firestore';
   import moment from 'moment';
   import uuid from 'uuid';
   import {FIREBASE_CONFIG} from '../variables/sensitive';

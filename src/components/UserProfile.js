@@ -20,6 +20,17 @@ import { PRIMARY_COLOR } from '../variables';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
+const GET_PROFILE = gql`
+query user($id: ID!) {
+  user(id: $id) {
+      name
+      work
+      school
+      pics
+      description
+  }
+`
+
 class UserProfile extends Component {
   constructor(props){
     super(props);
@@ -50,39 +61,50 @@ class UserProfile extends Component {
 
   render() {
     //console.log('props: ',this.props); 
-    const {name, school, work, description,profilePic,ancillaryPics} = this.props.user
+    
     const {userProfileContainer,userPics,userInfo,iconText,userPhoto,touchablePics,
       nameText,subHeading,schoolText,userDescription,leftClicker,rightClicker,
       picIndicator} = styles; 
 
     return (
-      <View style={userProfileContainer}>
-        <UserProfilePhotos 
-          pics={[profilePic, ...ancillaryPics]}
-          cacheImages={true}
-        />
-      <ScrollView>
-        <View style={userInfo}>
-          <MyAppText style={nameText}>{name}</MyAppText>
-          {!!school && (
-            <View style={subHeading}>
-              <Ionicons name="md-school" size={14} color="black" style={iconText}/>
-              <MyAppText style={schoolText}>{school}</MyAppText>
-            </View>
-          )}
-          {!!work && (
-            <View style={subHeading}>
-              <MaterialIcons name="work" size={14} color="black" style={iconText}/>
-              <MyAppText style={[schoolText,{paddingLeft:4}]}>{work}</MyAppText>
-            </View>
-          )}  
+      <Query query={GET_PROFILE} variables={{id: this.props.navigation.state.params.id}}>
+      {({loading, error, data}) => {
+        console.log('loading: ',loading);
+        console.log('error: ',error);
+        console.log('data: ',data);
+        const {name, school, work, description,pics} = data;  
+        
+        return (
+          <View style={userProfileContainer}>
+            <UserProfilePhotos 
+              pics={pics}
+              cacheImages={true}
+            />
+            <ScrollView>
+              <View style={userInfo}>
+                <MyAppText style={nameText}>{name}</MyAppText>
+                {!!school && (
+                  <View style={subHeading}>
+                    <Ionicons name="md-school" size={14} color="black" style={iconText}/>
+                    <MyAppText style={schoolText}>{school}</MyAppText>
+                  </View>
+                )}
+                {!!work && (
+                  <View style={subHeading}>
+                    <MaterialIcons name="work" size={14} color="black" style={iconText}/>
+                    <MyAppText style={[schoolText,{paddingLeft:4}]}>{work}</MyAppText>
+                  </View>
+                )}  
+                </View>
+                <View style={styles.horizontalLine}/>
+              <View style={userDescription}>
+                {!!description && <MyAppText>{description}</MyAppText>}
+              </View>
+            </ScrollView>
           </View>
-          <View style={styles.horizontalLine}/>
-        <View style={userDescription}>
-          {!!description && <MyAppText>{description}</MyAppText>}
-        </View>
-        </ScrollView>
-      </View>
+        )
+      }}
+      </Query>
     )
   }
 
@@ -129,14 +151,14 @@ const styles = StyleSheet.create({
   },
 })
 
-const mapStateToProps = (state, ownProps) => {
-  //console.log('id: ',ownProps.navigation.state.params.id);
-  //console.log('matchListReducer: ',state.matchListReducer)
-  return {
-    // Returns matches profile
-    user: getUserProfile(ownProps.navigation.state.params.id,
-      [...state.matchListReducer.matches, ...state.matchListReducer.queue])
-  }
-}
+// const mapStateToProps = (state, ownProps) => {
+//   //console.log('id: ',ownProps.navigation.state.params.id);
+//   //console.log('matchListReducer: ',state.matchListReducer)
+//   return {
+//     // Returns matches profile
+//     user: getUserProfile(ownProps.navigation.state.params.id,
+//       [...state.matchListReducer.matches, ...state.matchListReducer.queue])
+//   }
+// }
 
-export default connect(mapStateToProps)(UserProfile);
+export default UserProfile;

@@ -112,7 +112,7 @@ class Messenger extends Component {
     render() {
         return (
         <View style={styles.messengerContainer}>
-            <Query 
+            {/*<Query 
                 query={GET_MESSAGES} 
                 variables={{
                     id: this.props.navigation.state.params.id,
@@ -124,6 +124,7 @@ class Messenger extends Component {
                     console.log('error: ',error);
                     console.log('data: ',data);
                     return (
+                    */}
                         <GiftedChat 
                             messages={this.state.messages}
                             onSend={(message) => this.onSend(message)}
@@ -131,9 +132,11 @@ class Messenger extends Component {
                             showUserAvatar={false}
                             onPressAvatar={(user) => this.props.navigation.navigate('UserProfile',{id:user._id,name:user.name})}
                         />
+                        {/*
                     )
                 }}
             </Query>
+        */}
             {Platform.OS === 'android' ? <KeyboardSpacer /> : null }
         </View>
         )

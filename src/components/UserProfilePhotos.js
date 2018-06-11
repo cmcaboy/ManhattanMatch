@@ -26,8 +26,6 @@ class UserProfilePhotos extends Component {
   constructor(props){
     super(props);
     
-    
-
     const panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (event,gesture) => {},
