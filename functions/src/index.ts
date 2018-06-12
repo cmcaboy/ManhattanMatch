@@ -14,7 +14,7 @@ import { printSchema } from 'graphql/utilities/schemaPrinter';
 
 import { createServer } from 'http';
 import { execute, subscribe } from 'graphql';
-import { SubscriptionServer } from 'subscriptions-transport-ws';
+// import { SubscriptionServer } from 'subscriptions-transport-ws';
 
 const app = express();
 
@@ -69,6 +69,7 @@ const api = express().use(Cors({ origin: true }));
   fileUpload("/picture", api);
 
   api.post("/picture", (req, response, next) => {
+    console.log('pic upload req: ',req)
     uploadImageToStorage(req.files.file[0])
     .then(metadata => {
       response.status(200).json(metadata[0]);

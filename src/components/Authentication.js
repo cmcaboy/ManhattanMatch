@@ -27,12 +27,12 @@ class Authentication extends React.Component {
     // Firebase authentication details gathered from my firebase account.
     firebase.auth().onAuthStateChanged((user) => {
       console.log('user: ',user);
+      console.log('firebase auth: ',firebase.auth());
+      console.log('firebase uid: ',firebase.auth().currentUser);
       if(user) {
         //this.props.login(user.uid);
 
         this.setState({loggedIn: true});
-        //console.log('firebase auth: ',firebase.auth());
-        //console.log('firebase uid: ',firebase.auth().currentUser.uid);
 
         // We can use the firebase.auth().currentUSer.uid for our unique identifier.
       } else {

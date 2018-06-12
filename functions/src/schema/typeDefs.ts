@@ -1,7 +1,7 @@
 const typeDefs = `
     type User {
         id: String!
-        active: Int!
+        active: Int
         name: String
         email: String
         age: Int

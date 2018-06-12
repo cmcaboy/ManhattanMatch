@@ -7,10 +7,13 @@ const session = driver.session();
 const resolvers = {
     Query: {
         user: (_, args) => {
+            console.log('args: ',args);
             if(args.id) {
+                console.log('args: ',args);
                 return session.run(`Match (n:User {id: '${args.id}'}) RETURN n`)
                   .then(result => result.records)
                   .then(records => {
+                      console.log('records: ',records);
                     if(!records.length) {
                       return null;
                     }

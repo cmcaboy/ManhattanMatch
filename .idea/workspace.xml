@@ -2,43 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c21e4fcb-08ab-4afd-a1b9-9d8a9bae120e" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/cache.properties.lock" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/fileHashes.bin" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-background-fetch_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-background-fetch_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-background-fetch_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-background-fetch_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-background-geolocation_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-background-geolocation_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-background-geolocation_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-background-geolocation_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-background-geolocation_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-background-geolocation_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-fbsdk_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-fbsdk_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-fbsdk_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-fbsdk_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-image-picker_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-image-picker_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-image-picker_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-image-picker_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-vector-icons_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-vector-icons_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-vector-icons_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/android/.gradle/2.14.1/tasks/_react-native-vector-icons_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
-      <change beforePath="$PROJECT_DIR$/android/app/BUCK" afterPath="$PROJECT_DIR$/android/app/BUCK" />
-      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" afterPath="$PROJECT_DIR$/android/app/build.gradle" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/com/manhattanmatch/MainApplication.java" afterPath="$PROJECT_DIR$/android/app/src/main/java/com/manhattanmatch/MainApplication.java" />
-      <change beforePath="$PROJECT_DIR$/android/build.gradle" afterPath="$PROJECT_DIR$/android/build.gradle" />
-      <change beforePath="$PROJECT_DIR$/android/build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/android/build/intermediates/dex-cache/cache.xml" />
-      <change beforePath="$PROJECT_DIR$/android/settings.gradle" afterPath="$PROJECT_DIR$/android/settings.gradle" />
-      <change beforePath="$PROJECT_DIR$/functions/package.json" afterPath="$PROJECT_DIR$/functions/package.json" />
-      <change beforePath="$PROJECT_DIR$/functions/src/index.ts" afterPath="$PROJECT_DIR$/functions/src/index.ts" />
-      <change beforePath="$PROJECT_DIR$/functions/src/schema/schema.ts" afterPath="$PROJECT_DIR$/functions/src/schema/schema.ts" />
-      <change beforePath="$PROJECT_DIR$/functions/yarn.lock" afterPath="$PROJECT_DIR$/functions/yarn.lock" />
-      <change beforePath="$PROJECT_DIR$/ios/ManhattanMatch.xcodeproj/project.pbxproj" afterPath="$PROJECT_DIR$/ios/ManhattanMatch.xcodeproj/project.pbxproj" />
-      <change beforePath="$PROJECT_DIR$/ios/ManhattanMatch/Info.plist" afterPath="$PROJECT_DIR$/ios/ManhattanMatch/Info.plist" />
-      <change beforePath="$PROJECT_DIR$/src/components/Messenger.js" afterPath="$PROJECT_DIR$/src/components/Messenger.js" />
-      <change beforePath="$PROJECT_DIR$/src/components/UserProfile.js" afterPath="$PROJECT_DIR$/src/components/UserProfile.js" />
-      <change beforePath="$PROJECT_DIR$/src/components/UserProfilePhotos.js" afterPath="$PROJECT_DIR$/src/components/UserProfilePhotos.js" />
-      <change beforePath="$PROJECT_DIR$/src/firebase/index.js" afterPath="$PROJECT_DIR$/src/firebase/index.js" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/fileHashes/fileHashes.bin" afterPath="$PROJECT_DIR$/android/.gradle/4.6/fileHashes/fileHashes.bin" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/android/.gradle/4.6/fileHashes/fileHashes.lock" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/fileHashes/resourceHashesCache.bin" afterPath="$PROJECT_DIR$/android/.gradle/4.6/fileHashes/resourceHashesCache.bin" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/javaCompile/javaCompile.lock" afterPath="$PROJECT_DIR$/android/.gradle/4.6/javaCompile/javaCompile.lock" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/javaCompile/taskHistory.bin" afterPath="$PROJECT_DIR$/android/.gradle/4.6/javaCompile/taskHistory.bin" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/javaCompile/taskJars.bin" afterPath="$PROJECT_DIR$/android/.gradle/4.6/javaCompile/taskJars.bin" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/android/.gradle/4.6/taskHistory/taskHistory.bin" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/taskHistory/taskHistory.lock" afterPath="$PROJECT_DIR$/android/.gradle/4.6/taskHistory/taskHistory.lock" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/outputFiles.bin" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/outputFiles.bin" />
+      <change beforePath="$PROJECT_DIR$/android/local.properties" afterPath="$PROJECT_DIR$/android/local.properties" />
+      <change beforePath="$PROJECT_DIR$/functions/src/schema/resolvers.ts" afterPath="$PROJECT_DIR$/functions/src/schema/resolvers.ts" />
+      <change beforePath="$PROJECT_DIR$/functions/src/schema/typeDefs.ts" afterPath="$PROJECT_DIR$/functions/src/schema/typeDefs.ts" />
+      <change beforePath="$PROJECT_DIR$/src/components/Authentication.js" afterPath="$PROJECT_DIR$/src/components/Authentication.js" />
+      <change beforePath="$PROJECT_DIR$/src/services/FBLoginButton.js" afterPath="$PROJECT_DIR$/src/services/FBLoginButton.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -53,7 +32,7 @@
         <entry file="file://$PROJECT_DIR$/android/app/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="612">
-              <caret line="36" column="20" lean-forward="true" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
+              <caret line="36" column="20" lean-forward="false" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -76,7 +55,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="1">
     <option name="x" value="193" />
     <option name="y" value="28" />
     <option name="width" value="1400" />
@@ -247,7 +226,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="193" y="28" width="1400" height="1000" extended-state="0" />
+    <frame x="193" y="28" width="1400" height="1000" extended-state="1" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -285,7 +265,7 @@
     <entry file="file://$PROJECT_DIR$/android/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="612">
-          <caret line="36" column="20" lean-forward="true" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
+          <caret line="36" column="20" lean-forward="false" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
           <folding />
         </state>
       </provider>
