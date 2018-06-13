@@ -48,7 +48,8 @@ class Authentication extends React.Component {
     console.log('loggedIn: ',this.state.loggedIn);
     switch(this.state.loggedIn) {
       case true:
-          return <MainNavigator />
+          //return <MainNavigator />
+          <LoginForm />
           //return <Settings />
             //<CardSection><Button onPress={() => firebase.auth().signOut()}>Log Out</Button></CardSection>
       case false:

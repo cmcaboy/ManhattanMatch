@@ -14,10 +14,12 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.RNFetchBlob.RNFetchBlobPackage; 
 
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import io.invertase.firebase.firestore.RNFirebaseFirestorePackage;
+import io.invertase.firebase.storage.RNFirebaseStoragePackage;
 
 
 
@@ -45,13 +47,15 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RNBackgroundGeolocation(),
             new RNFirebasePackage(),
             new RNFirebaseAuthPackage(), 
             new RNFirebaseFirestorePackage(),
-            new RNBackgroundGeolocation(),
+            new RNFirebaseStoragePackage(),
             new RNBackgroundFetchPackage(),
             new ImagePickerPackage(),
             new VectorIconsPackage(),
+            new RNFetchBlobPackage(),
             new FBSDKPackage(mCallbackManager)
       );
     }

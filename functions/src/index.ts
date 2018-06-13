@@ -66,21 +66,27 @@ const uploadImageToStorage = file => {
 
 // Upload file to firebase storage
 const api = express().use(Cors({ origin: true }));
-  fileUpload("/picture", api);
+fileUpload("/picture", api);
 
-  api.post("/picture", (req, response, next) => {
-    console.log('pic upload req: ',req)
-    uploadImageToStorage(req.files.file[0])
-    .then(metadata => {
-      response.status(200).json(metadata[0]);
-      return next();
-    })
-    .catch(error => {
-      console.error(error);
-      response.status(500).json({ error });
-      next();
+api.post("/picture", (req, response, next) => {
+  console.log('pic upload req: ',req)
+  uploadImageToStorage(req.files.file[0])
+  .then(metadata => {
+    response.status(200).json(metadata[0]);
+    return next();
+  })
+  .catch(error => {
+    console.error(error);
+    response.status(500).json({ error });
+    next();
   });
 });
+
+api.use("/test", (req, res) => {
+  console.log('test');
+  res.send("hi!");
+});
+
 
 exports.api = functions.https.onRequest(api);
 

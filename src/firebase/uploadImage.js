@@ -1,31 +1,38 @@
-import {firebase} from './index';
-import uuid from 'uuid';
-import {FUNCTION_PATH} from '../variables/functions';
+import {firebase} from './index.js';
+import RNFetchBlob from 'react-native-fetch-blob';
 
-export default async (uri, name = uuid()) => {
-  console.log('uri: ',uri);
-  const body = new FormData();
-  body.append("picture", {
-    uri: uri,
-    name,
-    type: "image/jpg"
-  });
-  //console.log('body: ',body);
-  // Need to change url to my URL
+const Blob = RNFetchBlob.polyfill.Blob
+const fs = RNFetchBlob.fs
+window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+window.Blob = Blob
 
-  console.log('FUNCTION_PATH: ',FUNCTION_PATH);
-  console.log('Body: ',body);
-
-    const res = await fetch(`${FUNCTION_PATH}/api`, {
-      method: "POST",
-      body,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data"
-      }
-    });
-    console.log('res: ',res);
-    console.log('name: ',name);
-    const url = await firebase.storage().ref(name).getDownloadURL();
-    return url;
+const uploadImage = (uri, imageName, mime = 'image/jpg') => {
+    console.log('upload image');
+    console.log('uri: ',uri);
+    console.log('imageName: ',imageName);
+  return new Promise((resolve, reject) => {
+    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
+      let uploadBlob = null
+      const imageRef = firebase.storage().ref('posts').child(imageName)
+      fs.readFile(uploadUri, 'base64')
+      .then((data) => {
+        return Blob.build(data, { type: `${mime};BASE64` })
+      })
+      .then((blob) => {
+        uploadBlob = blob
+        return imageRef.put(blob, { contentType: mime })
+      })
+      .then(() => {
+        uploadBlob.close()
+        return imageRef.getDownloadURL()
+      })
+      .then((url) => {
+        resolve(url)
+      })
+      .catch((error) => {
+        reject(error)
+      })
+  })
 }
+
+export {uploadImage}

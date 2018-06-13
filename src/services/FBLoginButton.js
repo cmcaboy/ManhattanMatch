@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { LoginButton, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 import {firebase} from '../firebase';
 import gql from 'graphql-tag';
-import uploadImage from '../firebase/uploadImage.js';
+import uploadImage from '../firebase/uploadImage';
 
 const GET_EMAIL_BY_TOKEN = gql`
 query user($id: String!) {
@@ -70,8 +70,8 @@ class FBLoginButton extends Component {
 
                   console.log('photos: ',photos);
 
-                  const profilePic = await uploadImage(response.picture.data.url);
-                  const ancillaryPics = await Promise.all(photos.data.map(async (datum) => {return await uploadImage(datum.source)}));
+                  const profilePic = await uploadImage(response.picture.data.url, "primary photo");
+                  const ancillaryPics = await Promise.all(photos.data.map(async (datum) => {return await uploadImage(datum.source, "ancillary photo")}));
                   const pics = [profilePic, ...ancillaryPics];
 
                   const newUser = {
