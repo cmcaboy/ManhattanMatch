@@ -9,7 +9,7 @@ import { withClientState } from 'apollo-link-state';
 import { ApolloLink } from 'apollo-link';
 import Settings from './src/components/Settings';
 // import EditSettings from './src/components/EditSettings';
-// import EditProfile from './src/components/EditProfile';
+import EditProfile from './src/components/EditProfile';
 // import Matches from './src/components/Matches';
 
 import Authentication from './src/components/Authentication';

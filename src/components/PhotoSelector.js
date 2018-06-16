@@ -53,7 +53,7 @@ class PhotoSelector extends React.Component {
         console.log('User tapped custom button: ', response.customButton);
       }
       else {
-        let source = { uri: response.uri };
+        let source = { uri: response.uri.uri };
 
         console.log('source: ',source);
     

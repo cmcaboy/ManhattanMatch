@@ -13,7 +13,7 @@ import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import { printSchema } from 'graphql/utilities/schemaPrinter';
 
 import { createServer } from 'http';
-import { execute, subscribe } from 'graphql';
+import { execute } from 'graphql';
 // import { SubscriptionServer } from 'subscriptions-transport-ws';
 
 const app = express();
@@ -43,6 +43,7 @@ app.use("/schema", (req, res) => {
 exports.graphql = functions.https.onRequest(app);
 
 const uploadImageToStorage = file => {
+  console.log('uploadImageToStorage ', file)
   const storage = admin.storage();
   return new Promise((resolve, reject) => {
       const fileUploadLocal = storage.bucket().file(file.originalname);
@@ -66,12 +67,14 @@ const uploadImageToStorage = file => {
 
 // Upload file to firebase storage
 const api = express().use(Cors({ origin: true }));
+
 fileUpload("/picture", api);
 
 api.post("/picture", (req, response, next) => {
   console.log('pic upload req: ',req)
   uploadImageToStorage(req.files.file[0])
   .then(metadata => {
+    console.log('upload promise return: ', metadata);
     response.status(200).json(metadata[0]);
     return next();
   })

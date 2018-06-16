@@ -26,9 +26,9 @@ class Authentication extends React.Component {
   componentWillMount() {
     // Firebase authentication details gathered from my firebase account.
     firebase.auth().onAuthStateChanged((user) => {
-      console.log('user: ',user);
-      console.log('firebase auth: ',firebase.auth());
-      console.log('firebase uid: ',firebase.auth().currentUser);
+      // console.log('user: ',user);
+      // console.log('firebase auth: ',firebase.auth());
+      // console.log('firebase uid: ',firebase.auth().currentUser);
       if(user) {
         //this.props.login(user.uid);
 

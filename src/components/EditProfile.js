@@ -29,7 +29,7 @@ import GET_ID from '../queries/getId';
 import gql from 'graphql-tag';
 
 const GET_PROFILE = gql`
-  query user($id: ID!) {
+  query user($id: String!) {
     user(id: $id) {
         id
         pics
@@ -43,7 +43,7 @@ const GET_PROFILE = gql`
 `
 
 const SET_NAME = gql`
-mutation editUser($id: ID!, $name: String ) {
+mutation editUser($id: String!, $name: String ) {
   editUser(id: $id, name: $name) {
     	id
       name
@@ -51,7 +51,7 @@ mutation editUser($id: ID!, $name: String ) {
 }
 `
 const SET_AGE = gql`
-mutation editUser($id: ID!, $age: Int ) {
+mutation editUser($id: String!, $age: Int ) {
   editUser(id: $id, age: $age) {
     	id
       age
@@ -59,7 +59,7 @@ mutation editUser($id: ID!, $age: Int ) {
 }
 `
 const SET_WORK = gql`
-mutation editUser($id: ID!, $work: String ) {
+mutation editUser($id: String!, $work: String ) {
   editUser(id: $id, work: $work) {
     	id
       work
@@ -67,7 +67,7 @@ mutation editUser($id: ID!, $work: String ) {
 }
 `
 const SET_SCHOOL = gql`
-mutation editUser($id: ID!, $school: String ) {
+mutation editUser($id: String!, $school: String ) {
   editUser(id: $id, school: $school) {
     	id
       school
@@ -75,7 +75,7 @@ mutation editUser($id: ID!, $school: String ) {
 }
 `
 const SET_DESCRIPTION = gql`
-mutation editUser($id: ID!, $description: String ) {
+mutation editUser($id: String!, $description: String ) {
   editUser(id: $id, description: $description) {
     	id
       description
@@ -83,7 +83,7 @@ mutation editUser($id: ID!, $description: String ) {
 }
 `
 const SET_PICS = gql`
-mutation editUser($id: ID!, $pics: [String] ) {
+mutation editUser($id: String!, $pics: [String] ) {
   editUser(id: $id, pics: $pics) {
     	id
       pics
@@ -119,6 +119,7 @@ class EditProfile extends Component {
   }
 
   renderContent({name,age,school,work,description,pics = [],id}) {
+    console.log('get profile component');
     return (
       <ScrollView contentContainerStyle={styles.settingsContainer}>
       <KeyboardAvoidingView
@@ -218,7 +219,7 @@ class EditProfile extends Component {
           console.log('local data: ',data);
           console.log('local error: ',error);
           console.log('local loading: ',loading);
-          if(loading) return <MyAppText>Loading...</MyAppText>
+          if(loading) return <Spinner />
           if(error) return <MyAppText>Error! {error.message}</MyAppText>
           const { id } = data.user;
           return (
@@ -227,7 +228,7 @@ class EditProfile extends Component {
                 console.log('data: ',data);
                 console.log('error: ',error);
                 console.log('loading: ',loading);
-                if(loading) return <MyAppText>Loading...</MyAppText>
+                if(loading) return <Spinner />
                 if(error) return <MyAppText>Error! {error.message}</MyAppText>
                 return this.renderContent(data.user);
               }}

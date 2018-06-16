@@ -43,22 +43,32 @@ class FBLoginButton extends Component {
                 const credential = provider.credential(token);
                 
                 console.log('credential: ',credential);
-                console.log('this.props: ',this.props);
 
-                const responseEmailRaw = await fetch(`https://graph.facebook.com/me/?fields=email&access_token=${token}`)
-                const responseEmail = await responseEmailRaw.json();
+                const result = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
+                let email;
+                let isRegistered;
+                try {
+                  // Login via Firebase Auth
+                  email = result.additionalUserInfo.profile.email;
+  
+                  // const responseEmailRaw = await fetch(`https://graph.facebook.com/me/?fields=email&access_token=${token}`)
+                  // const responseEmail = await responseEmailRaw.json();
+  
+                  console.log('email: ',email);
 
-                console.log('response Email: ',responseEmail.email);
-
-                const {data, error} = await this.props.client.query({query: GET_EMAIL_BY_TOKEN, variables: {id: responseEmail.email}})
-                console.log('data: ',data);
-                console.log('error: ',error);
-                const email = !!data.user? data.user.email : null;
-                console.log('email: ',email);
+                  const {data, error} = await this.props.client.query({query: GET_EMAIL_BY_TOKEN, variables: {id: email}})
+                  console.log('data: ',data);
+                  console.log('error: ',error);
+                  isRegistered = !!data.user? !!data.user.email : false;
+                  console.log('isRegistered: ',isRegistered);
+                } catch(e) {
+                  email = null;
+                  isRegistered = false;
+                }
 
                 // If we do not have record of the user's email, this is a new user.
                 // We should build their profile from their facebook profile
-                if(!email) {
+                if(!isRegistered) {
                   // An alternative approach would be to run this all on the graphql server
                   const responseRaw = await fetch(`https://graph.facebook.com/me/?fields=first_name,last_name,picture.height(300),education,about,gender,email&access_token=${token}`)
                   const response = await responseRaw.json();
@@ -70,8 +80,10 @@ class FBLoginButton extends Component {
 
                   console.log('photos: ',photos);
 
-                  const profilePic = await uploadImage(response.picture.data.url, "primary photo");
-                  const ancillaryPics = await Promise.all(photos.data.map(async (datum) => {return await uploadImage(datum.source, "ancillary photo")}));
+                  const profilePic = await uploadImage(response.picture.data.url);
+                  const ancillaryPics = await Promise.all(photos.data.map(async (datum) => {return await uploadImage(datum.source)}));
+                  
+                  //const ancillaryPics = [];
                   const pics = [profilePic, ...ancillaryPics];
 
                   const newUser = {
@@ -95,17 +107,13 @@ class FBLoginButton extends Component {
                   console.log('newUser: ',newUser);
 
                   // Load up new user in our database
-                  this.props.startNewUser(newUser);
+                  await this.props.startNewUser(newUser);
                 }
 
-                this.props.startSetId(token);
+                await this.props.startSetId(token);
 
-                console.log('token: ',token)
-                
-                // Login via Firebase Auth
-                const {user} = await firebase.auth().signInWithCredential(credential);
-
-                console.log('user after fb login: ',user);
+                //console.log('user after fb login: ',user);
+                //console.log('result after fb login: ',result);
                 
               }
             }

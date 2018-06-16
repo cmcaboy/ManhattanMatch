@@ -6,6 +6,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.CallbackManager;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.react.ReactApplication;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.transistorsoft.rnbackgroundgeolocation.RNBackgroundGeolocation;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -14,7 +15,6 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.RNFetchBlob.RNFetchBlobPackage; 
 
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
@@ -47,6 +47,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RNFetchBlobPackage(),
             new RNBackgroundGeolocation(),
             new RNFirebasePackage(),
             new RNFirebaseAuthPackage(), 
@@ -55,7 +56,6 @@ public class MainApplication extends Application implements ReactApplication {
             new RNBackgroundFetchPackage(),
             new ImagePickerPackage(),
             new VectorIconsPackage(),
-            new RNFetchBlobPackage(),
             new FBSDKPackage(mCallbackManager)
       );
     }
@@ -74,6 +74,7 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+    AppEventsLogger.activateApp(this);
     SoLoader.init(this, /* native exopackage */ false);
   }
 }

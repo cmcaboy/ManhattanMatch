@@ -3,12 +3,13 @@ const Busboy = require("busboy");
 const getRawBody = require("raw-body");
 const contentType = require("content-type");
 
-module.exports = (path, app) => {
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({
+module.exports = (path, api) => {
+    api.use(bodyParser.json());
+    api.use(bodyParser.urlencoded({
         extended: true
     }));
-    app.use((req, res, next) => {
+    api.use((req, res, next) => {
+        console.log('first api: ',req);
         if (req.rawBody === undefined && req.method === "POST" && req.headers["content-type"].startsWith("multipart/form-data")) {
             getRawBody(req, {
                 length: req.headers["content-length"],
@@ -24,7 +25,8 @@ module.exports = (path, app) => {
         }
     })
 
-    app.use((req, res, next) => {
+    api.use((req, res, next) => {
+        console.log('second api: ',req)
         if (req.method === "POST" && req.headers["content-type"].startsWith("multipart/form-data")) {
             const busboy = new Busboy({
                 headers: req.headers
