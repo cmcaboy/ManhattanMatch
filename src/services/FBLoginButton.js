@@ -56,7 +56,7 @@ class FBLoginButton extends Component {
   
                   console.log('email: ',email);
 
-                  const {data, error} = await this.props.client.query({query: GET_EMAIL_BY_TOKEN, variables: {id: email}})
+                  const {data, error} = await this.props.client.query({query: GET_EMAIL_BY_TOKEN, variables: {id: email}, fetchPolicy:"no-cache"})
                   console.log('data: ',data);
                   console.log('error: ',error);
                   isRegistered = !!data.user? !!data.user.email : false;
@@ -69,6 +69,7 @@ class FBLoginButton extends Component {
                 // If we do not have record of the user's email, this is a new user.
                 // We should build their profile from their facebook profile
                 if(!isRegistered) {
+                  console.log('new user');
                   // An alternative approach would be to run this all on the graphql server
                   const responseRaw = await fetch(`https://graph.facebook.com/me/?fields=first_name,last_name,picture.height(300),education,about,gender,email&access_token=${token}`)
                   const response = await responseRaw.json();
@@ -112,8 +113,7 @@ class FBLoginButton extends Component {
 
                 await this.props.startSetId(token);
 
-                //console.log('user after fb login: ',user);
-                //console.log('result after fb login: ',result);
+                console.log('fb login complete');
                 
               }
             }

@@ -15,8 +15,8 @@ export default async (uri, name = uuid()) => {
   //console.log('body: ',body);
   // Need to change url to my URL
 
-  console.log(`FUNCTION_PATH: ${FUNCTION_PATH}/api/picture`);
-  console.log('Body: ',body);
+  // console.log(`FUNCTION_PATH: ${FUNCTION_PATH}/api/picture`);
+  // console.log('Body: ',body);
 
     try {
       const res = await fetch(`${FUNCTION_PATH}/api/picture`, {
@@ -27,11 +27,11 @@ export default async (uri, name = uuid()) => {
           "Content-Type": "multipart/form-data"
         }
       });
-      console.log('res: ',res);
+      // console.log('res: ',res);
     } catch(e) {
       console.log('Error uploading photo: ',e);
     }
-    console.log('name: ',name);
+    // console.log('name: ',name);
     const url = await firebase.storage().ref(name).getDownloadURL();
     return url;
 }

@@ -1,7 +1,7 @@
 const typeDefs = `
     type User {
         id: String!
-        active: Int
+        active: Boolean
         name: String
         email: String
         age: Int
@@ -62,7 +62,7 @@ const typeDefs = `
         editUser (
             id: String!
             name: String
-            active: Int
+            active: Boolean
             email: String
             gender: String
             age: Int
@@ -81,7 +81,7 @@ const typeDefs = `
         newUser (
             id: String!
             name: String
-            active: Int
+            active: Boolean
             email: String
             gender: String
             age: Int
