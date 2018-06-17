@@ -10,9 +10,12 @@
       <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/android/.gradle/4.6/fileHashes/fileHashes.lock" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/android/.gradle/4.6/taskHistory/taskHistory.bin" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/taskHistory/taskHistory.lock" afterPath="$PROJECT_DIR$/android/.gradle/4.6/taskHistory/taskHistory.lock" />
-      <change beforePath="$PROJECT_DIR$/functions/src/schema/typeDefs.ts" afterPath="$PROJECT_DIR$/functions/src/schema/typeDefs.ts" />
-      <change beforePath="$PROJECT_DIR$/src/firebase/uploadImage.js" afterPath="$PROJECT_DIR$/src/firebase/uploadImage.js" />
-      <change beforePath="$PROJECT_DIR$/src/services/FBLoginButton.js" afterPath="$PROJECT_DIR$/src/services/FBLoginButton.js" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" />
+      <change beforePath="$PROJECT_DIR$/src/components/Authentication.js" afterPath="$PROJECT_DIR$/src/components/Authentication.js" />
+      <change beforePath="$PROJECT_DIR$/src/components/MatchListItem.js" afterPath="$PROJECT_DIR$/src/components/MatchListItem.js" />
+      <change beforePath="$PROJECT_DIR$/src/components/Matches.js" afterPath="$PROJECT_DIR$/src/components/Matches.js" />
+      <change beforePath="$PROJECT_DIR$/src/components/Settings.js" afterPath="$PROJECT_DIR$/src/components/Settings.js" />
+      <change beforePath="$PROJECT_DIR$/src/components/StaggContainer.js" afterPath="$PROJECT_DIR$/src/components/StaggContainer.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />

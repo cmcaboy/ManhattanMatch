@@ -97,19 +97,19 @@ class Stagg extends Component {
         // Permissions function keeps track of whether the user accepted the 
         // permissions or not. It it has not asked, it will prompt the user.
 
-        try {
-            const response = await Permissions.check('location');
-            console.log('Permissions Response: ',response);
+        // try {
+        //     const response = await Permissions.check('location');
+        //     console.log('Permissions Response: ',response);
 
-            this.setState(() => ({status: response}));
+        //     this.setState(() => ({status: response}));
 
-            if(response.location === 'granted') {
-                this.trackLocation();
-            }
-        } catch(e) {
-            console.warn('Error getting Location permission: ',e)
-            this.setState(() => ({status: 'undetermined'}))
-        }
+        //     if(response.location === 'granted') {
+        //         this.trackLocation();
+        //     }
+        // } catch(e) {
+        //     console.warn('Error getting Location permission: ',e)
+        //     this.setState(() => ({status: 'undetermined'}))
+        // }
 
     }
 
@@ -335,7 +335,7 @@ class Stagg extends Component {
             return (
                 <View style={styles.center}>
                     <Foundation name='alert' size={50} />
-                    <Text>
+                    <Text style={{textAlign: 'center'}}>
                         You need to enable location services for this app.
                     </Text>
                     <TouchableOpacity onPress={this.askPermission} style={styles.button}>

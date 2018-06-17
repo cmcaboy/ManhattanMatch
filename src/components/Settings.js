@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Platform, Dimensions } from 'react-native';
-import {CirclePicture,Card,MyAppText} from './common';
+import {CirclePicture,Card,MyAppText,Spinner} from './common';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,12 +11,12 @@ import gql from 'graphql-tag';
 import GET_ID from '../queries/getId';
 
 const GET_PROFILE = gql`
-query user($id: ID!) {
+query user($id: String!) {
     user(id: $id) {
         name
         work
         school
-        profilePic
+        pics
     }
 }
 `
@@ -61,8 +61,8 @@ class Settings extends React.Component {
     }
 
     renderContent(user) {
-        const profilePic = !!user.profilePic? user.profilePic : PLACEHOLDER_PHOTO
-        const {work, school, name } = user;
+        const {work, school, name, pics } = user;
+        const profilePic = !!pics[0]? pics[0] : PLACEHOLDER_PHOTO
         console.log('profilePic: ',profilePic);
         console.log('name: ',name);
         console.log('work: ',work);
@@ -133,7 +133,7 @@ class Settings extends React.Component {
                 console.log('local data: ',data);
                 console.log('local error: ',error);
                 console.log('local loading: ',loading);
-                if(loading) return <MyAppText>Loading...</MyAppText>
+                if(loading) return <Spinner />
                 if(error) return <MyAppText>Error! {error.message}</MyAppText>
                 
                 const id = data.user.id;
@@ -144,7 +144,7 @@ class Settings extends React.Component {
                             console.log('loading: ',loading);
                             console.log('error: ',error);
                             console.log('data: ',data);
-                            if(loading) return <MyAppText>Loading...</MyAppText>
+                            if(loading) return <Spinner />
                             if(error) return <MyAppText>Error! {error.message}</MyAppText>
             
                             return this.renderContent(data.user)

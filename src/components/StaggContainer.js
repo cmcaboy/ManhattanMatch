@@ -7,7 +7,7 @@ import Stagg from './Stagg';
 import gql from 'graphql-tag';
 
 const GET_QUEUE = gql`
-query user($id: ID!) {
+query user($id: String!) {
     user(id: $id) {
         queue {
             id
@@ -23,7 +23,7 @@ query user($id: ID!) {
 `
 
 const SET_COORDS = gql`
-mutation editUser($id: ID!, $latitude: Float, $longtitude: Float) {
+mutation editUser($id: String!, $latitude: Float, $longtitude: Float) {
     editUser(id: $id, latitude: $latitude, longitude: $longitude) {
         id
         latitude
@@ -32,7 +32,7 @@ mutation editUser($id: ID!, $latitude: Float, $longtitude: Float) {
 }
 `
 const SET_PUSH_TOKEN = gql`
-mutation editUser($id: ID!, $token: String) {
+mutation editUser($id: String!, $token: String) {
     editUser(id: $id, token: $token) {
         id
         token
@@ -41,7 +41,7 @@ mutation editUser($id: ID!, $token: String) {
 `
 
 const LIKE = gql`
-mutation likeUser($id: ID!, $likedId: ID!) {
+mutation likeUser($id: String!, $likedId: String!) {
     likeUser(id: $id, likedId: $likedId) {
         id
         name
@@ -49,7 +49,7 @@ mutation likeUser($id: ID!, $likedId: ID!) {
 }
 `;
 const DISLIKE = gql`
-mutation dislikeUser($id: ID!, $dislikedId: ID!) {
+mutation dislikeUser($id: String!, $dislikedId: String!) {
     dislikeUser(id: $id, dislikedId: $dislikedId) {
         id
         name

@@ -22,7 +22,7 @@ class FBLoginButton extends Component {
       <View>
         <LoginButton
           //publishPermissions={["email","public_profile","user_photos","user_birthday","user_hometown"]}
-          readPermissions={['public_profile','email','user_photos','user_birthday','user_hometown']}
+          readPermissions={['public_profile','email','user_photos','user_birthday','user_hometown','user_gender']}
           onLoginFinished={
             async (error, result) => {
               console.log('error: ',error);

@@ -14,15 +14,16 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import UserProfilePhotos from './UserProfilePhotos';
-import { MyAppText } from './common';
+import { MyAppText,Spinner } from './common';
 import { PRIMARY_COLOR } from '../variables';
 import gql from 'graphql-tag';
+import {Query} from 'react-apollo';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const GET_PROFILE = gql`
-query user($id: ID!) {
+query user($id: String!) {
   user(id: $id) {
       name
       work
@@ -68,13 +69,17 @@ class UserProfile extends Component {
       nameText,subHeading,schoolText,userDescription,leftClicker,rightClicker,
       picIndicator} = styles; 
 
+      console.log('id: ',this.props.navigation.state.params.id);
+
     return (
       <Query query={GET_PROFILE} variables={{id: this.props.navigation.state.params.id}}>
       {({loading, error, data}) => {
         console.log('loading: ',loading);
         console.log('error: ',error);
         console.log('data: ',data);
-        const {name, school, work, description,pics} = data;  
+        if(loading) return <Spinner />
+        if(error) return <MyAppText>Error! {error.message}</MyAppText>
+        const {name, school, work, description,pics} = data.user;  
         
         return (
           <View style={userProfileContainer}>

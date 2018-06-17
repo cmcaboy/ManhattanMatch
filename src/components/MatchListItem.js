@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native'
 import {CirclePicture,MyAppText} from './common';
 
 const MatchListItem = ({name,picture,onPress,lastMessage = "test"}) => {
+  console.log('last message');
     return (
       <TouchableOpacity onPress={onPress}>
         <View style={styles.itemContainer}>

@@ -16,7 +16,7 @@ import {Query} from 'react-apollo';
 import GET_ID from '../queries/getId';
 
 const GET_MATCHES = gql`
-query user($id: ID!) {
+query user($id: String!) {
     user(id: $id) {
         matches {
             matchId
@@ -93,12 +93,12 @@ class Matches extends Component {
                     <View style={styles.messagesContainer}>
                         <MyAppText style={styles.heading}>Messages</MyAppText>
                         <ScrollView>
-                            {matches.filter(match => !!match.lastMessage).map((match) => (
+                            {matches.filter(match => (!!match.lastMessage && !!match.lastMessage.message)).map((match) => (
                             <MatchListItem 
                                 key={match.matchId}
                                 name={match.user.name} 
                                 picture={match.user.pics[0]}
-                                lastMessage={match.lastMessage}
+                                lastMessage={match.lastMessage.message}
                                 onPress={() => navigation.navigate('Messenger',{
                                     matchId:match.matchId,
                                     id,
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     },
     heading: {
         fontSize: 20,
-        fontWeight: '900',
+        //fontWeight: '500',
         color: PRIMARY_COLOR,
         marginTop: 10,
         marginBottom: 5,
