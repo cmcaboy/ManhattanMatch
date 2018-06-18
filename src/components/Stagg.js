@@ -65,10 +65,11 @@ class Stagg extends Component {
         this.locationTracker;
 
         this.position = position;
-        this.state = {panResponder, position,index:0, status: null}
+        this.state = {panResponder, position,index:0, status: 'granted'}
     }
 
     componentDidMount() {
+        this.trackLocation();
         // Ask user for notifications permissions
         // registerForNotifications(this.props.id,this.props.startSetPushToken);
         
@@ -93,7 +94,7 @@ class Stagg extends Component {
         LayoutAnimation.spring();
     }
 
-    async componentWillMount() {
+    componentWillMount() {
         // Permissions function keeps track of whether the user accepted the 
         // permissions or not. It it has not asked, it will prompt the user.
 
@@ -132,7 +133,11 @@ class Stagg extends Component {
         }
     }
 
+    onLocation = (location) => console.log(' - [event] location: ',location)
+
     trackLocation = () => {
+
+        console.log('function path: ',FUNCTION_PATH + '/coords');
 
         BackgroundGeolocation.on('location', this.onLocation, this.onError);
 
@@ -159,6 +164,7 @@ class Stagg extends Component {
             }
           }, (state) => {
             console.log("- BackgroundGeolocation is configured and ready: ", state.enabled);
+            console.log('state: ',state)
       
             // If we are not currently tracking, start tracking.
             if (!state.enabled) {
@@ -318,7 +324,7 @@ class Stagg extends Component {
     }
 
     render() {
-        console.log('props: ',this.props);
+        console.log('status: ',this.state.status);
         if(this.state.status === 'granted'){
             return this.renderGranted();
         } else if(this.state.status === 'denied') {

@@ -1,5 +1,4 @@
 import React from 'react';
-// import { ApolloClient } from 'apollo-client';
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -15,6 +14,8 @@ import EditProfile from './src/components/EditProfile';
 import Authentication from './src/components/Authentication';
 // import StaggContainer from './src/components/StaggContainer';
 import LoginForm from './src/components/LoginForm';
+import { YellowBox } from 'react-native';
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 const cache = new InMemoryCache();
 
