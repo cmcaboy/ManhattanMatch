@@ -162,6 +162,9 @@ class Stagg extends Component {
             // headers: {              // <-- Optional HTTP headers
             //   "X-FOO": "bar"
             // },
+            extras: {
+                "id": this.props.id
+            },
             params: {               // <-- Optional HTTP params
               "id": this.props.id
             }
