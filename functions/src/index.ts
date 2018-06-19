@@ -96,7 +96,10 @@ exports.api = functions.https.onRequest(api);
 exports.coords = functions.https.onRequest((req, res) => {
   console.log('req query: ',req.query);
   console.log('req params: ',req.params);
+  console.log('request type: ',req.method);
+  console.log('req body: ',req.body);
+  console.log('req contentType: ',req.get('content-type'));
   
-  res.send("Hello from Firebase!");
+  //res.send("Hello from Firebase!");
 });
 

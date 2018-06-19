@@ -134,6 +134,7 @@ class Stagg extends Component {
     }
 
     onLocation = (location) => console.log(' - [event] location: ',location)
+    onError = (e) => console.log(' - [error] location: ',e);
 
     trackLocation = () => {
 
@@ -143,6 +144,7 @@ class Stagg extends Component {
 
         BackgroundGeolocation.ready({
             // Geolocation Config
+            reset: true,
             desiredAccuracy: 100,
             distanceFilter: 100,
             // Activity Recognition
@@ -153,7 +155,8 @@ class Stagg extends Component {
             stopOnTerminate: false,   // <-- [Default: true] Allow the background-service to continue tracking when user closes the app.
             startOnBoot: true,        // <-- Auto start tracking when device is powered-up.
             // HTTP / SQLite config
-            url: FUNCTION_PATH + '/coords',
+            //url: FUNCTION_PATH + '/coords',
+            url: 'https://us-central1-manhattanmatch-9f9fe.cloudfunctions.net/coords',
             batchSync: false,       // <-- [Default: false] Set true to sync locations to server in a single HTTP request.
             autoSync: true,         // <-- [Default: true] Set true to sync each location to server as it arrives.
             // headers: {              // <-- Optional HTTP headers
@@ -165,6 +168,7 @@ class Stagg extends Component {
           }, (state) => {
             console.log("- BackgroundGeolocation is configured and ready: ", state.enabled);
             console.log('state: ',state)
+            console.log('state enabled: ',state.enabled)
       
             // If we are not currently tracking, start tracking.
             if (!state.enabled) {

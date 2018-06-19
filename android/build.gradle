@@ -10,9 +10,6 @@ buildscript {
         classpath 'com.google.gms:google-services:4.0.1'
         //classpath 'com.google.gms:google-services:3.1.2'
 
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
@@ -37,25 +34,7 @@ allprojects {
         }
     }
 }
-/**
--* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
--* !!! THE FOLLOWING IS OPTIONAL BUT HIGHLY RECOMMENDED FOR YOUR SANITY !!!
--* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-*
-* Do you hate Gradle conflicts where other plugin require some particular
-* version of play-services or define a compileSdkVersion, buildToolsVersion
-* which conflicts with that of your app?  Me too!
-*
-* If you define these key gradle configuration variables globally, the 
-* background-geolocation plugin (and any other "wise" plugins you've installed) 
-* can align themselves to YOUR desired versions!  You should define these variables 
-* as desired according to current values in your app/build.gradle
-*
-* You'll find that more and more plugins are beginning to wise up to checking 
-* for the presense of global gradle variables like this.
-*
-* BackgroundGeolocation is aware of the following variables:
-*/
+
 ext {
     compileSdkVersion   = 26
     targetSdkVersion    = 26

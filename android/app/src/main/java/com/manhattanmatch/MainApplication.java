@@ -7,7 +7,7 @@ import com.facebook.CallbackManager;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.react.ReactApplication;
 import com.RNFetchBlob.RNFetchBlobPackage;
-import com.transistorsoft.rnbackgroundgeolocation.RNBackgroundGeolocation;
+//import com.transistorsoft.rnbackgroundgeolocation.RNBackgroundGeolocation;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
