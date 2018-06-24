@@ -6,18 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c21e4fcb-08ab-4afd-a1b9-9d8a9bae120e" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/App.js" afterPath="$PROJECT_DIR$/App.js" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/fileHashes/fileHashes.bin" afterPath="$PROJECT_DIR$/android/.gradle/4.6/fileHashes/fileHashes.bin" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/android/.gradle/4.6/fileHashes/fileHashes.lock" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/javaCompile/javaCompile.lock" afterPath="$PROJECT_DIR$/android/.gradle/4.6/javaCompile/javaCompile.lock" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/javaCompile/taskHistory.bin" afterPath="$PROJECT_DIR$/android/.gradle/4.6/javaCompile/taskHistory.bin" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/javaCompile/taskJars.bin" afterPath="$PROJECT_DIR$/android/.gradle/4.6/javaCompile/taskJars.bin" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/android/.gradle/4.6/taskHistory/taskHistory.bin" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/4.6/taskHistory/taskHistory.lock" afterPath="$PROJECT_DIR$/android/.gradle/4.6/taskHistory/taskHistory.lock" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" />
-      <change beforePath="$PROJECT_DIR$/android/local.properties" afterPath="$PROJECT_DIR$/android/local.properties" />
-      <change beforePath="$PROJECT_DIR$/src/components/Stagg.js" afterPath="$PROJECT_DIR$/src/components/Stagg.js" />
-      <change beforePath="$PROJECT_DIR$/src/components/StaggContainer.js" afterPath="$PROJECT_DIR$/src/components/StaggContainer.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -55,7 +43,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="1">
     <option name="x" value="193" />
     <option name="y" value="28" />
     <option name="width" value="1628" />
@@ -235,7 +223,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="193" y="28" width="1628" height="1000" extended-state="0" />
+    <frame x="193" y="28" width="1628" height="1000" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
