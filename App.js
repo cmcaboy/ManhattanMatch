@@ -10,6 +10,7 @@ import Settings from './src/components/Settings';
 // import EditSettings from './src/components/EditSettings';
 import EditProfile from './src/components/EditProfile';
 // import Matches from './src/components/Matches';
+import {GRAPHQL_SERVER} from './src/variables'
 
 import Authentication from './src/components/Authentication';
 // import StaggContainer from './src/components/StaggContainer';
@@ -161,11 +162,10 @@ const stateLink = withClientState({
  const client = new ApolloClient({
    link: ApolloLink.from([
      stateLink,
-     new HttpLink({uri: 'https://us-central1-manhattanmatch-9f9fe.cloudfunctions.net/graphql/graphql'})
+     new HttpLink({uri: `${GRAPHQL_SERVER}/graphql`})
    ]),
    cache
  });
-
 
 export default class App extends React.Component {
   render() {

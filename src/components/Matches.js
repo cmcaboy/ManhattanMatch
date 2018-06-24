@@ -104,7 +104,7 @@ class Matches extends Component {
                                     id,
                                     otherId: match.user.id,
                                     name:match.user.name,
-                                    pic:match.pics[0]
+                                    pic:match.user.pics[0]
                                 })}
                             />
                         ))}

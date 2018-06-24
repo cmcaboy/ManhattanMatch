@@ -14,20 +14,10 @@ import { printSchema } from 'graphql/utilities/schemaPrinter';
 
 import { createServer } from 'http';
 import { execute } from 'graphql';
+import {driver} from  './db/neo4j';
 // import { SubscriptionServer } from 'subscriptions-transport-ws';
 
 const app = express();
-
-// app.use('/graphql', expressGraphQL({
-//   schema,
-//   graphiql:true
-// }));
-
-// app.use(
-//   "/graphql",
-//   bodyParser.json(),
-//   graphqlExpress({ schema, context: {} })
-// )
 
 // The GraphQL endpoint
 app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
@@ -94,12 +84,40 @@ api.use("/test", (req, res) => {
 exports.api = functions.https.onRequest(api);
 
 exports.coords = functions.https.onRequest((req, res) => {
-  console.log('req query: ',req.query);
-  console.log('req params: ',req.params);
-  console.log('request type: ',req.method);
   console.log('req body: ',req.body);
-  console.log('req contentType: ',req.get('content-type'));
-  
-  //res.send("Hello from Firebase!");
+
+  const session = driver.session();
+
+  // Ensure the request is valid
+  if(!req.body) {
+    console.log('invalid request body: ',req.body);
+    res.status(500);
+    return res.send('failed to updated coords. Invalided request body: ',req.body);
+  } else if(!req.body.location) {
+    console.log('invalid request body: ',req.body);
+    res.status(500);
+    return res.send('failed to updated coords. Invalided request body: ',req.body);
+  } else if (!req.body.location.coords) {
+    console.log('invalid request body: ',req.body);
+    res.status(500);
+    return res.send('failed to updated coords. Invalided request body: ',req.body);
+  }
+
+  const id = req.body.id
+  const latitude = req.body.location.coords.latitude;
+  const longitude = req.body.location.coords.longitude;
+
+  return session.run(`MATCH(n:User {id:'${id}'}) SET n.latitude=${latitude}, n.longitude=${longitude}`)
+    .then(() => {
+      console.log(`coords (${latitude},${longitude}) successfully updated for id ${id}`)
+      res.status(200);
+      return res.send(`coords (${latitude},${longitude}) successfully updated for id ${id}`)
+    })
+    .catch((e) => {
+      console.log(`error updating coords (${latitude},${longitude}) for id ${id}: ${e}`)
+      res.status(500);
+      return res.send(`coords (${latitude},${longitude}) successfully updated for id ${id}`)
+    })
+    .finally(() => session.close())
 });
 

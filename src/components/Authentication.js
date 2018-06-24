@@ -61,7 +61,7 @@ class Authentication extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <UdaciStatusBar backgroundColor={STATUS_BAR_COLOR} barStyle="light-content" />
+        {/*<UdaciStatusBar backgroundColor={STATUS_BAR_COLOR} barStyle="light-content" />*/}
         {this.renderContent()}
       </View>
     );

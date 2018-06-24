@@ -144,7 +144,7 @@ class Stagg extends Component {
 
         BackgroundGeolocation.ready({
             // Geolocation Config
-            reset: true,
+            reset: false,
             desiredAccuracy: 100,
             distanceFilter: 100,
             // Activity Recognition

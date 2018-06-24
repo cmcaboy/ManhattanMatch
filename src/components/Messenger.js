@@ -32,8 +32,15 @@ class Messenger extends Component {
         this.state = {
             messages: []
         }
-        this.messageRef = db.collection(`matches/${this.props.matchId}/messages`);
+        console.log('matchId: ',this.props.navigation.state.params.matchId);
+        this.messageRef = db.collection(`matches/${this.props.navigation.state.params.matchId}/messages`);
         this.unsubscribe;
+
+        this.name = this.props.navigation.state.params.name;
+        this.pic = this.props.navigation.state.params.pic;
+        this.id = this.props.navigation.state.params.id;
+
+
     }
 
     static navigationOptions = ({navigation}) => ({
@@ -59,13 +66,8 @@ class Messenger extends Component {
             }
     })
     
-    componentDidMount() {
-        this.listenForUpdates();
-    }
-
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
+    componentDidMount = () => this.listenForUpdates();
+    componentWillUnmount = () => this.unsubscribe();
 
     listenForUpdates() {
         // Could listen for lastMessage and lastUser as well
@@ -73,6 +75,7 @@ class Messenger extends Component {
             // the snapshot first returns all messages
             // It then will listen to updates.
             let messages = [];
+            console.log('num messages: ',querySnapshot.docChanges.length);
             querySnapshot.docChanges.forEach((change) => {
                 
                 const changeData = change.doc.data();
@@ -88,6 +91,7 @@ class Messenger extends Component {
                 });
                 
             });
+            console.log('messages: ',messages);
             this.setState((prevState) => ({
                 messages: [...messages,...prevState.messages]
             }));
@@ -102,10 +106,10 @@ class Messenger extends Component {
                 _id: now,
                 text: message.text,
                 createdAt: now,
-                uid: this.props.id,
+                uid: this.id,
                 order: -1 * now,
-                name: this.props.name,
-                avatar: this.props.profilePic
+                name: this.name,
+                avatar: this.pic
             })
         })
     }

@@ -16,3 +16,5 @@ export const PRIMARY_COLOR = '#F56705';
 export const SECONDARY_COLOR = '#02FCED';
 export const STATUS_BAR_COLOR = '#000';
 export const BACKGROUND_COLOR = '#000';
+
+export const GRAPHQL_SERVER = 'http://35.199.37.151:4000';
