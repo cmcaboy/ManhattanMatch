@@ -12,6 +12,8 @@ target 'ManhattanMatch' do
 
   # Pods for ManhattanMatch
 
+  pod 'RNBackgroundFetch', :path => '../node_modules/react-native-background-fetch'
+
   target 'ManhattanMatchTests' do
     inherit! :search_paths
     # Pods for testing

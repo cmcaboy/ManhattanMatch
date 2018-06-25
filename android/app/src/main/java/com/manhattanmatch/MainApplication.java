@@ -6,6 +6,9 @@ import com.facebook.FacebookSdk;
 import com.facebook.CallbackManager;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.react.ReactApplication;
+import com.transistorsoft.rnbackgroundfetch.RNBackgroundFetchPackage;
+import com.transistorsoft.rnbackgroundgeolocation.RNBackgroundGeolocation;
+import io.invertase.firebase.RNFirebasePackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 //import com.transistorsoft.rnbackgroundgeolocation.RNBackgroundGeolocation;
 import com.imagepicker.ImagePickerPackage;
@@ -47,6 +50,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RNBackgroundFetchPackage(),
+            new RNBackgroundGeolocation(),
+            new RNFirebasePackage(),
             new RNFetchBlobPackage(),
             new RNBackgroundGeolocation(),
             new RNFirebasePackage(),

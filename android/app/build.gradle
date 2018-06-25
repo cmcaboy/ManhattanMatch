@@ -144,6 +144,11 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-background-fetch')
+    compile project(':react-native-background-geolocation')
+    compile(project(':react-native-firebase')) {
+        transitive = false
+    }
     implementation project(':react-native-firebase')
     implementation project(':react-native-image-picker')
     implementation project(':react-native-fbsdk')
