@@ -72,7 +72,7 @@ class Matches extends Component {
                         {matches.filter(match => !match.lastMessage).map((match) => {
                             return (
                                 <TouchableOpacity 
-                                    onPress={() => navigation.navigate('Messenger',{
+                                    onPress={() => navigation.navigate('MessengerContainer',{
                                         matchId:match.matchId,
                                         id,
                                         otherId: match.user.id,
@@ -99,7 +99,7 @@ class Matches extends Component {
                                 name={match.user.name} 
                                 picture={match.user.pics[0]}
                                 lastMessage={match.lastMessage.message}
-                                onPress={() => navigation.navigate('Messenger',{
+                                onPress={() => navigation.navigate('MessengerContainer',{
                                     matchId:match.matchId,
                                     id,
                                     otherId: match.user.id,

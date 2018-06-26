@@ -26,10 +26,13 @@ const typeDefs = `
     }
     
     type Message {
-        id: String
+        _id: String
         name: String
-        date: String
-        message: String
+        createdAt: String
+        text: String
+        avatar: String
+        order: Int
+        uid: String
     }
 
     type LikeUser {

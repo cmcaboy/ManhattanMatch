@@ -8,8 +8,8 @@ const CirclePicture = ({imageURL = PLACEHOLDER_PHOTO,picSize = 'large', auto = f
     // pic
     let HEIGHT = 0;
     let BORDER_RADIUS = 0;
-    console.log('Width: ',Dimensions.get('window').width);
-    console.log('Height: ',Dimensions.get('window').height);
+    // console.log('Width: ',Dimensions.get('window').width);
+    // console.log('Height: ',Dimensions.get('window').height);
     if (picSize == 'large') {
         if (auto) {
             HEIGHT = Dimensions.get('window').width * 0.625;

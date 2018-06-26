@@ -280,13 +280,17 @@ const resolvers = {
                 .catch(e => console.log('newUser error: ',e))
         },
         newMessage: async (_,args) => {
-            //console.log('args: ',args);
+            console.log('in newMessage resolver');
+            console.log('args: ',args);
             const message = {
-                id: args.id,
+                _id: args._id,
                 name: args.name,
-                message: args.message,
-                //date: moment().format('MMMM Do YYYY, h:mm:ss a')
-                date: new Date()
+                text: args.text,
+                avatar: args.avatar,
+                createdAt: new Date(),
+                order: args.order,
+                uid: args.uid,
+                //createdAt: moment().format('MMMM Do YYYY, h:mm:ss a')
             };
 
             try {

@@ -5,6 +5,8 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 import {db} from '../firebase';
 import {connect} from 'react-redux';
 import {CirclePicture,MyAppText,Spinner} from './common';
+import {Query,Mutation} from 'react-apollo';
+import Messenger from './Messenger';
 import gql from 'graphql-tag';
 
 const GET_MESSAGES = gql`
@@ -14,8 +16,7 @@ query user($id: String!, $matchId: String) {
         work
         school
         pics
-        matches(id: $matchId) {
-            name
+        matches(matchId: $matchId) {
             messages {
                 id
                 name
@@ -139,8 +140,8 @@ class MessengerContainer extends Component {
             <Query 
                 query={GET_MESSAGES} 
                 variables={{
-                    id: this.props.navigation.state.params.id,
-                    matchId: this.props.navigation.state.params.matchId
+                    id: this.props.navigation.state.params.otherId,
+                    otherId: this.props.navigation.state.params.id
                 }}
             >
                 {({loading, error, data, subscribeToMore}) => {
@@ -152,19 +153,31 @@ class MessengerContainer extends Component {
                     return (
                         <Mutation mutation={SEND_MESSAGE}>
                         {(newMessage,_) => {
-                            const sendNewMessage = (message) => newMessage({variables: {
-                                id: this.props.navigation.state.params.id,
-                                matchId: this.props.navigation.state.params.matchId,
-                                name: this.props.navigation.state.params.name,
-                                message
+                            const sendNewMessage = (message) => {
+                                console.log('in sendNewMessage');
+                                console.log('message: ',message);
+                                // If messages is array, we may need to change
+                                const now = new Date().getTime();
+                                return newMessage({variables: {
+                                    _id: now,
+                                    id: this.props.navigation.state.params.id,
+                                    matchId: this.props.navigation.state.params.matchId,
+                                    name: this.props.navigation.state.params.name,
+                                    text: message.text,
+                                    avatar: this.props.navigation.state.params.pic,
+                                    uid: this.props.navigation.state.params.id,
+                                    order: -1 * now,
                             }})
+                            }
                             return (
                                 <Messenger 
-                                    messages={data.user.matches.messages}
+                                    messages={data.user.matches[0].messages}
                                     sendMessage={sendNewMessage}
                                     id={this.props.navigation.state.params.id}
-                                    subscribeToNewMessages={() => 
-                                        subscribeToMore({
+                                    subscribeToNewMessages={() => {
+
+                                        console.log('in subscribeToNewMessages');
+                                        return subscribeToMore({
                                             document: GET_NEW_MESSAGES,
                                             variables: {matchId: this.props.navigation.state.params.matchId},
                                             updateQuery: (prev, { subscriptionData}) => {
@@ -181,6 +194,7 @@ class MessengerContainer extends Component {
                                             } 
                                         })
                                     }
+                                    }
                                 />
                             )
                         }}
@@ -192,4 +206,20 @@ class MessengerContainer extends Component {
     }
 }
 
-export default ContainerMessenger;
+const styles = StyleSheet.create({
+    textHeader: {
+        alignSelf: 'center',
+        textAlign: 'center',
+        fontWeight:'bold',
+        fontSize: 18,
+        color: '#000',
+        paddingLeft: 8
+    },
+    headerViewStyle: {
+        flexDirection: 'row',
+        paddingVertical: 5
+    }
+});
+
+
+export default MessengerContainer;

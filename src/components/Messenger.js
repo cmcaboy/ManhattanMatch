@@ -25,7 +25,10 @@ class Messenger extends Component {
 
     }
     
-    componentDidMount = () => this.props.subscribeToNewMessages();
+    componentDidMount = () => {
+        console.log('Messenger props: ',this.props);
+        this.props.subscribeToNewMessages();
+    }
 
     // listenForUpdates() {
     //     // Could listen for lastMessage and lastUser as well

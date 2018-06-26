@@ -4,7 +4,7 @@ import Settings from '../components/Settings';
 import Leaderboard from '../components/Leaderboard';
 import StaggContainer from '../components/StaggContainer';
 import Matches from '../components/Matches';
-import Messenger from '../components/Messenger';
+import MessengerContainer from '../components/MessengerContainer';
 import EditSettings from '../components/EditSettings';
 import EditProfile from '../components/EditProfile';
 import UserProfile from '../components/UserProfile';
@@ -67,8 +67,8 @@ const MainNavigator = StackNavigator({
     Home: {
         screen: Tabs
     },
-    Messenger: {
-        screen: Messenger
+    MessengerContainer: {
+        screen: MessengerContainer
     },
     EditSettings: {
         screen: EditSettings
