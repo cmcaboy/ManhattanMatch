@@ -8,13 +8,14 @@ import {CirclePicture,MyAppText,Spinner} from './common';
 import gql from 'graphql-tag';
 
 const GET_MESSAGES = gql`
-query user($id: ID!, $matchId: ID) {
+query user($id: String!, $matchId: String) {
     user(id: $id) {
         name
         work
         school
-        profilePic
+        pics
         matches(id: $matchId) {
+            name
             messages {
                 id
                 name
