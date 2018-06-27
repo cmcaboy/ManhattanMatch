@@ -128,7 +128,7 @@ const resolvers = {
             }
             const data = await db.collection(`matches/${parentValue.matchId}/messages`).orderBy("createdAt", "desc").limit(50).get();
 
-            return data.docs.map(doc => {
+            const messages = data.docs.map(doc => {
                 const docData = doc.data();
                 console.log('docData in messages: ',docData);
                 return {
@@ -141,7 +141,11 @@ const resolvers = {
                     uid: docData.uid,
                     _id: docData._id
                 };
-            })
+            });
+
+            console.log('messages in messages: ',messages);
+
+            return messages;
         },
         lastMessage: async (parentValue, args) => {
             console.log('lastMessage resolver');

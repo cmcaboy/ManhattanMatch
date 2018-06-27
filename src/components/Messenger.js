@@ -76,8 +76,8 @@ class Messenger extends Component {
     // }
     
     render() {
-        console.log('id: ',this.props.id);
-        console.log('messages: ',this.props.messages);
+        //console.log('id: ',this.props.id);
+        //console.log('messages: ',this.props.messages);
         return (
         <View style={styles.messengerContainer}>
             <GiftedChat 

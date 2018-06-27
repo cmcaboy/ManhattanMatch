@@ -159,7 +159,7 @@ class MessengerContainer extends Component {
                 {({loading, error, data, subscribeToMore}) => {
                     console.log('loading: ',loading);
                     console.log('error: ',error);
-                    console.log('data: ',data);
+                    console.log('MessengerContainer data: ',data);
                     if(loading) return <Spinner />
                     if(error) return <Text>Error! {error.message}</Text>
                     return (
