@@ -112,7 +112,7 @@ const typeDefs = `
             text: String
             createdAt: String
             avatar: String
-            order: String
+            order: Int
             uid: String
             _id: String
         ): Message
