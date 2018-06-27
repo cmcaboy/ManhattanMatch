@@ -312,6 +312,7 @@ const resolvers = {
                 createdAt: new Date(),
                 order: args.order,
                 uid: args.uid,
+                id: args.id,
                 //createdAt: moment().format('MMMM Do YYYY, h:mm:ss a')
             };
 

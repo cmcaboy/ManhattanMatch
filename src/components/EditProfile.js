@@ -216,18 +216,18 @@ class EditProfile extends Component {
     return (
       <Query query={GET_ID}>
         {({loading, error, data}) => {
-          console.log('local data: ',data);
-          console.log('local error: ',error);
-          console.log('local loading: ',loading);
+          //console.log('local data: ',data);
+          //console.log('local error: ',error);
+          //console.log('local loading: ',loading);
           if(loading) return <Spinner />
           if(error) return <MyAppText>Error! {error.message}</MyAppText>
           const { id } = data.user;
           return (
             <Query query={GET_PROFILE} variables={{id}}>
               {({loading, error, data}) => {
-                console.log('data: ',data);
-                console.log('error: ',error);
-                console.log('loading: ',loading);
+                //console.log('data: ',data);
+                //console.log('error: ',error);
+                //console.log('loading: ',loading);
                 if(loading) return <Spinner />
                 if(error) return <MyAppText>Error! {error.message}</MyAppText>
                 return this.renderContent(data.user);

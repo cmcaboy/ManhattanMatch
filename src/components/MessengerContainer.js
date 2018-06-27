@@ -157,9 +157,9 @@ class MessengerContainer extends Component {
                 }}
             >
                 {({loading, error, data, subscribeToMore}) => {
-                    console.log('loading: ',loading);
-                    console.log('error: ',error);
-                    console.log('MessengerContainer data: ',data);
+                    //console.log('loading: ',loading);
+                    //console.log('error: ',error);
+                    //console.log('MessengerContainer data: ',data);
                     if(loading) return <Spinner />
                     if(error) return <Text>Error! {error.message}</Text>
                     return (
@@ -196,7 +196,7 @@ class MessengerContainer extends Component {
                                     user: {
                                         name: message.name,
                                         avatar: message.avatar,
-                                        _id: message._id,
+                                        _id: message.uid,
                                     }
                                 }
                             })
@@ -215,13 +215,21 @@ class MessengerContainer extends Component {
                                                 if(!subscriptionData.data) return prev;
                                                 console.log('prev: ',prev);
                                                 console.log('subscriptionData.data: ',subscriptionData.data);
-                                                const newMessage = subscriptionData.data.newMessageSub;
-    
-                                                return Object.assign({}, prev, {
+                                                const newMessage = {
+                                                    ...subscriptionData.data.newMessageSub,
+                                                    user: {
+                                                        name: subscriptionData.data.newMessageSub.name,
+                                                        avatar: subscriptionData.data.newMessageSub.avatar,
+                                                        _id: subscriptionData.data.newMessageSub.uid
+                                                    },
+                                                };
+                                                const messages = Object.assign({}, prev, {
                                                     matches: {
                                                         messages: [newMessage, ...prev.user.matches[0].messages]
                                                     }
-                                                })
+                                                });
+                                                console.log('messages after subscription update: ',messages);
+                                                return messages;
                                             } 
                                         })
                                     }

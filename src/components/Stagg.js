@@ -294,15 +294,15 @@ class Stagg extends Component {
     }
 
     renderGranted = () => {
-        console.log('queue: ', this.props.queue);
+        //console.log('queue: ', this.props.queue);
         if (this.props.queue.length === 0) {
             return this.noProspects();
         }
         return (
             <Animated.View style={styles.staggContainer}>
                 {this.props.queue.map((prospect,i) => {
-                    console.log('i',i);
-                    console.log('state index: ',this.state.index);
+                    //console.log('i',i);
+                    //console.log('state index: ',this.state.index);
                     if(i < this.state.index) { return null }
                     else if (i === this.state.index) {
                         return (

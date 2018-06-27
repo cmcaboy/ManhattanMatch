@@ -118,18 +118,18 @@ class Matches extends Component {
         return (
             <Query query={GET_ID}>
             {({loading, error, data}) => {
-              console.log('local data: ',data);
-              console.log('local error: ',error);
-              console.log('local loading: ',loading);
+              //console.log('local data: ',data);
+              //console.log('local error: ',error);
+              //console.log('local loading: ',loading);
               if(loading) return <Spinner />
               if(error) return <Text>Error! {error.message}</Text>
               const { id } = data.user;
               return (
                 <Query query={GET_MATCHES} variables={{id}}>
                   {({loading, error, data}) => {
-                    console.log('data: ',data);
-                    console.log('error: ',error);
-                    console.log('loading: ',loading);
+                    //console.log('data: ',data);
+                    //console.log('error: ',error);
+                    //console.log('loading: ',loading);
                     if(loading) return <Spinner />
                     if(error) return <Text>Error! {error.message}</Text>
                     return this.renderContent({matches:data.user.matches,id})

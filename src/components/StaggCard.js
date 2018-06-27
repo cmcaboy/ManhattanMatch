@@ -46,14 +46,14 @@ class StaggCard extends Component {
   }
 
   render() {
-    console.log('stagg card');
+    //console.log('stagg card');
     const {pics,style,name,description,work,school,id} = this.props; 
     const distanceApart = Math.round(this.props.distanceApart);
 
     const picHeight = SCREEN_HEIGHT - (CARD_MARGIN*2 + TAB_BAR_HEIGHT +25);
     const picWidth = SCREEN_WIDTH - CARD_MARGIN*2;
 
-    console.log('pics: ',pics);
+    //console.log('pics: ',pics);
 
     return (
             <View style={{margin:CARD_MARGIN}}>
