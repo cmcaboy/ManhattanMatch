@@ -120,7 +120,7 @@ const resolvers = {
             if(!parentValue.matchId) {
                 return [];
             }
-            const data = await db.collection(`matches/${parentValue.matchId}/messages`).orderBy("date", "desc").limit(50).get();
+            const data = await db.collection(`matches/${parentValue.matchId}/messages`).orderBy("createdAt", "desc").limit(50).get();
 
             return data.docs.map(doc => {
                 const docData = doc.data();
@@ -144,7 +144,7 @@ const resolvers = {
             try {
                 // Can use a desc option if orderBy if I need to get opposite order.
                 // citiesRef.orderBy("state").orderBy("population", "desc")
-                const data = await db.collection(`matches/${parentValue.matchId}/messages`).orderBy("date", "desc").limit(1).get();
+                const data = await db.collection(`matches/${parentValue.matchId}/messages`).orderBy("createdAt", "desc").limit(1).get();
 
                 if(!data.docs) {
                     return null;
