@@ -132,7 +132,7 @@ const resolvers = {
                 const docData = doc.data();
                 console.log('docData in messages: ',docData);
                 return {
-                    id: docData.id,
+                    id: docData._id,
                     name: docData.name,
                     text: docData.text,
                     createdAt: docData.createdAt,
