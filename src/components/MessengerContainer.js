@@ -20,8 +20,12 @@ query user($id: String!, $matchId: String) {
             messages {
                 id
                 name
-                message
-                date
+                text
+                createdAt
+                avatar
+                order
+                uid
+                _id
             }
         }
     }
@@ -44,7 +48,7 @@ subscription($matchId: String) {
 `;
 
 const SEND_MESSAGE = gql`
-mutation($matchId: String!,$id: String!, $name: String, $text: String, $createdAt: String, $avatar: String, $order: Int, $uid: String, $_id: String) {
+mutation($matchId: String!,$id: String!, $name: String, $text: String, $createdAt: String, $avatar: String, $order: Float, $uid: String, $_id: String) {
     newMessage(matchId: $matchId, id: $id, name: $name, text: $text, createdAt: $createdAt, avatar: $avatar, order: $order, uid: $uid, _id: $_id) {
         id
         name

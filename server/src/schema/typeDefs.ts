@@ -32,7 +32,7 @@ const typeDefs = `
         createdAt: String
         text: String
         avatar: String
-        order: Int
+        order: Float
         uid: String
     }
 
@@ -112,7 +112,7 @@ const typeDefs = `
             text: String
             createdAt: String
             avatar: String
-            order: Int
+            order: Float
             uid: String
             _id: String
         ): Message

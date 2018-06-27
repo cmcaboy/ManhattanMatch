@@ -30,9 +30,9 @@ query user($id: String!) {
                 school
             }
             lastMessage {
-              	message
+              	text
                 name
-                date
+                createdAt
             }
         }
     }
