@@ -95,6 +95,7 @@ const resolvers = {
                         })
                         .then(records => {
                             return records.map(record => {
+                                console.log('record: ',record)
                                 return {
                                 user: record._fields[0].properties,
                                 matchId: record._fields[1]
