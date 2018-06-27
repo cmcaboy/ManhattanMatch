@@ -26,6 +26,7 @@ const typeDefs = `
     }
     
     type Message {
+        id: String
         _id: String
         name: String
         createdAt: String

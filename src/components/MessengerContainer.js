@@ -31,21 +31,31 @@ query user($id: String!, $matchId: String) {
 const GET_NEW_MESSAGES = gql`
 subscription($matchId: String) {
     newMessageSub(matchId: $matchId) {
-      id
-      name
-      date
-      message
+        id
+        name
+        createdAt
+        text
+        createdAt
+        avatar
+        order
+        uid
+        _id
     }
   }
 `;
 
 const SEND_MESSAGE = gql`
-mutation($matchId: String!,$id: String!, $name: String, $message: String) {
-    newMessage(matchId: $matchId, id: $id, name: $name, message: $message) {
+mutation($matchId: String!,$id: String!, $name: String, $text: String, $createdAt: String, $avatar: String, $order: Int, $uid: String, $_id: String) {
+    newMessage(matchId: $matchId, id: $id, name: $name, text: $text, createdAt: $createdAt, avatar: $avatar, order: $order, uid: $uid, _id: $_id) {
         id
         name
-        date
-        message
+        createdAt
+        text
+        createdAt
+        avatar
+        order
+        uid
+        _id
     }
 }
 `;
@@ -163,7 +173,8 @@ class MessengerContainer extends Component {
                                     id: this.props.navigation.state.params.id,
                                     matchId: this.props.navigation.state.params.matchId,
                                     name: this.props.navigation.state.params.name,
-                                    text: message.text,
+                                    // The message object returns an array.
+                                    text: message[0].text,
                                     avatar: this.props.navigation.state.params.pic,
                                     uid: this.props.navigation.state.params.id,
                                     order: -1 * now,
