@@ -127,8 +127,12 @@ const resolvers = {
                 return {
                     id: docData.id,
                     name: docData.name,
-                    date: docData.date,
-                    message: docData.message
+                    text: docData.text,
+                    createdAt: docData.createdAt,
+                    avatar: docData.avatar,
+                    order: docData.order,
+                    uid: docData.uid,
+                    _id: docData._id
                 };
             })
         },
@@ -151,8 +155,12 @@ const resolvers = {
                     return {
                         id: docData.id,
                         name: docData.name,
-                        date: docData.date,
-                        message: docData.message
+                        text: docData.text,
+                        createdAt: docData.createdAt,
+                        avatar: docData.avatar,
+                        order: docData.order,
+                        uid: docData.uid,
+                        _id: docData._id
                     };
                 })
 

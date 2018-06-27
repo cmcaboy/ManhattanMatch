@@ -170,6 +170,14 @@ class MessengerContainer extends Component {
                                 console.log('message: ',message);
                                 // If messages is array, we may need to change
                                 const now = new Date().getTime();
+                                console.log("_id: ",now);
+                                console.log("id: ",this.props.navigation.state.params.id);
+                                console.log("matchId: ",this.props.navigation.state.params.matchId);
+                                console.log("name: ",this.props.navigation.state.params.name);
+                                console.log("text: ",message[0].text)
+                                console.log("avatar: ",this.props.navigation.state.params.pic);
+                                console.log("uid: ",this.props.navigation.state.params.id);
+                                console.log("order: ",now)
                                 return newMessage({variables: {
                                     _id: now,
                                     id: this.props.navigation.state.params.id,
@@ -201,7 +209,7 @@ class MessengerContainer extends Component {
     
                                                 return Object.assign({}, prev, {
                                                     matches: {
-                                                        messages: [newMessage, ...prev.matches.messages]
+                                                        messages: [newMessage, ...prev.user.matches[0].messages]
                                                     }
                                                 })
                                             } 
