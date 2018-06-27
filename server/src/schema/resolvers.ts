@@ -130,6 +130,7 @@ const resolvers = {
 
             return data.docs.map(doc => {
                 const docData = doc.data();
+                console.log('docData in messages: ',docData);
                 return {
                     id: docData.id,
                     name: docData.name,

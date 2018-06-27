@@ -63,10 +63,10 @@ class Settings extends React.Component {
     renderContent(user) {
         const {work, school, name, pics } = user;
         const profilePic = !!pics[0]? pics[0] : PLACEHOLDER_PHOTO
-        console.log('profilePic: ',profilePic);
-        console.log('name: ',name);
-        console.log('work: ',work);
-        console.log('school: ',school);
+        //console.log('profilePic: ',profilePic);
+        //console.log('name: ',name);
+        //console.log('work: ',work);
+        //console.log('school: ',school);
         return (
             <View style={styles.settingsContainer}>
                 <View style={styles.miniProfile}> 
@@ -130,9 +130,9 @@ class Settings extends React.Component {
         return (
             <Query query={GET_ID}>
             {({ loading, error, data}) => {
-                console.log('local data: ',data);
-                console.log('local error: ',error);
-                console.log('local loading: ',loading);
+                //console.log('local data: ',data);
+                //console.log('local error: ',error);
+                //console.log('local loading: ',loading);
                 if(loading) return <Spinner />
                 if(error) return <MyAppText>Error! {error.message}</MyAppText>
                 
@@ -141,9 +141,9 @@ class Settings extends React.Component {
                 return (
                     <Query query={GET_PROFILE} variables={{id}}>
                         {({loading, error, data}) => {
-                            console.log('loading: ',loading);
-                            console.log('error: ',error);
-                            console.log('data: ',data);
+                            //console.log('loading: ',loading);
+                            //console.log('error: ',error);
+                            //console.log('data: ',data);
                             if(loading) return <Spinner />
                             if(error) return <MyAppText>Error! {error.message}</MyAppText>
             

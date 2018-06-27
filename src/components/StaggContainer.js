@@ -63,18 +63,18 @@ class StaggContainer extends Component {
         return (
             <Query query={GET_ID}>
                 {({loading, error, data}) => {
-                console.log('local data stagg: ',data);
-                console.log('local error stagg: ',error);
-                console.log('local loading stagg: ',loading);
+                //console.log('local data stagg: ',data);
+                //console.log('local error stagg: ',error);
+                //console.log('local loading stagg: ',loading);
                 if(loading) return <Spinner />
                 if(error) return <Text>Error! {error.message}</Text>
                 const { id } = data.user;
                 return (
                     <Query query={GET_QUEUE} variables={{id}}>
                     {({loading, error, data}) => {
-                        console.log('data stagg: ',data);
-                        console.log('error stagg: ',error);
-                        console.log('loading stagg: ',loading);
+                        //console.log('data stagg: ',data);
+                        //console.log('error stagg: ',error);
+                        //console.log('loading stagg: ',loading);
                         if(loading) return <Spinner />
                         if(error) return <Text>Error! {error.message}</Text>
                         return <Mutation mutation={LIKE}>

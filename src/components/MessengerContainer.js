@@ -10,13 +10,13 @@ import Messenger from './Messenger';
 import gql from 'graphql-tag';
 
 const GET_MESSAGES = gql`
-query user($id: String!, $matchId: String) {
+query user($id: String!, $otherId: String) {
     user(id: $id) {
         name
         work
         school
         pics
-        matches(matchId: $matchId) {
+        matches(otherId: $otherId) {
             messages {
                 id
                 name
@@ -190,9 +190,19 @@ class MessengerContainer extends Component {
                                     order: -1 * now,
                             }})
                             }
+                            const messages = data.user.matches[0].messages.map(message => {
+                                return {
+                                    ...message,
+                                    user: {
+                                        name: message.name,
+                                        avatar: message.avatar,
+                                        _id: message._id,
+                                    }
+                                }
+                            })
                             return (
                                 <Messenger 
-                                    messages={data.user.matches[0].messages}
+                                    messages={messages}
                                     sendMessage={sendNewMessage}
                                     id={this.props.navigation.state.params.id}
                                     subscribeToNewMessages={() => {

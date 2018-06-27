@@ -120,7 +120,7 @@ class Stagg extends Component {
     askPermission = async () => {
         try {
             const response = await Permissions.request('location');
-            console.log('location request response: ',response);
+            //console.log('location request response: ',response);
     
             if(response === 'granted') {
                 return this.trackLocation();
@@ -138,7 +138,7 @@ class Stagg extends Component {
 
     trackLocation = () => {
 
-        console.log('function path: ',FUNCTION_PATH + '/coords');
+        //console.log('function path: ',FUNCTION_PATH + '/coords');
 
         BackgroundGeolocation.on('location', this.onLocation, this.onError);
 
@@ -169,9 +169,9 @@ class Stagg extends Component {
               "id": this.props.id
             }
           }, (state) => {
-            console.log("- BackgroundGeolocation is configured and ready: ", state.enabled);
-            console.log('state: ',state)
-            console.log('state enabled: ',state.enabled)
+            //console.log("- BackgroundGeolocation is configured and ready: ", state.enabled);
+            //console.log('state: ',state)
+            //console.log('state enabled: ',state.enabled)
       
             // If we are not currently tracking, start tracking.
             if (!state.enabled) {
@@ -199,7 +199,7 @@ class Stagg extends Component {
     forceSwipe(direction) {
         // same as spring, but the animation plays out slightly differently. Timing is more linear while
         // spring is more bouncy.
-        console.log('force swipe ',direction);
+        //console.log('force swipe ',direction);
         Animated.timing(this.state.position, {
             toValue: { x:direction==='right'?SCREEN_WIDTH+150:-SCREEN_WIDTH-150, y:0},
             duration: SWIPE_OUT_DURATION
@@ -218,8 +218,8 @@ class Stagg extends Component {
 
         this.state.position.setValue({x:0,y:0});
         
-        console.log('queue length: ', queue.length);
-        console.log('index: ', (this.state.index + 1));
+        //console.log('queue length: ', queue.length);
+        //console.log('index: ', (this.state.index + 1));
         
     } 
     onSwipeRight = (id) => this.props.likeUser(id);
@@ -331,7 +331,7 @@ class Stagg extends Component {
     }
 
     render() {
-        console.log('status: ',this.state.status);
+        //console.log('status: ',this.state.status);
         if(this.state.status === 'granted'){
             return this.renderGranted();
         } else if(this.state.status === 'denied') {

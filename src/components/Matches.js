@@ -93,7 +93,7 @@ class Matches extends Component {
                     <View style={styles.messagesContainer}>
                         <MyAppText style={styles.heading}>Messages</MyAppText>
                         <ScrollView>
-                            {matches.filter(match => (!!match.lastMessage && !!match.lastMessage.message)).map((match) => (
+                            {matches.filter(match => (!!match.lastMessage && !!match.lastMessage.text)).map((match) => (
                             <MatchListItem 
                                 key={match.matchId}
                                 name={match.user.name} 
