@@ -88,6 +88,7 @@ const resolvers = {
                 } else {
                     query = `MATCH(a:User{id:'${parentValue.id}'})-[r:LIKES]->(b:User) where r.matchId IS NOT NULL RETURN b,r.matchId`;
                 }
+                console.log('query: ',query);
                 return session
                     .run(query)
                         .then(result => {
@@ -96,6 +97,7 @@ const resolvers = {
                         .then(records => {
                             return records.map(record => {
                                 console.log('record: ',record)
+                                console.log('record properties: ',record._fields[0],properties)
                                 return {
                                 user: record._fields[0].properties,
                                 matchId: record._fields[1]
