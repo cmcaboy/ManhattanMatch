@@ -83,8 +83,8 @@ const resolvers = {
             let query = '';
             console.log('args: ',args);
             console.log('pareventValue.id: ',parentValue.id);
-                if(args.matchId) {
-                    query = `MATCH(a:User{id:'${parentValue.id}'})-[r:LIKES]->(b:User{id:'${args.matchId}'}) where r.matchId IS NOT NULL RETURN b,r.matchId`;
+                if(args.otherId) {
+                    query = `MATCH(a:User{id:'${parentValue.id}'})-[r:LIKES]->(b:User{id:'${args.otherId}'}) where r.matchId IS NOT NULL RETURN b,r.matchId`;
                 } else {
                     query = `MATCH(a:User{id:'${parentValue.id}'})-[r:LIKES]->(b:User) where r.matchId IS NOT NULL RETURN b,r.matchId`;
                 }

@@ -21,7 +21,7 @@ const typeDefs = `
         profilePics: String
         likes: [User]
         dislikes: [User]
-        matches(matchId: String): [Match]
+        matches(otherId: String): [Match]
         queue: [User]
     }
     
