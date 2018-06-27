@@ -117,6 +117,9 @@ const resolvers = {
     },
     Match: {
         messages: async (parentValue, args) => {
+            console.log('messages resolver');
+            console.log('parentValue.matchId: ',parentValue.matchId);
+            console.log('args: ',args);
             if(!parentValue.matchId) {
                 return [];
             }
@@ -137,6 +140,9 @@ const resolvers = {
             })
         },
         lastMessage: async (parentValue, args) => {
+            console.log('lastMessage resolver');
+            console.log('parentValue.matchId: ',parentValue.matchId);
+            console.log('args: ',args);
             if(!parentValue.matchId) {
                 return null;
             }
