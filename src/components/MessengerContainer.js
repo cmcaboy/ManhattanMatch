@@ -151,6 +151,7 @@ class MessengerContainer extends Component {
         return (
             <Query 
                 query={GET_MESSAGES} 
+                fetchPolicy="network-only"
                 variables={{
                     id: this.props.navigation.state.params.otherId,
                     otherId: this.props.navigation.state.params.id
@@ -215,19 +216,30 @@ class MessengerContainer extends Component {
                                                 if(!subscriptionData.data) return prev;
                                                 console.log('prev: ',prev);
                                                 console.log('subscriptionData.data: ',subscriptionData.data);
-                                                const newMessage = {
-                                                    ...subscriptionData.data.newMessageSub,
+                                                const newMessage = subscriptionData.data.newMessageSub;
+                                                    
+                                                console.log('newMessage: ',newMessage);
+                                                // const messages = Object.assign({}, prev, {
+                                                //     user: {
+                                                //         matches: [{
+                                                //             messages: [...prev.user.matches[0].messages,newMessage]
+                                                //         }]
+                                                //     }
+                                                // });
+                                                
+                                                // You must return an object that has the same structure as what the query
+                                                // component returns.
+                                                const messages = {
+                                                    ...prev,
                                                     user: {
-                                                        name: subscriptionData.data.newMessageSub.name,
-                                                        avatar: subscriptionData.data.newMessageSub.avatar,
-                                                        _id: subscriptionData.data.newMessageSub.uid
-                                                    },
-                                                };
-                                                const messages = Object.assign({}, prev, {
-                                                    matches: {
-                                                        messages: [newMessage, ...prev.user.matches[0].messages]
+                                                        ...prev.user,
+                                                        matches: [{
+                                                            messages: [newMessage,...prev.user.matches[0].messages],
+                                                            __typename: 'Match',
+                                                        }]
+
                                                     }
-                                                });
+                                                }
                                                 console.log('messages after subscription update: ',messages);
                                                 return messages;
                                             } 
