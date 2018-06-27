@@ -109,7 +109,12 @@ const typeDefs = `
             matchId: String! 
             id: String! 
             name: String 
-            message: String
+            text: String
+            createdAt: String
+            avatar: String
+            order: String
+            uid: String
+            _id: String
         ): Message
     }
 

@@ -33,7 +33,6 @@ subscription($matchId: String) {
     newMessageSub(matchId: $matchId) {
         id
         name
-        createdAt
         text
         createdAt
         avatar
@@ -49,7 +48,6 @@ mutation($matchId: String!,$id: String!, $name: String, $text: String, $createdA
     newMessage(matchId: $matchId, id: $id, name: $name, text: $text, createdAt: $createdAt, avatar: $avatar, order: $order, uid: $uid, _id: $_id) {
         id
         name
-        createdAt
         text
         createdAt
         avatar
