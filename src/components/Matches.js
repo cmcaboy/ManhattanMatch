@@ -18,6 +18,7 @@ import GET_ID from '../queries/getId';
 const GET_MATCHES = gql`
 query user($id: String!) {
     user(id: $id) {
+        name
         matches {
             matchId
             user {
@@ -56,7 +57,7 @@ class Matches extends Component {
             </View>
         )
     }
-    renderContent({matches,id}) {
+    renderContent({matches,id,name}) {
         const {navigation} = this.props;
 
         if (matches.length === 0) {
@@ -76,7 +77,8 @@ class Matches extends Component {
                                         matchId:match.matchId,
                                         id,
                                         otherId: match.user.id,
-                                        name:match.user.name,
+                                        name: name,
+                                        otherName:match.user.name,
                                         pic:match.user.pics[0]
                                     })}
                                     key={match.user.id}
@@ -132,7 +134,7 @@ class Matches extends Component {
                     //console.log('loading: ',loading);
                     if(loading) return <Spinner />
                     if(error) return <Text>Error! {error.message}</Text>
-                    return this.renderContent({matches:data.user.matches,id})
+                    return this.renderContent({matches:data.user.matches,id,name:data.user.name})
                   }}
                   </Query>
               ) 

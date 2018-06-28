@@ -132,7 +132,6 @@ const resolvers = {
                 const docData = doc.data();
                 console.log('docData in messages: ',docData);
                 return {
-                    id: docData._id,
                     name: docData.name,
                     text: docData.text,
                     createdAt: docData.createdAt,
@@ -167,7 +166,6 @@ const resolvers = {
                 const messages = data.docs.map(doc => {
                     const docData = doc.data();
                     return {
-                        id: docData.id,
                         name: docData.name,
                         text: docData.text,
                         createdAt: docData.createdAt,
@@ -312,7 +310,6 @@ const resolvers = {
                 createdAt: new Date(),
                 order: args.order,
                 uid: args.uid,
-                id: args.id,
                 //createdAt: moment().format('MMMM Do YYYY, h:mm:ss a')
             };
 

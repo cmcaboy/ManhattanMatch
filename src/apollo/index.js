@@ -118,7 +118,7 @@ export const resolvers = {
 const defaults = {
     user: {
       __typename: 'user',
-      id: 5,
+      id: 6,
       minAgePreference: 18,
       maxAgePreference: 25,
       distance: 15,

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Platform, Image } from 'react-native';
 import {GiftedChat} from 'react-native-gifted-chat';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 import {db} from '../firebase';
 import {connect} from 'react-redux';
 import {CirclePicture,MyAppText,Spinner} from './common';
@@ -18,7 +17,6 @@ query user($id: String!, $otherId: String) {
         pics
         matches(otherId: $otherId) {
             messages {
-                id
                 name
                 text
                 createdAt
@@ -35,7 +33,6 @@ query user($id: String!, $otherId: String) {
 const GET_NEW_MESSAGES = gql`
 subscription($matchId: String) {
     newMessageSub(matchId: $matchId) {
-        id
         name
         text
         createdAt
@@ -48,9 +45,8 @@ subscription($matchId: String) {
 `;
 
 const SEND_MESSAGE = gql`
-mutation($matchId: String!,$id: String!, $name: String, $text: String, $createdAt: String, $avatar: String, $order: Float, $uid: String, $_id: String) {
-    newMessage(matchId: $matchId, id: $id, name: $name, text: $text, createdAt: $createdAt, avatar: $avatar, order: $order, uid: $uid, _id: $_id) {
-        id
+mutation($matchId: String!, $name: String, $text: String, $createdAt: String, $avatar: String, $order: Float, $uid: String, $_id: String) {
+    newMessage(matchId: $matchId, name: $name, text: $text, createdAt: $createdAt, avatar: $avatar, order: $order, uid: $uid, _id: $_id) {
         name
         text
         createdAt
@@ -77,15 +73,15 @@ class MessengerContainer extends Component {
     }
 
     static navigationOptions = ({navigation}) => ({
-        title: `${navigation.state.params.name}`,
+        title: `${navigation.state.params.otherName}`,
         headerTitle: (
             <View style={styles.headerViewStyle}>
                 {console.log('navigation params: ',navigation.state.params)}
                 <TouchableOpacity onPress={() => navigation.navigate('UserProfile',
-                    {id:navigation.state.params.otherId,name:navigation.state.params.name})}>
+                    {id:navigation.state.params.otherId,name:navigation.state.params.otherName})}>
                     <CirclePicture imageURL={navigation.state.params.pic} picSize="mini" />
                 </TouchableOpacity>
-                <MyAppText style={styles.textHeader}>{navigation.state.params.name}</MyAppText>
+                <MyAppText style={styles.textHeader}>{navigation.state.params.otherName}</MyAppText>
                 <View style={{width: 100}}></View>
             </View>
         ),
@@ -160,7 +156,7 @@ class MessengerContainer extends Component {
                 {({loading, error, data, subscribeToMore}) => {
                     //console.log('loading: ',loading);
                     //console.log('error: ',error);
-                    //console.log('MessengerContainer data: ',data);
+                    console.log('MessengerContainer data: ',data);
                     if(loading) return <Spinner />
                     if(error) return <Text>Error! {error.message}</Text>
                     return (
@@ -172,7 +168,7 @@ class MessengerContainer extends Component {
                                 // If messages is array, we may need to change
                                 const now = new Date().getTime();
                                 console.log("_id: ",now);
-                                console.log("id: ",this.props.navigation.state.params.id);
+                                // console.log("id: ",this.props.navigation.state.params.id);
                                 console.log("matchId: ",this.props.navigation.state.params.matchId);
                                 console.log("name: ",this.props.navigation.state.params.name);
                                 console.log("text: ",message[0].text)
@@ -180,8 +176,8 @@ class MessengerContainer extends Component {
                                 console.log("uid: ",this.props.navigation.state.params.id);
                                 console.log("order: ",now)
                                 return newMessage({variables: {
-                                    _id: now,
-                                    id: this.props.navigation.state.params.id,
+                                    _id: this.props.navigation.state.params.id,
+                                    // id: now,
                                     matchId: this.props.navigation.state.params.matchId,
                                     name: this.props.navigation.state.params.name,
                                     // The message object returns an array.
@@ -226,7 +222,7 @@ class MessengerContainer extends Component {
                                                 //         }]
                                                 //     }
                                                 // });
-                                                
+
                                                 // You must return an object that has the same structure as what the query
                                                 // component returns.
                                                 const messages = {

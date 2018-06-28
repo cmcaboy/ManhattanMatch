@@ -26,9 +26,11 @@ class Messenger extends Component {
     }
     
     componentDidMount = () => {
-        console.log('Messenger props: ',this.props);
-        this.props.subscribeToNewMessages();
+        //console.log('Messenger props: ',this.props);
+        this.unsubscribe = this.props.subscribeToNewMessages();
     }
+
+    componentWillUnmount = () => this.unsubscribe();
 
     // listenForUpdates() {
     //     // Could listen for lastMessage and lastUser as well
@@ -77,7 +79,7 @@ class Messenger extends Component {
     
     render() {
         //console.log('id: ',this.props.id);
-        //console.log('messages: ',this.props.messages);
+        console.log('messages: ',this.props.messages);
         return (
         <View style={styles.messengerContainer}>
             <GiftedChat 
@@ -87,7 +89,7 @@ class Messenger extends Component {
                 showUserAvatar={false}
                 onPressAvatar={(user) => this.props.navigation.navigate('UserProfile',{id:user._id,name:user.name})}
             />
-            {Platform.OS === 'android' ? <KeyboardSpacer /> : null }
+            {/*Platform.OS === 'android' ? <KeyboardSpacer /> : null */}
         </View>
         )
     }

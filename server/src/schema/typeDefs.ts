@@ -26,7 +26,6 @@ const typeDefs = `
     }
     
     type Message {
-        id: String
         _id: String
         name: String
         createdAt: String
@@ -107,7 +106,6 @@ const typeDefs = `
         ): User
         newMessage (
             matchId: String! 
-            id: String! 
             name: String 
             text: String
             createdAt: String
