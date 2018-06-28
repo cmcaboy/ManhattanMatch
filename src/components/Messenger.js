@@ -32,6 +32,14 @@ class Messenger extends Component {
 
     componentWillUnmount = () => this.unsubscribe();
 
+    componentWillReceiveProps = (nextProps) => {
+        if(nextProps.messages.map(message => message.text) !== this.props.messages.map(message => message.text)) {
+            console.log('messages change');
+            console.log('old messages: ',this.props.messages.map(message => message.text));
+            console.log('new messages: ',nextProps.messages.map(message => message.text));
+        }
+    }
+
     // listenForUpdates() {
     //     // Could listen for lastMessage and lastUser as well
     //     this.unsubscribe = this.messageRef.orderBy("order").onSnapshot((querySnapshot) => {
@@ -79,7 +87,7 @@ class Messenger extends Component {
     
     render() {
         //console.log('id: ',this.props.id);
-        console.log('messages: ',this.props.messages);
+        //console.log('messages: ',this.props.messages);
         return (
         <View style={styles.messengerContainer}>
             <GiftedChat 

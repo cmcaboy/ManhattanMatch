@@ -147,16 +147,18 @@ class MessengerContainer extends Component {
         return (
             <Query 
                 query={GET_MESSAGES} 
-                fetchPolicy="network-only"
+                fetchPolicy='network-only'
                 variables={{
                     id: this.props.navigation.state.params.otherId,
                     otherId: this.props.navigation.state.params.id
                 }}
             >
                 {({loading, error, data, subscribeToMore}) => {
-                    //console.log('loading: ',loading);
-                    //console.log('error: ',error);
+                    console.log('loading: ',loading);
+                    console.log('error: ',error);
                     console.log('MessengerContainer data: ',data);
+                    console.log('id: ',this.props.navigation.state.params.otherId);
+                    console.log('otherId: ',this.props.navigation.state.params.id);
                     if(loading) return <Spinner />
                     if(error) return <Text>Error! {error.message}</Text>
                     return (
@@ -167,15 +169,15 @@ class MessengerContainer extends Component {
                                 console.log('message: ',message);
                                 // If messages is array, we may need to change
                                 const now = new Date().getTime();
-                                console.log("_id: ",now);
+                                // console.log("_id: ",this.props.navigation.state.params.id);
                                 // console.log("id: ",this.props.navigation.state.params.id);
-                                console.log("matchId: ",this.props.navigation.state.params.matchId);
-                                console.log("name: ",this.props.navigation.state.params.name);
-                                console.log("text: ",message[0].text)
-                                console.log("avatar: ",this.props.navigation.state.params.pic);
-                                console.log("uid: ",this.props.navigation.state.params.id);
-                                console.log("order: ",now)
-                                return newMessage({variables: {
+                                // console.log("matchId: ",this.props.navigation.state.params.matchId);
+                                // console.log("name: ",this.props.navigation.state.params.name);
+                                // console.log("text: ",message[0].text)
+                                // console.log("avatar: ",this.props.navigation.state.params.pic);
+                                // console.log("uid: ",message[0]._id);
+                                // console.log("order: ",now);
+                                newMessage({variables: {
                                     _id: this.props.navigation.state.params.id,
                                     // id: now,
                                     matchId: this.props.navigation.state.params.matchId,
@@ -183,20 +185,25 @@ class MessengerContainer extends Component {
                                     // The message object returns an array.
                                     text: message[0].text,
                                     avatar: this.props.navigation.state.params.pic,
-                                    uid: this.props.navigation.state.params.id,
+                                    uid: message[0]._id,
                                     order: -1 * now,
                             }})
                             }
+                            //console.log('messages before refactor: ',data.user.matches[0].messages);
                             const messages = data.user.matches[0].messages.map(message => {
                                 return {
-                                    ...message,
+                                    _id: message.uid,
+                                    text: message.text,
+                                    createdAt: message.createdAt,
+                                    order: message.order,
                                     user: {
                                         name: message.name,
                                         avatar: message.avatar,
-                                        _id: message.uid,
-                                    }
+                                        _id: message._id,
+                                    },
                                 }
-                            })
+                            });
+                            //console.log('messages after refactor: ',messages);
                             return (
                                 <Messenger 
                                     messages={messages}
@@ -204,17 +211,17 @@ class MessengerContainer extends Component {
                                     id={this.props.navigation.state.params.id}
                                     subscribeToNewMessages={() => {
 
-                                        console.log('in subscribeToNewMessages');
+                                        //console.log('in subscribeToNewMessages');
                                         return subscribeToMore({
                                             document: GET_NEW_MESSAGES,
                                             variables: {matchId: this.props.navigation.state.params.matchId},
                                             updateQuery: (prev, { subscriptionData}) => {
                                                 if(!subscriptionData.data) return prev;
-                                                console.log('prev: ',prev);
+                                                //console.log('prev: ',prev);
                                                 console.log('subscriptionData.data: ',subscriptionData.data);
                                                 const newMessage = subscriptionData.data.newMessageSub;
                                                     
-                                                console.log('newMessage: ',newMessage);
+                                                console.log('newMessage via updateQuery: ',newMessage);
                                                 // const messages = Object.assign({}, prev, {
                                                 //     user: {
                                                 //         matches: [{
@@ -236,7 +243,7 @@ class MessengerContainer extends Component {
 
                                                     }
                                                 }
-                                                console.log('messages after subscription update: ',messages);
+                                                //console.log('messages after subscription update: ',messages);
                                                 return messages;
                                             } 
                                         })
