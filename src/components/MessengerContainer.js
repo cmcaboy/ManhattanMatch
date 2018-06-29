@@ -63,12 +63,7 @@ class MessengerContainer extends Component {
         super(props);
 
         console.log('matchId: ',this.props.navigation.state.params.matchId);
-        // this.messageRef = db.collection(`matches/${this.props.navigation.state.params.matchId}/messages`);
-        // this.unsubscribe;
 
-        // this.name = this.props.navigation.state.params.name;
-        // this.pic = this.props.navigation.state.params.pic;
-        // this.id = this.props.navigation.state.params.id;
     }
 
     static navigationOptions = ({navigation}) => ({
@@ -94,59 +89,11 @@ class MessengerContainer extends Component {
             }
     })
     
-    //componentDidMount = () => this.listenForUpdates();
-    // componentWillUnmount = () => this.unsubscribe();
-
-    // listenForUpdates() {
-    //     // Could listen for lastMessage and lastUser as well
-    //     this.unsubscribe = this.messageRef.orderBy("order").onSnapshot((querySnapshot) => {
-    //         // the snapshot first returns all messages
-    //         // It then will listen to updates.
-    //         let messages = [];
-    //         console.log('num messages: ',querySnapshot.docChanges.length);
-    //         querySnapshot.docChanges.forEach((change) => {
-                
-    //             const changeData = change.doc.data();
-    //             messages.push({
-    //                 _id: changeData.createdAt,
-    //                 text: changeData.text,
-    //                 createdAt: new Date(changeData.createdAt),
-    //                 user: {
-    //                     _id: changeData.uid,
-    //                     name: changeData.name,
-    //                     avatar: changeData.avatar
-    //                 }
-    //             });
-                
-    //         });
-    //         console.log('messages: ',messages);
-    //         this.setState((prevState) => ({
-    //             messages: [...messages,...prevState.messages]
-    //         }));
-    //     })
-    // }
-
-    // onSend(messages = []) {
-    //     messages.forEach(message => {
-    //         console.log(message);
-    //         const now = new Date().getTime();
-    //         this.messageRef.add({
-    //             _id: now,
-    //             text: message.text,
-    //             createdAt: now,
-    //             uid: this.id,
-    //             order: -1 * now,
-    //             name: this.name,
-    //             avatar: this.pic
-    //         })
-    //     })
-    // }
-    
     render() {
         return (
             <Query 
                 query={GET_MESSAGES} 
-                fetchPolicy='network-only'
+                //fetchPolicy='network-only'
                 variables={{
                     id: this.props.navigation.state.params.otherId,
                     otherId: this.props.navigation.state.params.id
@@ -221,7 +168,6 @@ class MessengerContainer extends Component {
 
                                                     }
                                                 }
-                                                //console.log('messages after subscription update: ',messages);
                                                 return messages;
                                             } 
                                         })
