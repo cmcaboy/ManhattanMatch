@@ -160,22 +160,22 @@ class MessengerContainer extends Component {
                     console.log('otherId: ',this.props.navigation.state.params.id);
                     if(loading) return <Spinner />
                     if(error) return <Text>Error! {error.message}</Text>
-                        const messages = data.user.matches[0].messages
-                        // console.log('messages before refactor: ',data.user.matches[0].messages);
-                        //     const messages = data.user.matches[0].messages.map(message => {
-                        //         return {
-                        //             _id: message.uid,
-                        //             text: message.text,
-                        //             createdAt: message.createdAt,
-                        //             order: message.order,
-                        //             user: {
-                        //                 name: message.name,
-                        //                 avatar: message.avatar,
-                        //                 _id: message._id,
-                        //             },
-                        //         }
-                        //     });
-                        //     console.log('messages after refactor: ',messages);
+                        //const messages = data.user.matches[0].messages
+                        console.log('messages before refactor: ',data.user.matches[0].messages);
+                            const messages = data.user.matches[0].messages.map(message => {
+                                return {
+                                    _id: message._id,
+                                    text: message.text,
+                                    createdAt: message.createdAt,
+                                    order: message.order,
+                                    user: {
+                                        name: message.name,
+                                        avatar: message.avatar,
+                                        _id: message.uid,
+                                    },
+                                }
+                            });
+                            console.log('messages after refactor: ',messages);
                     return (
                         <Mutation mutation={SEND_MESSAGE} ignoreResults={true}>
                         {(newMessage,_) => {
@@ -188,45 +188,45 @@ class MessengerContainer extends Component {
                                     matchId={this.props.navigation.state.params.matchId}
                                     name={this.props.navigation.state.params.name}
                                     pic={this.props.navigation.state.params.pic}
-                        //             subscribeToNewMessages={() => {
-                        //                 //console.log('in subscribeToNewMessages');
-                        //                 return subscribeToMore({
-                        //                     document: GET_NEW_MESSAGES,
-                        //                     variables: {matchId: this.props.navigation.state.params.matchId},
-                        //                     updateQuery: (prev, { subscriptionData}) => {
-                        //                         if(!subscriptionData.data) return prev;
-                        //                         //console.log('prev: ',prev);
-                        //                         console.log('subscriptionData.data: ',subscriptionData.data);
-                        //                         const newMessage = subscriptionData.data.newMessageSub;
+                                    subscribeToNewMessages={() => {
+                                        console.log('in subscribeToNewMessages');
+                                        return subscribeToMore({
+                                            document: GET_NEW_MESSAGES,
+                                            variables: {matchId: this.props.navigation.state.params.matchId},
+                                            updateQuery: (prev, { subscriptionData}) => {
+                                                if(!subscriptionData.data) return prev;
+                                                //console.log('prev: ',prev);
+                                                console.log('subscriptionData.data: ',subscriptionData.data);
+                                                const newMessage = subscriptionData.data.newMessageSub;
                                                     
-                        //                         console.log('newMessage via updateQuery: ',newMessage);
-                        //                         // const messages = Object.assign({}, prev, {
-                        //                         //     user: {
-                        //                         //         matches: [{
-                        //                         //             messages: [...prev.user.matches[0].messages,newMessage]
-                        //                         //         }]
-                        //                         //     }
-                        //                         // });
+                                                console.log('newMessage via updateQuery: ',newMessage);
+                                                // const messages = Object.assign({}, prev, {
+                                                //     user: {
+                                                //         matches: [{
+                                                //             messages: [...prev.user.matches[0].messages,newMessage]
+                                                //         }]
+                                                //     }
+                                                // });
 
-                        //                         // You must return an object that has the same structure as what the query
-                        //                         // component returns.
-                        //                         const messages = {
-                        //                             ...prev,
-                        //                             user: {
-                        //                                 ...prev.user,
-                        //                                 matches: [{
-                        //                                     messages: [newMessage,...prev.user.matches[0].messages],
-                        //                                     __typename: 'Match',
-                        //                                 }]
+                                                // You must return an object that has the same structure as what the query
+                                                // component returns.
+                                                const messages = {
+                                                    ...prev,
+                                                    user: {
+                                                        ...prev.user,
+                                                        matches: [{
+                                                            messages: [newMessage,...prev.user.matches[0].messages],
+                                                            __typename: 'Match',
+                                                        }]
 
-                        //                             }
-                        //                         }
-                        //                         //console.log('messages after subscription update: ',messages);
-                        //                         return messages;
-                        //                     } 
-                        //                 })
-                        //             }
-                        //             }
+                                                    }
+                                                }
+                                                //console.log('messages after subscription update: ',messages);
+                                                return messages;
+                                            } 
+                                        })
+                                    }
+                                    }
                                  />
                             )
                         }}

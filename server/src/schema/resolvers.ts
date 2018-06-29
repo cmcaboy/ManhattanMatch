@@ -132,11 +132,9 @@ const resolvers = {
                 const docData = doc.data();
                 console.log('docData in messages: ',docData);
                 return {
-                    user: {
-                        name: docData.name,
-                        avatar: docData.avatar,
-                        _id: docData.uid,
-                    },
+                    name: docData.name,
+                    avatar: docData.avatar,
+                    uid: docData.uid,
                     text: docData.text,
                     createdAt: docData.createdAt,
                     order: docData.order,
@@ -168,15 +166,13 @@ const resolvers = {
                 const messages = data.docs.map(doc => {
                     const docData = doc.data();
                     return {
-                        user: {
-                            name: docData.name,
-                            avatar: docData.avatar,
-                            _id: docData._id,
-                        },
+                        name: docData.name,
+                        avatar: docData.avatar,
+                        uid: docData.uid,
                         text: docData.text,
                         createdAt: docData.createdAt,
                         order: docData.order,
-                        _id: docData.uid,
+                        _id: docData._id,
                     };
                 })
 
