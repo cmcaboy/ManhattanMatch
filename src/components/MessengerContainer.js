@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Platform, Image } from 'react-native';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {db} from '../firebase';
-import {connect} from 'react-redux';
 import {CirclePicture,MyAppText,Spinner} from './common';
 import {Query,Mutation} from 'react-apollo';
 import Messenger from './Messenger';
@@ -161,98 +160,76 @@ class MessengerContainer extends Component {
                     console.log('otherId: ',this.props.navigation.state.params.id);
                     if(loading) return <Spinner />
                     if(error) return <Text>Error! {error.message}</Text>
+                        // console.log('messages before refactor: ',data.user.matches[0].messages);
+                        //     const messages = data.user.matches[0].messages.map(message => {
+                        //         return {
+                        //             _id: message.uid,
+                        //             text: message.text,
+                        //             createdAt: message.createdAt,
+                        //             order: message.order,
+                        //             user: {
+                        //                 name: message.name,
+                        //                 avatar: message.avatar,
+                        //                 _id: message._id,
+                        //             },
+                        //         }
+                        //     });
+                        //     console.log('messages after refactor: ',messages);
                     return (
-                        <Mutation mutation={SEND_MESSAGE}>
-                        {(newMessage,_) => {
-                            const sendNewMessage = (message) => {
-                                console.log('in sendNewMessage');
-                                console.log('message: ',message);
-                                // If messages is array, we may need to change
-                                const now = new Date().getTime();
-                                // console.log("_id: ",this.props.navigation.state.params.id);
-                                // console.log("id: ",this.props.navigation.state.params.id);
-                                // console.log("matchId: ",this.props.navigation.state.params.matchId);
-                                // console.log("name: ",this.props.navigation.state.params.name);
-                                // console.log("text: ",message[0].text)
-                                // console.log("avatar: ",this.props.navigation.state.params.pic);
-                                // console.log("uid: ",message[0]._id);
-                                // console.log("order: ",now);
-                                newMessage({variables: {
-                                    _id: this.props.navigation.state.params.id,
-                                    // id: now,
-                                    matchId: this.props.navigation.state.params.matchId,
-                                    name: this.props.navigation.state.params.name,
-                                    // The message object returns an array.
-                                    text: message[0].text,
-                                    avatar: this.props.navigation.state.params.pic,
-                                    uid: message[0]._id,
-                                    order: -1 * now,
-                            }})
-                            }
-                            //console.log('messages before refactor: ',data.user.matches[0].messages);
-                            const messages = data.user.matches[0].messages.map(message => {
-                                return {
-                                    _id: message.uid,
-                                    text: message.text,
-                                    createdAt: message.createdAt,
-                                    order: message.order,
-                                    user: {
-                                        name: message.name,
-                                        avatar: message.avatar,
-                                        _id: message._id,
-                                    },
-                                }
-                            });
-                            //console.log('messages after refactor: ',messages);
-                            return (
+                        // <Mutation mutation={SEND_MESSAGE} ignoreResults={true}>
+                        // {(newMessage,_) => {
+                        //     console.log('start of mutation');
+                        //     return (
                                 <Messenger 
                                     messages={messages}
-                                    sendMessage={sendNewMessage}
+                                    //newMessage={newMessage}
                                     id={this.props.navigation.state.params.id}
-                                    subscribeToNewMessages={() => {
-
-                                        //console.log('in subscribeToNewMessages');
-                                        return subscribeToMore({
-                                            document: GET_NEW_MESSAGES,
-                                            variables: {matchId: this.props.navigation.state.params.matchId},
-                                            updateQuery: (prev, { subscriptionData}) => {
-                                                if(!subscriptionData.data) return prev;
-                                                //console.log('prev: ',prev);
-                                                console.log('subscriptionData.data: ',subscriptionData.data);
-                                                const newMessage = subscriptionData.data.newMessageSub;
+                                    matchId={this.props.navigation.state.params.matchId}
+                                    name={this.props.navigation.state.params.name}
+                                    pic={this.props.navigation.state.params.pic}
+                        //             subscribeToNewMessages={() => {
+                        //                 //console.log('in subscribeToNewMessages');
+                        //                 return subscribeToMore({
+                        //                     document: GET_NEW_MESSAGES,
+                        //                     variables: {matchId: this.props.navigation.state.params.matchId},
+                        //                     updateQuery: (prev, { subscriptionData}) => {
+                        //                         if(!subscriptionData.data) return prev;
+                        //                         //console.log('prev: ',prev);
+                        //                         console.log('subscriptionData.data: ',subscriptionData.data);
+                        //                         const newMessage = subscriptionData.data.newMessageSub;
                                                     
-                                                console.log('newMessage via updateQuery: ',newMessage);
-                                                // const messages = Object.assign({}, prev, {
-                                                //     user: {
-                                                //         matches: [{
-                                                //             messages: [...prev.user.matches[0].messages,newMessage]
-                                                //         }]
-                                                //     }
-                                                // });
+                        //                         console.log('newMessage via updateQuery: ',newMessage);
+                        //                         // const messages = Object.assign({}, prev, {
+                        //                         //     user: {
+                        //                         //         matches: [{
+                        //                         //             messages: [...prev.user.matches[0].messages,newMessage]
+                        //                         //         }]
+                        //                         //     }
+                        //                         // });
 
-                                                // You must return an object that has the same structure as what the query
-                                                // component returns.
-                                                const messages = {
-                                                    ...prev,
-                                                    user: {
-                                                        ...prev.user,
-                                                        matches: [{
-                                                            messages: [newMessage,...prev.user.matches[0].messages],
-                                                            __typename: 'Match',
-                                                        }]
+                        //                         // You must return an object that has the same structure as what the query
+                        //                         // component returns.
+                        //                         const messages = {
+                        //                             ...prev,
+                        //                             user: {
+                        //                                 ...prev.user,
+                        //                                 matches: [{
+                        //                                     messages: [newMessage,...prev.user.matches[0].messages],
+                        //                                     __typename: 'Match',
+                        //                                 }]
 
-                                                    }
-                                                }
-                                                //console.log('messages after subscription update: ',messages);
-                                                return messages;
-                                            } 
-                                        })
-                                    }
-                                    }
-                                />
-                            )
-                        }}
-                        </Mutation>
+                        //                             }
+                        //                         }
+                        //                         //console.log('messages after subscription update: ',messages);
+                        //                         return messages;
+                        //                     } 
+                        //                 })
+                        //             }
+                        //             }
+                                 />
+                        //     )
+                        // }}
+                        // </Mutation>
                     )
                 }}
             </Query>

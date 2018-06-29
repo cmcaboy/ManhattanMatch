@@ -132,13 +132,14 @@ const resolvers = {
                 const docData = doc.data();
                 console.log('docData in messages: ',docData);
                 return {
-                    name: docData.name,
+                    //name: docData.name,
                     text: docData.text,
                     createdAt: docData.createdAt,
-                    avatar: docData.avatar,
+                    //avatar: docData.avatar,
                     order: docData.order,
-                    uid: docData.uid,
-                    _id: docData._id
+                    //uid: docData.uid,
+                    _id: docData._id,
+                    user: docData.user,
                 };
             });
 
@@ -166,12 +167,13 @@ const resolvers = {
                 const messages = data.docs.map(doc => {
                     const docData = doc.data();
                     return {
-                        name: docData.name,
+                        user: docData.user
+                        //name: docData.name,
                         text: docData.text,
                         createdAt: docData.createdAt,
-                        avatar: docData.avatar,
+                        //avatar: docData.avatar,
                         order: docData.order,
-                        uid: docData.uid,
+                        //uid: docData.uid,
                         _id: docData._id
                     };
                 })
@@ -304,12 +306,13 @@ const resolvers = {
             console.log('args: ',args);
             const message = {
                 _id: args._id,
-                name: args.name,
+                user: args.user,
+                //name: args.name,
                 text: args.text,
-                avatar: args.avatar,
+                //avatar: args.avatar,
                 createdAt: new Date(),
                 order: args.order,
-                uid: args.uid,
+                //uid: args.uid,
                 //createdAt: moment().format('MMMM Do YYYY, h:mm:ss a')
             };
 

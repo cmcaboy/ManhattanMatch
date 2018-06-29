@@ -26,11 +26,14 @@ const typeDefs = `
     }
     
     type Message {
+        user: {
+            _id: String
+            name: String
+            avatar: String
+        }
         _id: String
-        name: String
         createdAt: String
         text: String
-        avatar: String
         order: Float
         uid: String
     }
