@@ -24,13 +24,15 @@ const typeDefs = `
         matches(otherId: String): [Match]
         queue: [User]
     }
+
+    type MessageUser {
+        name: String
+        avatar: String
+        _id: String
+    }
     
     type Message {
-        user: {
-            name: String
-            avatar: String
-            _id: String
-        }
+        user: MessageUser
         createdAt: String
         text: String
         order: Float
