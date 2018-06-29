@@ -50,7 +50,7 @@ class Messenger extends Component {
                     avatar: this.props.pic,
                     name: this.props.name,
                     _id: message.user._id,
-                }
+                },
                 // id: now,
                 matchId: this.props.matchId,
                 // The message object returns an array.
@@ -121,8 +121,8 @@ class Messenger extends Component {
         <View style={styles.messengerContainer}>
             <GiftedChat 
                 messages={this.props.messages}
-                //onSend={(message) => this.sendNewMessage(message)}
-                onSend={(message) => console.log(message)}
+                onSend={(message) => this.sendNewMessage(message)}
+                //onSend={(message) => console.log(message)}
                 user={{_id:this.props.id}}
                 showUserAvatar={false}
                 onPressAvatar={(user) => this.props.navigation.navigate('UserProfile',{id:user._id,name:user.name})}

@@ -109,10 +109,13 @@ const typeDefs = `
         ): User
         newMessage (
             matchId: String! 
-            name: String 
+            user: {
+                name: String 
+                _id: String
+                avatar: String
+            }
             text: String
             createdAt: String
-            avatar: String
             order: Float
             uid: String
             _id: String

@@ -160,6 +160,7 @@ class MessengerContainer extends Component {
                     console.log('otherId: ',this.props.navigation.state.params.id);
                     if(loading) return <Spinner />
                     if(error) return <Text>Error! {error.message}</Text>
+                        const messages = data.user.matches[0].messages
                         // console.log('messages before refactor: ',data.user.matches[0].messages);
                         //     const messages = data.user.matches[0].messages.map(message => {
                         //         return {
@@ -176,13 +177,13 @@ class MessengerContainer extends Component {
                         //     });
                         //     console.log('messages after refactor: ',messages);
                     return (
-                        // <Mutation mutation={SEND_MESSAGE} ignoreResults={true}>
-                        // {(newMessage,_) => {
-                        //     console.log('start of mutation');
-                        //     return (
+                        <Mutation mutation={SEND_MESSAGE} ignoreResults={true}>
+                        {(newMessage,_) => {
+                            console.log('start of mutation');
+                            return (
                                 <Messenger 
                                     messages={messages}
-                                    //newMessage={newMessage}
+                                    newMessage={newMessage}
                                     id={this.props.navigation.state.params.id}
                                     matchId={this.props.navigation.state.params.matchId}
                                     name={this.props.navigation.state.params.name}
@@ -227,9 +228,9 @@ class MessengerContainer extends Component {
                         //             }
                         //             }
                                  />
-                        //     )
-                        // }}
-                        // </Mutation>
+                            )
+                        }}
+                        </Mutation>
                     )
                 }}
             </Query>
