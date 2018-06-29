@@ -48,12 +48,12 @@ class Messenger extends Component {
             this.props.newMessage({variables: {
                 avatar: this.props.pic,
                 name: this.props.name,
-                _id: message.user._id,
+                uid: message.user._id,
                 // id: now,
                 matchId: this.props.matchId,
                 // The message object returns an array.
                 text: message.text,
-                uid: message._id,
+                _id: message._id,
                 order: -1 * now,
         }})
         })

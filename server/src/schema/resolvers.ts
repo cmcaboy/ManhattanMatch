@@ -135,12 +135,12 @@ const resolvers = {
                     user: {
                         name: docData.name,
                         avatar: docData.avatar,
-                        _id: docData._id,
+                        _id: docData.uid,
                     },
                     text: docData.text,
                     createdAt: docData.createdAt,
                     order: docData.order,
-                    _id: docData.uid,
+                    _id: docData._id,
                 };
             });
 
