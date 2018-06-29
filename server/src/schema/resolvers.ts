@@ -132,14 +132,15 @@ const resolvers = {
                 const docData = doc.data();
                 console.log('docData in messages: ',docData);
                 return {
-                    //name: docData.name,
+                    user: {
+                        name: docData.name,
+                        avatar: docData.avatar,
+                        _id: docData._id,
+                    },
                     text: docData.text,
                     createdAt: docData.createdAt,
-                    //avatar: docData.avatar,
                     order: docData.order,
-                    //uid: docData.uid,
-                    _id: docData._id,
-                    user: docData.user,
+                    _id: docData.uid,
                 };
             });
 
@@ -167,14 +168,15 @@ const resolvers = {
                 const messages = data.docs.map(doc => {
                     const docData = doc.data();
                     return {
-                        user: docData.user
-                        //name: docData.name,
+                        user: {
+                            name: docData.name,
+                            avatar: docData.avatar,
+                            _id: docData._id,
+                        },
                         text: docData.text,
                         createdAt: docData.createdAt,
-                        //avatar: docData.avatar,
                         order: docData.order,
-                        //uid: docData.uid,
-                        _id: docData._id
+                        _id: docData.uid,
                     };
                 })
 
@@ -306,13 +308,12 @@ const resolvers = {
             console.log('args: ',args);
             const message = {
                 _id: args._id,
-                user: args.user,
-                //name: args.name,
+                name: args.name,
                 text: args.text,
-                //avatar: args.avatar,
+                avatar: args.avatar,
                 createdAt: new Date(),
                 order: args.order,
-                //uid: args.uid,
+                uid: args.uid,
                 //createdAt: moment().format('MMMM Do YYYY, h:mm:ss a')
             };
 

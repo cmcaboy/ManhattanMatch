@@ -46,16 +46,14 @@ class Messenger extends Component {
         // console.log("order: ",now);
         messages.forEach(message => {
             this.props.newMessage({variables: {
-                user: {
-                    avatar: this.props.pic,
-                    name: this.props.name,
-                    _id: message.user._id,
-                },
+                avatar: this.props.pic,
+                name: this.props.name,
+                _id: message.user._id,
                 // id: now,
                 matchId: this.props.matchId,
                 // The message object returns an array.
                 text: message.text,
-                _id: message._id,
+                uid: message._id,
                 order: -1 * now,
         }})
         })

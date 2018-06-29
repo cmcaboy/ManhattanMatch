@@ -24,15 +24,10 @@ const typeDefs = `
         matches(otherId: String): [Match]
         queue: [User]
     }
-
-    type MessageUser {
-        _id: String
-        name: String
-        avatar: String
-    }
     
     type Message {
-        user: MessageUser
+        name: String
+        avatar: String
         _id: String
         createdAt: String
         text: String
@@ -53,7 +48,6 @@ const typeDefs = `
         lastMessage: Message
     }
 
-    
     type Query {
         user(id: String!): User
         match(matchId: String!): Match
@@ -112,9 +106,10 @@ const typeDefs = `
         ): User
         newMessage (
             matchId: String! 
-            user: MessageUser
+            name: String 
             text: String
             createdAt: String
+            avatar: String
             order: Float
             uid: String
             _id: String
