@@ -313,6 +313,8 @@ const resolvers = {
                 //createdAt: moment().format('MMMM Do YYYY, h:mm:ss a')
             };
 
+            console.log('message: ',message);
+
             try {
                 await db.collection(`matches/${args.matchId}/messages`).add(message);
             } catch(e) {

@@ -73,7 +73,7 @@ class MessengerContainer extends Component {
                 {console.log('navigation params: ',navigation.state.params)}
                 <TouchableOpacity onPress={() => navigation.navigate('UserProfile',
                     {id:navigation.state.params.otherId,name:navigation.state.params.otherName})}>
-                    <CirclePicture imageURL={navigation.state.params.pic} picSize="mini" />
+                    <CirclePicture imageURL={navigation.state.params.otherPic} picSize="mini" />
                 </TouchableOpacity>
                 <MyAppText style={styles.textHeader}>{navigation.state.params.otherName}</MyAppText>
                 <View style={{width: 100}}></View>

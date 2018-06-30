@@ -58,7 +58,7 @@ class Matches extends Component {
             </View>
         )
     }
-    renderContent({matches,id,name}) {
+    renderContent({matches,id,name,pic}) {
         const {navigation} = this.props;
 
         if (matches.length === 0) {
@@ -80,7 +80,8 @@ class Matches extends Component {
                                         otherId: match.user.id,
                                         name: name,
                                         otherName:match.user.name,
-                                        pic:match.user.pics[0]
+                                        pic:pic,
+                                        otherPic: match.user.pics[0],
                                     })}
                                     key={match.user.id}
                                 >
@@ -106,8 +107,10 @@ class Matches extends Component {
                                     matchId:match.matchId,
                                     id,
                                     otherId: match.user.id,
-                                    name:match.user.name,
-                                    pic:match.user.pics[0]
+                                    name: name,
+                                    otherName: match.user.name,
+                                    pic:pic,
+                                    otherPic: match.user.pics[0],
                                 })}
                             />
                         ))}
@@ -135,7 +138,7 @@ class Matches extends Component {
                     //console.log('loading: ',loading);
                     if(loading) return <Spinner />
                     if(error) return <Text>Error! {error.message}</Text>
-                    return this.renderContent({matches:data.user.matches,id,name:data.user.name})
+                    return this.renderContent({matches:data.user.matches,id,name:data.user.name,pic:data.user.pic})
                   }}
                   </Query>
               ) 
