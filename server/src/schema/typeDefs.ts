@@ -18,7 +18,7 @@ const typeDefs = `
         maxAgePreference: Int
         match: Boolean
         pics: [String]
-        profilePics: String
+        profilePic: String
         likes: [User]
         dislikes: [User]
         matches(otherId: String): [Match]

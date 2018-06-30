@@ -19,6 +19,7 @@ const GET_MATCHES = gql`
 query user($id: String!) {
     user(id: $id) {
         name
+        profilePic
         matches {
             matchId
             user {
