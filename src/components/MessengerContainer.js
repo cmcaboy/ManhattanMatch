@@ -100,15 +100,15 @@ class MessengerContainer extends Component {
                 }}
             >
                 {({loading, error, data, subscribeToMore}) => {
-                    console.log('loading: ',loading);
-                    console.log('error: ',error);
-                    console.log('MessengerContainer data: ',data);
-                    console.log('id: ',this.props.navigation.state.params.otherId);
-                    console.log('otherId: ',this.props.navigation.state.params.id);
+                    //console.log('loading: ',loading);
+                    //console.log('error: ',error);
+                    //console.log('MessengerContainer data: ',data);
+                    //console.log('id: ',this.props.navigation.state.params.otherId);
+                    //console.log('otherId: ',this.props.navigation.state.params.id);
                     if(loading) return <Spinner />
                     if(error) return <Text>Error! {error.message}</Text>
                         //const messages = data.user.matches[0].messages
-                        console.log('messages before refactor: ',data.user.matches[0].messages);
+                        //console.log('messages before refactor: ',data.user.matches[0].messages);
                             const messages = data.user.matches[0].messages.map(message => {
                                 return {
                                     _id: message._id,
@@ -122,11 +122,12 @@ class MessengerContainer extends Component {
                                     },
                                 }
                             });
-                            console.log('messages after refactor: ',messages);
+                            //console.log('messages after refactor: ',messages);
                     return (
                         <Mutation mutation={SEND_MESSAGE} ignoreResults={true}>
                         {(newMessage,_) => {
-                            console.log('start of mutation');
+                            //console.log('start of mutation');
+                            //console.log('pic in mcontainer: ',this.props.navigation.state.params.pic)
                             return (
                                 <Messenger 
                                     messages={messages}
@@ -135,6 +136,7 @@ class MessengerContainer extends Component {
                                     matchId={this.props.navigation.state.params.matchId}
                                     name={this.props.navigation.state.params.name}
                                     pic={this.props.navigation.state.params.pic}
+                                    navigation={this.props.navigation}
                                     subscribeToNewMessages={() => {
                                         console.log('in subscribeToNewMessages');
                                         return subscribeToMore({

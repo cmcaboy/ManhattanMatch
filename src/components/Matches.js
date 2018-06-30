@@ -61,6 +61,8 @@ class Matches extends Component {
     renderContent({matches,id,name,pic}) {
         const {navigation} = this.props;
 
+        console.log('pic in matches: ',pic)
+
         if (matches.length === 0) {
             return this.noMatches();
         } else {
@@ -133,12 +135,12 @@ class Matches extends Component {
               return (
                 <Query query={GET_MATCHES} variables={{id}}>
                   {({loading, error, data}) => {
-                    //console.log('data: ',data);
+                    //console.log('data in matches: ',data);
                     //console.log('error: ',error);
                     //console.log('loading: ',loading);
                     if(loading) return <Spinner />
                     if(error) return <Text>Error! {error.message}</Text>
-                    return this.renderContent({matches:data.user.matches,id,name:data.user.name,pic:data.user.pic})
+                    return this.renderContent({matches:data.user.matches,id,name:data.user.name,pic:data.user.profilePic})
                   }}
                   </Query>
               ) 

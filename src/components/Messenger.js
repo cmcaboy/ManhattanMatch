@@ -21,6 +21,7 @@ class Messenger extends Component {
     sendNewMessage = (messages) => {
         console.log('in sendNewMessage');
         console.log('messages: ',messages);
+        //console.log('pic: ',this.props.pic);
         // If messages is array, we may need to change
         const now = new Date().getTime();
         // console.log("_id: ",this.props.navigation.state.params.id);
@@ -55,15 +56,15 @@ class Messenger extends Component {
     }
     
     render() {
-        //console.log('id: ',this.props.id);
-        //console.log('messages: ',this.props.messages);
+        // console.log('id: ',`${this.props.id}`);
+        // console.log('messages: ',this.props.messages);
         return (
         <View style={styles.messengerContainer}>
             <GiftedChat 
                 messages={this.props.messages}
                 onSend={(message) => this.sendNewMessage(message)}
                 //onSend={(message) => console.log(message)}
-                user={{_id:this.props.id}}
+                user={{_id:`${this.props.id}`,name: this.props.name, avatar: this.props.pic}}
                 showUserAvatar={false}
                 onPressAvatar={(user) => this.props.navigation.navigate('UserProfile',{id:user._id,name:user.name})}
             />
