@@ -1,3 +1,4 @@
+import { AsyncStorage } from 'react-native';
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { withClientState } from 'apollo-link-state';
@@ -7,142 +8,21 @@ import {GRAPHQL_SERVER} from '../variables';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 import {ApolloLink,split} from 'apollo-link';
+import { persistCache } from 'apollo-cache-persist';
 import gql from 'graphql-tag';
+import {resolvers, typeDefs, defaults} from './localState';
 
-export const resolvers = {
-  Mutation: {
-    updateAgePreferenceLocal: (_, { minAge, maxAge }, { cache, getCacheKey }) => {
-
-      const query = gql`
-        query getAgePreferenceLocal {
-          user @client {
-              id
-              __typename
-              minAgePreference
-              maxAgePreference
-          }
-        }
-      `
-      const previous = cache.readQuery({query});
-
-      const data = {
-        user: {
-          ...previous.user,
-          //id: previous.user.id,
-          minAgePreference: minAge,
-          maxAgePreference: maxAge
-        }
-      };
-      
-      cache.writeQuery({query,data});
-      return null;
-    },
-    updateDistanceLocal: (_, { id, distance }, { cache, getCacheKey }) => {
-
-      const query = gql`
-        query getDistanceLocal {
-          user @client {
-              id
-              __typename
-              distance
-          }
-        }
-      `
-      const previous = cache.readQuery({query});
-
-      const data = {
-        user: {
-          ...previous.user,
-          distance: distance
-        }
-      };
-
-      console.log('previous: ',previous);
-      console.log('data: ',data);
-      
-      cache.writeQuery({query,data})
-      return null;
-    },
-    updateIdLocal: (_, { id }, { cache, getCacheKey }) => {
-
-      const query = gql`
-        query getIdLocal {
-          user @client {
-              id
-              __typename
-          }
-        }
-      `
-      //const previous = cache.readQuery({query});
-      
-      const data = {
-        user: {
-          __typename: 'user',
-          id
-        }
-      };
-      
-      cache.writeQuery({query,data})
-
-      return null;
-    },
-    updateSendNotificationsLocal: (_, { id, sendNotifications }, { cache, getCacheKey }) => {
-
-      const query = gql`
-        query getSendNotificationsLocal {
-          user @client {
-              id
-              __typename
-              sendNotifications
-          }
-        }
-      `
-      const previous = cache.readQuery({query});
-
-      const data = {
-        user: {
-          ...previous.user,
-          sendNotifications: sendNotifications
-        }
-      };
-
-      console.log('previous: ',previous);
-      console.log('data: ',data);
-      
-      cache.writeQuery({query,data})
-      return null;
-    },
-  }
-}
-
-const defaults = {
-    user: {
-      __typename: 'user',
-      id: 5,
-      minAgePreference: 18,
-      maxAgePreference: 25,
-      distance: 15,
-      sendNotifications: true
-    }
-};
-
-const typeDefs = `
-  type user {
-    id: Int!
-  }
-
-  type Mutation {
-    alterId(id: Int!): user
-  }
-
-  type Query {
-    visibilityFilter: String
-    getUser: user
-  }
-  `
+// This file is the setup file for Apollo client
 
 // Initiate the cache
 const cache = new InMemoryCache();  
+
+// persistCache allows apollo to store the cache or local state to AsyncStorage
+// This works similar to redux-persist.
+persistCache({
+  cache,
+  storage: AsyncStorage
+})
 
 // stateLink is the local graphql engine for state management
 const stateLink = withClientState({
@@ -159,6 +39,7 @@ const httpLink = ApolloLink.from([
     new HttpLink({uri: `${GRAPHQL_SERVER}/graphql`})
 ]);
 
+// Websockets are used for subscriptions.
 const wsLink = new WebSocketLink({
     uri: 'ws://35.199.37.151:4000/subscriptions',
     options: {

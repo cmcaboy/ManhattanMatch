@@ -25,7 +25,7 @@ const typeDefs = `
         queue: [User]
     }
     
-    type Message {
+    type MessageItem {
         name: String
         avatar: String
         _id: String
@@ -33,6 +33,11 @@ const typeDefs = `
         text: String
         order: Float
         uid: String
+    }
+    
+    type Message {
+        cursor: String
+        list: [MessageItem]!
     }
 
     type LikeUser {
@@ -44,17 +49,18 @@ const typeDefs = `
     type Match {
         matchId: String
         user: User
-        messages: [Message]
-        lastMessage: Message
+        messages: Message
+        lastMessage: MessageItem
     }
 
     type Query {
         user(id: String!): User
         match(matchId: String!): Match
+        moreMessages(matchId: String!, cursor: String): Message
     }
 
     type Subscription {
-        newMessageSub(matchId: String): Message
+        newMessageSub(matchId: String): MessageItem
     }
 
     type Mutation {
@@ -113,7 +119,7 @@ const typeDefs = `
             order: Float
             uid: String
             _id: String
-        ): Message
+        ): MessageItem
     }
 
     schema {

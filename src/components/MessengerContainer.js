@@ -16,14 +16,34 @@ query user($id: String!, $otherId: String) {
         pics
         matches(otherId: $otherId) {
             messages {
-                name
-                text
-                createdAt
-                avatar
-                order
-                uid
-                _id
+                cursor
+                list {
+                    name
+                    text
+                    createdAt
+                    avatar
+                    order
+                    uid
+                    _id
+                }
             }
+        }
+    }
+}
+`;
+
+const MORE_MESSAGES = gql`
+query moreMessages($matchId: String!, $cursor: String) {
+    messages {
+        cursor
+        list {
+            name
+            text
+            createdAt
+            avatar
+            order
+            uid
+            _id
         }
     }
 }
@@ -99,7 +119,7 @@ class MessengerContainer extends Component {
                     otherId: this.props.navigation.state.params.id
                 }}
             >
-                {({loading, error, data, subscribeToMore}) => {
+                {({loading, error, data, subscribeToMore, fetchMore}) => {
                     //console.log('loading: ',loading);
                     //console.log('error: ',error);
                     //console.log('MessengerContainer data: ',data);
@@ -137,25 +157,52 @@ class MessengerContainer extends Component {
                                     name={this.props.navigation.state.params.name}
                                     pic={this.props.navigation.state.params.pic}
                                     navigation={this.props.navigation}
+                                    fetchMoreMessages={() => {
+                                        console.log('in fetchMoreMessages');
+                                        return fetchMore({
+                                            document: MORE_MESSAGES,
+                                            variables: {
+                                                matchId: this.props.navigation.state.params.matchId, 
+                                                cursor: data.user.matches[0].messages.cursor,
+                                            },
+                                            updateQuery: (prev, { fetchMoreResult }) => {
+                                                console.log('fetchMore updateQuery');
+                                                console.log('fetchMore Result: ',fetchMoreResult)
+                                                let newMessages = fetchMoreResult.moreMessages.messages.list;
+                                                const newCursor = fetchMoreResult.moreMessages.messages.cursor;
+
+                                                // Append the new messages to the existing query result
+                                                const messages = {
+                                                    ...prev,
+                                                    user: {
+                                                        ...prev.user,
+                                                        matches: [{
+                                                            messages: {
+                                                                cursor: newCursor,
+                                                                list: [...prev.user.matches[0].messages.list,...newMessages],
+                                                                __typename: 'Message',
+                                                            },
+                                                            __typename: 'Match',
+                                                        }]
+                                                    }
+                                                }
+                                                console.log('fetchMore New Result: ',messages);
+                                                return messages;
+                                            }
+                                        })
+                                    }}
                                     subscribeToNewMessages={() => {
                                         console.log('in subscribeToNewMessages');
                                         return subscribeToMore({
                                             document: GET_NEW_MESSAGES,
                                             variables: {matchId: this.props.navigation.state.params.matchId},
-                                            updateQuery: (prev, { subscriptionData}) => {
+                                            updateQuery: (prev, { subscriptionData }) => {
                                                 if(!subscriptionData.data) return prev;
                                                 //console.log('prev: ',prev);
                                                 console.log('subscriptionData.data: ',subscriptionData.data);
                                                 const newMessage = subscriptionData.data.newMessageSub;
                                                     
                                                 console.log('newMessage via updateQuery: ',newMessage);
-                                                // const messages = Object.assign({}, prev, {
-                                                //     user: {
-                                                //         matches: [{
-                                                //             messages: [...prev.user.matches[0].messages,newMessage]
-                                                //         }]
-                                                //     }
-                                                // });
 
                                                 // You must return an object that has the same structure as what the query
                                                 // component returns.
@@ -164,10 +211,10 @@ class MessengerContainer extends Component {
                                                     user: {
                                                         ...prev.user,
                                                         matches: [{
+                                                            messageCursor: prev.user.matches[0].messageCursor,
                                                             messages: [newMessage,...prev.user.matches[0].messages],
                                                             __typename: 'Match',
                                                         }]
-
                                                     }
                                                 }
                                                 return messages;

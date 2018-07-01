@@ -7,6 +7,7 @@ const pubsub = new PubSub();
 const session = driver.session();
 
 const NEW_MESSAGE = 'NEW_MESSAGE';
+const MESSAGE_PAGE_LENGTH = 20;
 
 const resolvers = {
     Subscription: {
@@ -62,7 +63,61 @@ const resolvers = {
                     .catch(e => console.log('token lookup error: ',e))
               }
         },
-        match: (_,args) => console.log('matchId: ',args.matchId)
+        match: (_,args) => console.log('matchId: ',args.matchId),
+        moreMessages: async (_,args) => {
+            console.log('in moreMessages');
+            console.log('args: ',args);
+            let query = '';
+            let cursor = '';
+            if(!args.messagesCursor) {
+                query = db.collection(`matches/${args.matchId}/messages`)
+                        .orderBy("createdAt", "desc")
+                        .limit(MESSAGE_PAGE_LENGTH)
+                cursor = null;
+                
+            } else {
+                query = db.collection(`matches/${args.matchId}/messages`)
+                        .where("createdAt",'>',args.messageCursor)
+                        .orderBy("createdAt", "desc")
+                        .limit(MESSAGE_PAGE_LENGTH)
+                cursor = args.messagesCursor;
+            }
+
+            const results = await query.get();
+
+            const messages = data.docs.map(doc => {
+                const docData = doc.data();
+                console.log('docData in messages: ',docData);
+                return {
+                    name: docData.name,
+                    avatar: docData.avatar,
+                    uid: docData.uid,
+                    text: docData.text,
+                    createdAt: docData.createdAt,
+                    order: docData.order,
+                    _id: docData._id,
+                };
+            });
+
+            // If there are no additional messages left, return an empty message array and
+            // don't change the cursor
+            if(messages.length === 0) {
+                return {
+                    messages: [],
+                    cursor
+                }
+            }
+
+            // Set the new cursor to the last date in the message array
+            const newCursor = messages[messages.length - 1].createdAt;
+
+            console.log('messages in messages: ',messages);
+
+            return {
+                messages,
+                cursor: newCursor,
+            }
+        }
     },
     User: {
         likes: (parentValue, args) => {
@@ -124,9 +179,12 @@ const resolvers = {
             console.log('parentValue.matchId: ',parentValue.matchId);
             console.log('args: ',args);
             if(!parentValue.matchId) {
-                return [];
+                return {
+                    list: [],
+                    cursor: null,
+                }
             }
-            const data = await db.collection(`matches/${parentValue.matchId}/messages`).orderBy("createdAt", "desc").limit(50).get();
+            const data = await db.collection(`matches/${parentValue.matchId}/messages`).orderBy("createdAt", "desc").limit(MESSAGE_PAGE_LENGTH).get();
 
             const messages = data.docs.map(doc => {
                 const docData = doc.data();
@@ -142,9 +200,15 @@ const resolvers = {
                 };
             });
 
+            const cursor = messages.length > 0 ? messages[messages.length - 1].createdAt : null;
+
             console.log('messages in messages: ',messages);
 
-            return messages;
+            return {
+                cursor,
+                list: messages,
+            }
+                
         },
         lastMessage: async (parentValue, args) => {
             console.log('lastMessage resolver');

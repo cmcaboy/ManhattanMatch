@@ -63,12 +63,13 @@ class Messenger extends Component {
             <GiftedChat 
                 messages={this.props.messages}
                 onSend={(message) => this.sendNewMessage(message)}
-                //onSend={(message) => console.log(message)}
                 user={{_id:`${this.props.id}`,name: this.props.name, avatar: this.props.pic}}
                 showUserAvatar={false}
                 onPressAvatar={(user) => this.props.navigation.navigate('UserProfile',{id:user._id,name:user.name})}
+                loadEarlier={true}
+                onLoadEarlier={() => this.props.fetchMoreMessages()}
+                isLoadEarlier={true}
             />
-            {/*Platform.OS === 'android' ? <KeyboardSpacer /> : null */}
         </View>
         )
     }
