@@ -120,7 +120,9 @@ const resolvers = {
             }
 
             // Set the new cursor to the last date in the message array
-            const newCursor = messages[messages.length - 1].order;
+            // Return a null cursor if the message array length is less than 20, indicating that their
+            // are no more messages left to retreive.
+            const newCursor = messages.length >= 20 ? messages[messages.length - 1].order : null;
 
             console.log('messages in moreMessages: ',messages);
             console.log('newCursor: ',newCursor);
