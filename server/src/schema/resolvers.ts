@@ -50,7 +50,7 @@ const resolvers = {
                   return session.run(`Match (n:User {token: '${args.token}'}) RETURN n`)
                     .then(result => result.records)
                     .then(records => {
-                      console.log('records: ',records);
+                    //   console.log('records: ',records);
                       if(!records.length) {
                         return null;
                       }
@@ -82,7 +82,6 @@ const resolvers = {
 
             const messages = data.docs.map(doc => {
                 const docData = doc.data();
-                console.log('docData in messages: ',docData);
                 return {
                     name: docData.name,
                     avatar: docData.avatar,
@@ -146,8 +145,8 @@ const resolvers = {
                         })
                         .then(records => {
                             return records.map(record => {
-                                console.log('record: ',record)
-                                console.log('record field 1: ',record._fields[0])
+                                // console.log('record: ',record)
+                                // console.log('record field 1: ',record._fields[0])
                                 return {
                                 user: record._fields[0].properties,
                                 matchId: record._fields[1]
@@ -183,7 +182,6 @@ const resolvers = {
 
             const messages = data.docs.map(doc => {
                 const docData = doc.data();
-                console.log('docData in messages: ',docData);
                 return {
                     name: docData.name,
                     avatar: docData.avatar,

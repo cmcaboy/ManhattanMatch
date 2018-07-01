@@ -113,7 +113,7 @@ class MessengerContainer extends Component {
         return (
             <Query 
                 query={GET_MESSAGES} 
-                //fetchPolicy='network-only'
+                fetchPolicy='network-only'
                 variables={{
                     id: this.props.navigation.state.params.otherId,
                     otherId: this.props.navigation.state.params.id
@@ -129,7 +129,7 @@ class MessengerContainer extends Component {
                     if(error) return <Text>Error! {error.message}</Text>
                         //const messages = data.user.matches[0].messages
                         //console.log('messages before refactor: ',data.user.matches[0].messages);
-                            const messages = data.user.matches[0].messages.map(message => {
+                            const messages = data.user.matches[0].messages.list.map(message => {
                                 return {
                                     _id: message._id,
                                     text: message.text,
@@ -160,7 +160,7 @@ class MessengerContainer extends Component {
                                     fetchMoreMessages={() => {
                                         console.log('in fetchMoreMessages');
                                         return fetchMore({
-                                            document: MORE_MESSAGES,
+                                            query: MORE_MESSAGES,
                                             variables: {
                                                 matchId: this.props.navigation.state.params.matchId, 
                                                 cursor: data.user.matches[0].messages.cursor,
@@ -168,6 +168,7 @@ class MessengerContainer extends Component {
                                             updateQuery: (prev, { fetchMoreResult }) => {
                                                 console.log('fetchMore updateQuery');
                                                 console.log('fetchMore Result: ',fetchMoreResult)
+                                                console.log('prev: ',prev)
                                                 let newMessages = fetchMoreResult.moreMessages.messages.list;
                                                 const newCursor = fetchMoreResult.moreMessages.messages.cursor;
 
@@ -211,8 +212,11 @@ class MessengerContainer extends Component {
                                                     user: {
                                                         ...prev.user,
                                                         matches: [{
-                                                            messageCursor: prev.user.matches[0].messageCursor,
-                                                            messages: [newMessage,...prev.user.matches[0].messages],
+                                                            messages: {
+                                                                cursor: prev.user.matches[0].messages.cursor,
+                                                                list: [newMessage,...prev.user.matches[0].messages.list],
+                                                                __typename: 'Message',
+                                                            },
                                                             __typename: 'Match',
                                                         }]
                                                     }
