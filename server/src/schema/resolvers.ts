@@ -50,7 +50,7 @@ const resolvers = {
                   return session.run(`Match (n:User {token: '${args.token}'}) RETURN n`)
                     .then(result => result.records)
                     .then(records => {
-                    //   console.log('records: ',records);
+                      console.log('records: ',records);
                       if(!records.length) {
                         return null;
                       }
@@ -69,13 +69,13 @@ const resolvers = {
             console.log('args: ',args);
             let query = null;
             let cursor = '';
-            if(!args.messagesCursor) {
+            if(!args.cursor) {
                 query = db.collection(`matches/${args.matchId}/messages`).orderBy("createdAt", "desc").limit(MESSAGE_PAGE_LENGTH)
                 cursor = null;
                 
             } else {
-                query = db.collection(`matches/${args.matchId}/messages`).where("createdAt",'<',args.messageCursor).orderBy("createdAt", "desc").limit(MESSAGE_PAGE_LENGTH)
-                cursor = args.messagesCursor;
+                query = db.collection(`matches/${args.matchId}/messages`).where("createdAt",'<',args.cursor).orderBy("createdAt", "desc").limit(MESSAGE_PAGE_LENGTH)
+                cursor = args.cursor;
             }
 
             const data = await query.get();
@@ -105,10 +105,10 @@ const resolvers = {
             // Set the new cursor to the last date in the message array
             const newCursor = messages[messages.length - 1].createdAt;
 
-            console.log('messages in messages: ',messages);
+            console.log('messages in moreMessages: ',messages);
 
             return {
-                messages,
+                list: messages,
                 cursor: newCursor,
             }
         }
