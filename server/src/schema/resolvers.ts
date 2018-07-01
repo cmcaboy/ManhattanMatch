@@ -74,7 +74,7 @@ const resolvers = {
                 cursor = null;
                 
             } else {
-                query = db.collection(`matches/${args.matchId}/messages`).where("createdAt",'>',args.cursor).orderBy("createdAt", "desc").limit(MESSAGE_PAGE_LENGTH)
+                query = db.collection(`matches/${args.matchId}/messages`).where("createdAt",'<',args.cursor).orderBy("createdAt", "desc").limit(MESSAGE_PAGE_LENGTH)
                 cursor = args.cursor;
             }
 
@@ -84,6 +84,8 @@ const resolvers = {
             } catch(e) {
                 console.log('error fetching more messages from firestore: ',e);
             }
+
+            
 
             const messages = data.docs.map(doc => {
                 const docData = doc.data();
@@ -97,6 +99,8 @@ const resolvers = {
                     _id: docData._id,
                 };
             });
+
+            console.log('messages: ', messages);
 
             console.log('message lengths: ',messages.length);
 
