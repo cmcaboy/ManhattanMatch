@@ -67,23 +67,18 @@ const resolvers = {
         moreMessages: async (_,args) => {
             console.log('in moreMessages');
             console.log('args: ',args);
-            let query = '';
+            let query = null;
             let cursor = '';
             if(!args.messagesCursor) {
-                query = db.collection(`matches/${args.matchId}/messages`)
-                        .orderBy("createdAt", "desc")
-                        .limit(MESSAGE_PAGE_LENGTH)
+                query = db.collection(`matches/${args.matchId}/messages`).orderBy("createdAt", "desc").limit(MESSAGE_PAGE_LENGTH)
                 cursor = null;
                 
             } else {
-                query = db.collection(`matches/${args.matchId}/messages`)
-                        .where("createdAt",'<',args.messageCursor)
-                        .orderBy("createdAt", "desc")
-                        .limit(MESSAGE_PAGE_LENGTH)
+                query = db.collection(`matches/${args.matchId}/messages`).where("createdAt",'<',args.messageCursor).orderBy("createdAt", "desc").limit(MESSAGE_PAGE_LENGTH)
                 cursor = args.messagesCursor;
             }
 
-            const results = await query.get();
+            const data = await query.get();
 
             const messages = data.docs.map(doc => {
                 const docData = doc.data();
