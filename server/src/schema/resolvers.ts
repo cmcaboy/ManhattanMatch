@@ -70,11 +70,11 @@ const resolvers = {
             let query = null;
             let cursor = '';
             if(!args.cursor) {
-                query = db.collection(`matches/${args.matchId}/messages`).orderBy("createdAt", "desc").limit(MESSAGE_PAGE_LENGTH)
+                query = db.collection(`matches/${args.matchId}/messages`).orderBy("order").limit(MESSAGE_PAGE_LENGTH)
                 cursor = null;
                 
             } else {
-                query = db.collection(`matches/${args.matchId}/messages`).orderBy("createdAt", "desc").startAfter(args.cursor).limit(MESSAGE_PAGE_LENGTH)
+                query = db.collection(`matches/${args.matchId}/messages`).orderBy("order").startAfter(args.cursor).limit(MESSAGE_PAGE_LENGTH)
                 cursor = args.cursor;
             }
 
@@ -205,7 +205,7 @@ const resolvers = {
                 };
             });
 
-            const cursor = messages.length > 0 ? messages[messages.length - 1].createdAt : null;
+            const cursor = messages.length > 0 ? messages[messages.length - 1].order : null;
 
             console.log('messages in messages: ',messages);
 
