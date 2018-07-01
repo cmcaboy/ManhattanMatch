@@ -77,7 +77,7 @@ const resolvers = {
             } else {
                 console.log('cursor exists');
                 cursor = parseInt(args.cursor);
-                query = db.collection(`matches/${args.matchId}/messages`).orderBy("order").startAt(cursor).limit(MESSAGE_PAGE_LENGTH)
+                query = db.collection(`matches/${args.matchId}/messages`).orderBy("order").startAfter(cursor).limit(MESSAGE_PAGE_LENGTH)
             }
 
             //console.log('query: ',query);
