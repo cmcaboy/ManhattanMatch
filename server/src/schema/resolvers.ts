@@ -67,18 +67,16 @@ const resolvers = {
         moreMessages: async (_,args) => {
             console.log('in moreMessages');
             console.log('args: ',args);
-            let query = null;
-            let cursor = null;
+
             if(!args.cursor) {
-                console.log('no cursor');
-                query = db.collection(`matches/${args.matchId}/messages`).orderBy("order").limit(MESSAGE_PAGE_LENGTH)
-                cursor = null;
-                
-            } else {
-                console.log('cursor exists');
-                cursor = parseInt(args.cursor);
-                query = db.collection(`matches/${args.matchId}/messages`).orderBy("order").startAfter(cursor).limit(MESSAGE_PAGE_LENGTH)
+                return {
+                    list: [],
+                    cursor: null,
+                }
             }
+            
+            let cursor = parseInt(args.cursor);
+            const query = db.collection(`matches/${args.matchId}/messages`).orderBy("order").startAfter(cursor).limit(MESSAGE_PAGE_LENGTH);
 
             //console.log('query: ',query);
             console.log('cursor: ',cursor);
@@ -115,7 +113,7 @@ const resolvers = {
             if(messages.length === 0) {
                 return {
                     list: [],
-                    cursor
+                    cursor,
                 }
             }
 

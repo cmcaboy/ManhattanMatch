@@ -42,7 +42,7 @@ class Messenger extends Component {
                 // The message object returns an array.
                 text: message.text,
                 _id: message._id,
-                order: -1 * now,
+                order: 1 * now,
         }})
         })
     }

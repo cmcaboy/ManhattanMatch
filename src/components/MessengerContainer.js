@@ -169,8 +169,8 @@ class MessengerContainer extends Component {
                                                 console.log('fetchMore updateQuery');
                                                 console.log('fetchMore Result: ',fetchMoreResult)
                                                 console.log('prev: ',prev)
-                                                let newMessages = fetchMoreResult.moreMessages.messages.list;
-                                                const newCursor = fetchMoreResult.moreMessages.messages.cursor;
+                                                let newMessages = fetchMoreResult.moreMessages.list;
+                                                const newCursor = fetchMoreResult.moreMessages.cursor;
 
                                                 // Append the new messages to the existing query result
                                                 const messages = {
