@@ -42,7 +42,7 @@ class Messenger extends Component {
                 // The message object returns an array.
                 text: message.text,
                 _id: message._id,
-                order: 1 * now,
+                order: -1 * now,
         }})
         })
     }
@@ -66,7 +66,7 @@ class Messenger extends Component {
                 user={{_id:`${this.props.id}`,name: this.props.name, avatar: this.props.pic}}
                 showUserAvatar={false}
                 onPressAvatar={(user) => this.props.navigation.navigate('UserProfile',{id:user._id,name:user.name})}
-                loadEarlier={true}
+                loadEarlier={!!this.props.cursor}
                 onLoadEarlier={() => this.props.fetchMoreMessages()}
                 isLoadEarlier={true}
             />

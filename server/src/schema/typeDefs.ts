@@ -60,7 +60,7 @@ const typeDefs = `
     }
 
     type Subscription {
-        newMessageSub(matchId: String): MessageItem
+        newMessageSub(matchId: String, id: String): MessageItem
     }
 
     type Mutation {

@@ -50,8 +50,8 @@ query moreMessages($matchId: String!, $cursor: String) {
 `;
 
 const GET_NEW_MESSAGES = gql`
-subscription($matchId: String) {
-    newMessageSub(matchId: $matchId) {
+subscription($matchId: String, $id: String) {
+    newMessageSub(matchId: $matchId, id: $id) {
         name
         text
         createdAt
@@ -157,6 +157,7 @@ class MessengerContainer extends Component {
                                     name={this.props.navigation.state.params.name}
                                     pic={this.props.navigation.state.params.pic}
                                     navigation={this.props.navigation}
+                                    cursor={data.user.matches[0].messages.cursor}
                                     fetchMoreMessages={() => {
                                         console.log('in fetchMoreMessages');
                                         return fetchMore({

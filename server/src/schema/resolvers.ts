@@ -21,7 +21,7 @@ const resolvers = {
                 (payload,args) => {
                     console.log('payload: ',payload);
                     console.log('args: ',args);
-                    return payload.newMessageSub.matchId === args.matchId
+                    return (payload.newMessageSub.matchId === args.matchId && payload.newMessageSub.message.uid != args.id)
                 }
             ),
         },
@@ -78,10 +78,6 @@ const resolvers = {
             let cursor = parseInt(args.cursor);
             const query = db.collection(`matches/${args.matchId}/messages`).orderBy("order").startAfter(cursor).limit(MESSAGE_PAGE_LENGTH);
 
-            //console.log('query: ',query);
-            console.log('cursor: ',cursor);
-            console.log('cursor: ', 1 * cursor);
-
             let data;
             try {
                 data = await query.get();
@@ -103,10 +99,6 @@ const resolvers = {
                     _id: docData._id,
                 };
             });
-
-            console.log('messages: ', messages);
-
-            console.log('message lengths: ',messages.length);
 
             // If there are no additional messages left, return an empty message array and
             // don't change the cursor
