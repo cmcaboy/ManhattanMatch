@@ -70,15 +70,17 @@ const resolvers = {
             let query = null;
             let cursor = '';
             if(!args.cursor) {
+                console.log('no cursor');
                 query = db.collection(`matches/${args.matchId}/messages`).orderBy("order").limit(MESSAGE_PAGE_LENGTH)
                 cursor = null;
                 
             } else {
+                console.log('cursor exists');
                 query = db.collection(`matches/${args.matchId}/messages`).orderBy("order").startAfter(args.cursor).limit(MESSAGE_PAGE_LENGTH)
                 cursor = args.cursor;
             }
 
-            console.log('query: ',query);
+            //console.log('query: ',query);
 
             let data;
             try {
