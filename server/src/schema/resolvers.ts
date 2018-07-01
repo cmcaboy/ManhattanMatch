@@ -68,7 +68,7 @@ const resolvers = {
             console.log('in moreMessages');
             console.log('args: ',args);
             let query = null;
-            let cursor = '';
+            let cursor = null;
             if(!args.cursor) {
                 console.log('no cursor');
                 query = db.collection(`matches/${args.matchId}/messages`).orderBy("order").limit(MESSAGE_PAGE_LENGTH)
@@ -77,7 +77,7 @@ const resolvers = {
             } else {
                 console.log('cursor exists');
                 query = db.collection(`matches/${args.matchId}/messages`).orderBy("order").limit(MESSAGE_PAGE_LENGTH)
-                cursor = args.cursor;
+                cursor = parseInt(args.cursor);
             }
 
             //console.log('query: ',query);
@@ -120,7 +120,7 @@ const resolvers = {
             }
 
             // Set the new cursor to the last date in the message array
-            const newCursor = messages[0].createdAt;
+            const newCursor = messages[0].order;
 
             console.log('messages in moreMessages: ',messages);
             console.log('newCursor: ',newCursor);
