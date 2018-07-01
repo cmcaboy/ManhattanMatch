@@ -81,6 +81,8 @@ const resolvers = {
             }
 
             //console.log('query: ',query);
+            console.log('cursor: ',cursor);
+            console.log('cursor: ', 1 * cursor);
 
             let data;
             try {
