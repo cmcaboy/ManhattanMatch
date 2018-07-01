@@ -78,7 +78,12 @@ const resolvers = {
                 cursor = args.cursor;
             }
 
-            const data = await query.get();
+            let data;
+            try {
+                data = await query.get();
+            } catch(e) {
+                console.log('error fetching more messages from firestore: ',e);
+            }
 
             const messages = data.docs.map(doc => {
                 const docData = doc.data();
@@ -93,11 +98,13 @@ const resolvers = {
                 };
             });
 
+            console.log('message lengths: ',messages.length);
+
             // If there are no additional messages left, return an empty message array and
             // don't change the cursor
             if(messages.length === 0) {
                 return {
-                    messages: [],
+                    list: [],
                     cursor
                 }
             }

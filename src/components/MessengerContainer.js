@@ -34,7 +34,7 @@ query user($id: String!, $otherId: String) {
 
 const MORE_MESSAGES = gql`
 query moreMessages($matchId: String!, $cursor: String) {
-    messages {
+    moreMessages(matchId: $matchId, cursor: $cursor) {
         cursor
         list {
             name
