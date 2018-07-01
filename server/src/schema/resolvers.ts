@@ -74,7 +74,7 @@ const resolvers = {
                 cursor = null;
                 
             } else {
-                query = db.collection(`matches/${args.matchId}/messages`).where("createdAt",'<',args.cursor).orderBy("createdAt", "desc").limit(MESSAGE_PAGE_LENGTH)
+                query = db.collection(`matches/${args.matchId}/messages`).orderBy("createdAt", "desc").startAfter(args.cursor).limit(MESSAGE_PAGE_LENGTH)
                 cursor = args.cursor;
             }
 
