@@ -78,6 +78,8 @@ const resolvers = {
                 cursor = args.cursor;
             }
 
+            console.log('query: ',query);
+
             let data;
             try {
                 data = await query.get();
