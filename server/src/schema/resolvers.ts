@@ -77,7 +77,7 @@ const resolvers = {
                 
             } else {
                 query = db.collection(`matches/${args.matchId}/messages`)
-                        .where("createdAt",'>',args.messageCursor)
+                        .where("createdAt",'<',args.messageCursor)
                         .orderBy("createdAt", "desc")
                         .limit(MESSAGE_PAGE_LENGTH)
                 cursor = args.messagesCursor;
