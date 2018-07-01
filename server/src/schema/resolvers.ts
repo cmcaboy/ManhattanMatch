@@ -120,7 +120,7 @@ const resolvers = {
             }
 
             // Set the new cursor to the last date in the message array
-            const newCursor = messages[0].order;
+            const cursor = messages[messages.length - 1].order;
 
             console.log('messages in moreMessages: ',messages);
             console.log('newCursor: ',newCursor);
