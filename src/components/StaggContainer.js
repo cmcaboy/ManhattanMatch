@@ -9,6 +9,7 @@ import gql from 'graphql-tag';
 const GET_QUEUE = gql`
 query user($id: String!) {
     user(id: $id) {
+        id
         queue {
             id
             name

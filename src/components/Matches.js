@@ -18,6 +18,7 @@ import GET_ID from '../queries/getId';
 const GET_MATCHES = gql`
 query user($id: String!) {
     user(id: $id) {
+        id
         name
         profilePic
         matches {
@@ -130,7 +131,10 @@ class Matches extends Component {
               //console.log('local error: ',error);
               //console.log('local loading: ',loading);
               if(loading) return <Spinner />
-              if(error) return <Text>Error! {error.message}</Text>
+              if(error) {
+                console.log('error: ',error);  
+                return <Text>Error! {error.message}</Text>
+              }
               const { id } = data.user;
               return (
                 <Query query={GET_MATCHES} variables={{id}}>

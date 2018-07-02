@@ -13,6 +13,7 @@ import GET_ID from '../queries/getId';
 const GET_PROFILE = gql`
 query user($id: String!) {
     user(id: $id) {
+        id
         name
         work
         school

@@ -25,6 +25,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 const GET_PROFILE = gql`
 query user($id: String!) {
   user(id: $id) {
+      id
       name
       work
       school

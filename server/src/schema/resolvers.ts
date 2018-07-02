@@ -63,26 +63,22 @@ const resolvers = {
                     .catch(e => console.log('token lookup error: ',e))
               }
         },
-        match: (_,args) => console.log('matchId: ',args.matchId),
-        moreMessages: async (_,args) => {
+        messages: (_,args) => {
             console.log('in moreMessages');
             console.log('args: ',args);
-
-            if(!args.cursor) {
-                return {
-                    list: [],
-                    cursor: null,
-                }
-            }
             
-            let cursor = parseInt(args.cursor);
-            const query = db.collection(`matches/${args.matchId}/messages`).orderBy("order").startAfter(cursor).limit(MESSAGE_PAGE_LENGTH);
+            const query = db.collection(`matches/${args.id}/messages`).orderBy("order").limit(MESSAGE_PAGE_LENGTH);
 
             let data;
             try {
                 data = await query.get();
             } catch(e) {
                 console.log('error fetching more messages from firestore: ',e);
+                return {
+                    id: args.id
+                    list: [],
+                    cursor: null,
+                }
             }
 
             
@@ -104,6 +100,73 @@ const resolvers = {
             // don't change the cursor
             if(messages.length === 0) {
                 return {
+                    id: args.id,
+                    list: [],
+                    cursor: null,
+                }
+            }
+
+            // Set the new cursor to the last date in the message array
+            // Return a null cursor if the message array length is less than 20, indicating that their
+            // are no more messages left to retreive.
+            const cursor = messages.length >= 20 ? messages[messages.length - 1].order : null;
+
+            console.log('messages in moreMessages: ',messages);
+            console.log('newCursor: ',cursor);
+
+            return {
+                id: args.id,
+                list: messages,
+                cursor,
+            }
+        },
+        moreMessages: async (_,args) => {
+            console.log('in moreMessages');
+            console.log('args: ',args);
+
+            if(!args.cursor) {
+                return {
+                    id: args.id,
+                    list: [],
+                    cursor: null,
+                }
+            }
+            
+            let cursor = parseInt(args.cursor);
+            const query = db.collection(`matches/${args.id}/messages`).orderBy("order").startAfter(cursor).limit(MESSAGE_PAGE_LENGTH);
+
+            let data;
+            try {
+                data = await query.get();
+            } catch(e) {
+                console.log('error fetching more messages from firestore: ',e);
+                return {
+                    id: args.id,
+                    list: [],
+                    cursor,
+                }
+            }
+
+            
+
+            const messages = data.docs.map(doc => {
+                const docData = doc.data();
+                return {
+                    name: docData.name,
+                    avatar: docData.avatar,
+                    uid: docData.uid,
+                    text: docData.text,
+                    createdAt: docData.createdAt,
+                    order: docData.order,
+                    _id: docData._id,
+                };
+            });
+
+            // If there are no additional messages left, return an empty message array and
+            // don't change the cursor
+            if(messages.length === 0) {
+                return {
+                    id: args.id,
                     list: [],
                     cursor,
                 }
@@ -118,6 +181,7 @@ const resolvers = {
             console.log('newCursor: ',newCursor);
 
             return {
+                id: args.id,
                 list: messages,
                 cursor: newCursor,
             }

@@ -36,6 +36,7 @@ const typeDefs = `
     }
     
     type Message {
+        id: String 
         cursor: String
         list: [MessageItem]!
     }
@@ -55,8 +56,8 @@ const typeDefs = `
 
     type Query {
         user(id: String!): User
-        match(matchId: String!): Match
-        moreMessages(matchId: String!, cursor: String!): Message
+        messages(id: String!): Message
+        moreMessages(id: String!, cursor: String!): Message
     }
 
     type Subscription {

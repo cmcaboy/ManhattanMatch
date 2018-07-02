@@ -7,34 +7,55 @@ import {Query,Mutation} from 'react-apollo';
 import Messenger from './Messenger';
 import gql from 'graphql-tag';
 
+// const GET_MESSAGES = gql`
+// query user($id: String!, $otherId: String) {
+//     user(id: $id) {
+//         id
+//         name
+//         work
+//         school
+//         pics
+//         matches(otherId: $otherId) {
+//             messages {
+//                 cursor
+//                 list {
+//                     name
+//                     text
+//                     createdAt
+//                     avatar
+//                     order
+//                     uid
+//                     _id
+//                 }
+//             }
+//         }
+//     }
+// }
+// `;
+
+
 const GET_MESSAGES = gql`
-query user($id: String!, $otherId: String) {
-    user(id: $id) {
-        name
-        work
-        school
-        pics
-        matches(otherId: $otherId) {
-            messages {
-                cursor
-                list {
-                    name
-                    text
-                    createdAt
-                    avatar
-                    order
-                    uid
-                    _id
-                }
-            }
+query messages($id: String!) {
+    messages(id: $id) {
+        id
+        cursor
+        list {
+            _id
+            name
+            text
+            createdAt
+            avatar
+            order
+            uid
         }
     }
 }
 `;
 
 const MORE_MESSAGES = gql`
-query moreMessages($matchId: String!, $cursor: String) {
-    moreMessages(matchId: $matchId, cursor: $cursor) {
+query moreMessages($id: String!, $cursor: String) {
+    moreMessages(id: $matchId, cursor: $cursor) {
+        id
         cursor
         list {
             name
@@ -115,8 +136,7 @@ class MessengerContainer extends Component {
                 query={GET_MESSAGES} 
                 //fetchPolicy='network-only'
                 variables={{
-                    id: this.props.navigation.state.params.otherId,
-                    otherId: this.props.navigation.state.params.id
+                    id: this.props.navigation.state.params.matchId,
                 }}
             >
                 {({loading, error, data, subscribeToMore, fetchMore}) => {
@@ -129,7 +149,7 @@ class MessengerContainer extends Component {
                     if(error) return <Text>Error! {error.message}</Text>
                         //const messages = data.user.matches[0].messages
                         //console.log('messages before refactor: ',data.user.matches[0].messages);
-                            const messages = data.user.matches[0].messages.list.map(message => {
+                            const messages = data.messages.list.map(message => {
                                 return {
                                     _id: message._id,
                                     text: message.text,
@@ -176,18 +196,12 @@ class MessengerContainer extends Component {
 
                                                 // Append the new messages to the existing query result
                                                 const messages = {
-                                                    ...prev,
-                                                    user: {
-                                                        ...prev.user,
-                                                        matches: [{
-                                                            messages: {
-                                                                cursor: newCursor,
-                                                                list: [...prev.user.matches[0].messages.list,...newMessages],
-                                                                __typename: 'Message',
-                                                            },
-                                                            __typename: 'Match',
-                                                        }]
-                                                    }
+                                                    messages: {
+                                                        id: prev.messages.id,
+                                                        cursor: newCursor,
+                                                        list: [...prev.messages.list,...newMessages],
+                                                        __typename: 'Message',
+                                                    },
                                                 }
                                                 console.log('fetchMore New Result: ',messages);
                                                 return messages;
@@ -213,18 +227,12 @@ class MessengerContainer extends Component {
                                                 // You must return an object that has the same structure as what the query
                                                 // component returns.
                                                 const messages = {
-                                                    ...prev,
-                                                    user: {
-                                                        ...prev.user,
-                                                        matches: [{
-                                                            messages: {
-                                                                cursor: prev.user.matches[0].messages.cursor,
-                                                                list: [newMessage,...prev.user.matches[0].messages.list],
-                                                                __typename: 'Message',
-                                                            },
-                                                            __typename: 'Match',
-                                                        }]
-                                                    }
+                                                    messages: {
+                                                        id: prev.messages.id,
+                                                        cursor: prev.messages.cursor,
+                                                        list: [newMessage,...prev.messages.list],
+                                                        __typename: 'Message',
+                                                    },
                                                 }
                                                 return messages;
                                             } 

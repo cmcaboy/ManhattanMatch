@@ -7,25 +7,18 @@ import {CirclePicture,MyAppText} from './common';
 import gql from 'graphql-tag';
 
 const GET_MESSAGES = gql`
-query user($id: String!, $otherId: String) {
-    user(id: $id) {
-        name
-        work
-        school
-        pics
-        matches(otherId: $otherId) {
-            messages {
-                cursor
-                list {
-                    name
-                    text
-                    createdAt
-                    avatar
-                    order
-                    uid
-                    _id
-                }
-            }
+query messages($id: String!) {
+    messages(id: $id) {
+        id
+        cursor
+        list {
+            _id
+            name
+            text
+            createdAt
+            avatar
+            order
+            uid
         }
     }
 }
@@ -82,15 +75,15 @@ class Messenger extends Component {
                 //         __typename: 'MessageItem',
                 //     }
                 // },
-                update: (store, data) => {
-                    console.log('update data after mutation:',data);
-                    console.log('store: ',store);
-                    const storeData = store.readQuery({ 
-                        query: GET_MESSAGES, 
-                        variables: {id:this.props.id,otherId: this.props.otherId}
-                    });
-                    console.log('storeData: ',storeData)
-                },
+                // update: (store, data) => {
+                //     console.log('update data after mutation:',data);
+                //     console.log('store: ',store);
+                //     const storeData = store.readQuery({ 
+                //         query: GET_MESSAGES, 
+                //         variables: {id:this.props.matchId}
+                //     });
+                //     console.log('storeData: ',storeData)
+                // },
             })
         })
     }
