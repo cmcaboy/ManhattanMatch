@@ -17,7 +17,7 @@ const typeDefs = `
         minAgePreference: Int
         maxAgePreference: Int
         match: Boolean
-        distanceApart: Int
+        distanceApart: Float
         pics: [String]
         profilePic: String
         likes: [User]
