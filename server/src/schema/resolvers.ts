@@ -230,8 +230,8 @@ const resolvers = {
                         .catch(e => console.log('matches error: ',e))
         },
         queue: (parentValue, args) => {
-            console.log('parentValue: 'parentValue);
-            console.log('args: 'args);
+            console.log('parentValue: ',parentValue);
+            console.log('args: ',args);
             return session
                 .run(`MATCH(a:User{id:'${parentValue.id}'}),(b:User) 
                     where NOT (a)-[:LIKES|DISLIKES]->(b) AND 
