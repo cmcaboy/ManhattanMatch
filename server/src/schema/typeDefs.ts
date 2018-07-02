@@ -54,7 +54,7 @@ const typeDefs = `
     }
 
     type Query {
-        user(id: String!, otherId: String): User
+        user(id: String!): User
         match(matchId: String!): Match
         moreMessages(matchId: String!, cursor: String!): Message
     }
