@@ -63,7 +63,7 @@ const resolvers = {
                     .catch(e => console.log('token lookup error: ',e))
               }
         },
-        messages: (_,args) => {
+        messages: async (_,args) => {
             console.log('in moreMessages');
             console.log('args: ',args);
             
