@@ -75,7 +75,7 @@ const resolvers = {
             } catch(e) {
                 console.log('error fetching more messages from firestore: ',e);
                 return {
-                    id: args.id
+                    id: args.id,
                     list: [],
                     cursor: null,
                 }
