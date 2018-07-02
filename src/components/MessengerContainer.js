@@ -113,7 +113,7 @@ class MessengerContainer extends Component {
         return (
             <Query 
                 query={GET_MESSAGES} 
-                fetchPolicy='network-only'
+                //fetchPolicy='network-only'
                 variables={{
                     id: this.props.navigation.state.params.otherId,
                     otherId: this.props.navigation.state.params.id
@@ -144,7 +144,7 @@ class MessengerContainer extends Component {
                             });
                             //console.log('messages after refactor: ',messages);
                     return (
-                        <Mutation mutation={SEND_MESSAGE} ignoreResults={true}>
+                        <Mutation mutation={SEND_MESSAGE} ignoreResults={false}>
                         {(newMessage,_) => {
                             //console.log('start of mutation');
                             //console.log('pic in mcontainer: ',this.props.navigation.state.params.pic)
@@ -153,6 +153,7 @@ class MessengerContainer extends Component {
                                     messages={messages}
                                     newMessage={newMessage}
                                     id={this.props.navigation.state.params.id}
+                                    otherId={this.props.navigation.state.params.otherId}
                                     matchId={this.props.navigation.state.params.matchId}
                                     name={this.props.navigation.state.params.name}
                                     pic={this.props.navigation.state.params.pic}
@@ -197,7 +198,10 @@ class MessengerContainer extends Component {
                                         console.log('in subscribeToNewMessages');
                                         return subscribeToMore({
                                             document: GET_NEW_MESSAGES,
-                                            variables: {matchId: this.props.navigation.state.params.matchId},
+                                            variables: {
+                                                matchId: this.props.navigation.state.params.matchId, 
+                                                id: this.props.navigation.state.params.id
+                                            },
                                             updateQuery: (prev, { subscriptionData }) => {
                                                 if(!subscriptionData.data) return prev;
                                                 //console.log('prev: ',prev);

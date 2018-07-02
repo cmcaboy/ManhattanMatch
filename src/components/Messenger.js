@@ -6,6 +6,31 @@ import {db} from '../firebase';
 import {CirclePicture,MyAppText} from './common';
 import gql from 'graphql-tag';
 
+const GET_MESSAGES = gql`
+query user($id: String!, $otherId: String) {
+    user(id: $id) {
+        name
+        work
+        school
+        pics
+        matches(otherId: $otherId) {
+            messages {
+                cursor
+                list {
+                    name
+                    text
+                    createdAt
+                    avatar
+                    order
+                    uid
+                    _id
+                }
+            }
+        }
+    }
+}
+`;
+
 class Messenger extends Component {
     
     constructor(props) {
@@ -33,17 +58,40 @@ class Messenger extends Component {
         // console.log("uid: ",message[0]._id);
         // console.log("order: ",now);
         messages.forEach(message => {
-            this.props.newMessage({variables: {
-                avatar: this.props.pic,
-                name: this.props.name,
-                uid: message.user._id,
-                // id: now,
-                matchId: this.props.matchId,
-                // The message object returns an array.
-                text: message.text,
-                _id: message._id,
-                order: -1 * now,
-        }})
+            this.props.newMessage({
+                variables: {
+                    avatar: this.props.pic,
+                    name: this.props.name,
+                    uid: message.user._id,
+                    // id: now,
+                    matchId: this.props.matchId,
+                    // The message object returns an array.
+                    text: message.text,
+                    _id: message._id,
+                    order: -1 * now,
+                },
+                // optimisticResponse: {
+                //     __typename: "Mutation",
+                //     newMessage: {
+                //         avatar: this.props.pic,
+                //         name: this.props.name,
+                //         uid: message.user._id,
+                //         matchId: this.props.matchId,
+                //         text: message._id,
+                //         order: -1 * now,
+                //         __typename: 'MessageItem',
+                //     }
+                // },
+                update: (store, data) => {
+                    console.log('update data after mutation:',data);
+                    console.log('store: ',store);
+                    const storeData = store.readQuery({ 
+                        query: GET_MESSAGES, 
+                        variables: {id:this.props.id,otherId: this.props.otherId}
+                    });
+                    console.log('storeData: ',storeData)
+                },
+            })
         })
     }
 
