@@ -44,6 +44,7 @@ query user($id: String!) {
             description
             work
             school
+            distanceApart
         }
     }
   }

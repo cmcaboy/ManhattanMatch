@@ -246,7 +246,7 @@ const resolvers = {
                         console.log('field 1: ',record._fields[1]);
                         return {
                             ...record._fields[0].properties,
-                            distance: record._fields[1],
+                            distanceApart: record._fields[1],
                         }
                     })
                     )
