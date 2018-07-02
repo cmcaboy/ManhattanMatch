@@ -8,7 +8,6 @@ import {
   Dimensions, 
   ImageBackground,
   TouchableWithoutFeedback } from 'react-native';
-// import {connect} from 'react-redux';
 import getUserProfile from '../selectors/getUserProfile';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -18,22 +17,10 @@ import { MyAppText,Spinner } from './common';
 import { PRIMARY_COLOR } from '../variables';
 import gql from 'graphql-tag';
 import {Query} from 'react-apollo';
+import {GET_USER_PROFILE} from '../apollo/queries';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
-
-const GET_PROFILE = gql`
-query user($id: String!) {
-  user(id: $id) {
-      id
-      name
-      work
-      school
-      pics
-      description
-  }
-}
-`
 
 class UserProfile extends Component {
   constructor(props){
@@ -64,20 +51,18 @@ class UserProfile extends Component {
     }
 
   render() {
-    //console.log('props: ',this.props); 
-    
     const {userProfileContainer,userPics,userInfo,iconText,userPhoto,touchablePics,
       nameText,subHeading,schoolText,userDescription,leftClicker,rightClicker,
       picIndicator} = styles; 
 
-      console.log('id: ',this.props.navigation.state.params.id);
+      // console.log('id: ',this.props.navigation.state.params.id);
 
     return (
-      <Query query={GET_PROFILE} variables={{id: this.props.navigation.state.params.id}}>
+      <Query query={GET_USER_PROFILE} variables={{id: this.props.navigation.state.params.id}}>
       {({loading, error, data}) => {
-        console.log('loading: ',loading);
-        console.log('error: ',error);
-        console.log('data: ',data);
+        // console.log('loading: ',loading);
+        // console.log('error: ',error);
+        // console.log('data: ',data);
         if(loading) return <Spinner />
         if(error) return <MyAppText>Error! {error.message}</MyAppText>
         const {name, school, work, description,pics} = data.user;  
@@ -158,15 +143,5 @@ const styles = StyleSheet.create({
     opacity: 0.3
   },
 })
-
-// const mapStateToProps = (state, ownProps) => {
-//   //console.log('id: ',ownProps.navigation.state.params.id);
-//   //console.log('matchListReducer: ',state.matchListReducer)
-//   return {
-//     // Returns matches profile
-//     user: getUserProfile(ownProps.navigation.state.params.id,
-//       [...state.matchListReducer.matches, ...state.matchListReducer.queue])
-//   }
-// }
 
 export default UserProfile;

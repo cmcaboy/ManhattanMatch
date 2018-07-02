@@ -234,10 +234,20 @@ const resolvers = {
                 .run(`MATCH(a:User{id:'${parentValue.id}'}),(b:User) 
                     where NOT (a)-[:LIKES|DISLIKES]->(b) AND 
                     NOT b.id='${parentValue.id}' AND
-                    NOT b.gender='${parentValue.gender}'
-                    RETURN b`)
+                    NOT b.gender='${parentValue.gender}' AND
+                    distance(point(a),point(b))*0.000621371 < ${parentValue.distance}
+                    RETURN b, distance(point(a),point(b))*0.000621371`)
                     .then(result => result.records)
-                    .then(records => records.map(record => record._fields[0].properties))
+                    .then(records => records.map(record => {
+                        console.log('queue record: ',record);
+                        console.log('field 0: ',record._fields[0]);
+                        console.log('field 1: ',record._fields[1]);
+                        return {
+                            ...record._fields[0].properties,
+                            distance: record._fields[1],
+                        }
+                    })
+                    )
                     .catch(e => console.log('queue error: ',e))
         }
     },

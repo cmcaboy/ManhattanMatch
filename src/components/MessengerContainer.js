@@ -6,105 +6,14 @@ import {CirclePicture,MyAppText,Spinner} from './common';
 import {Query,Mutation} from 'react-apollo';
 import Messenger from './Messenger';
 import gql from 'graphql-tag';
-
-// const GET_MESSAGES = gql`
-// query user($id: String!, $otherId: String) {
-//     user(id: $id) {
-//         id
-//         name
-//         work
-//         school
-//         pics
-//         matches(otherId: $otherId) {
-//             messages {
-//                 cursor
-//                 list {
-//                     name
-//                     text
-//                     createdAt
-//                     avatar
-//                     order
-//                     uid
-//                     _id
-//                 }
-//             }
-//         }
-//     }
-// }
-// `;
-
-
-const GET_MESSAGES = gql`
-query messages($id: String!) {
-    messages(id: $id) {
-        id
-        cursor
-        list {
-            _id
-            name
-            text
-            createdAt
-            avatar
-            order
-            uid
-        }
-    }
-}
-`;
-
-const MORE_MESSAGES = gql`
-query moreMessages($id: String!, $cursor: String) {
-    moreMessages(id: $matchId, cursor: $cursor) {
-        id
-        cursor
-        list {
-            name
-            text
-            createdAt
-            avatar
-            order
-            uid
-            _id
-        }
-    }
-}
-`;
-
-const GET_NEW_MESSAGES = gql`
-subscription($matchId: String, $id: String) {
-    newMessageSub(matchId: $matchId, id: $id) {
-        name
-        text
-        createdAt
-        avatar
-        order
-        uid
-        _id
-    }
-  }
-`;
-
-const SEND_MESSAGE = gql`
-mutation($matchId: String!, $name: String, $text: String, $createdAt: String, $avatar: String, $order: Float, $uid: String, $_id: String) {
-    newMessage(matchId: $matchId, name: $name, text: $text, createdAt: $createdAt, avatar: $avatar, order: $order, uid: $uid, _id: $_id) {
-        name
-        text
-        createdAt
-        avatar
-        order
-        uid
-        _id
-    }
-}
-`;
+import {GET_NEW_MESSAGES} from '../apollo/subscriptions';
+import {SEND_MESSAGE} from '../apollo/mutations';
+import {GET_MESSAGES,MORE_MESSAGES} from '../apollo/queries';
 
 class MessengerContainer extends Component {
     
     constructor(props) {
         super(props);
-
-        console.log('matchId: ',this.props.navigation.state.params.matchId);
-
     }
 
     static navigationOptions = ({navigation}) => ({
@@ -134,40 +43,35 @@ class MessengerContainer extends Component {
         return (
             <Query 
                 query={GET_MESSAGES} 
+                // fetchPolicy can be set to no-cache or network-only if we want to force a refetch
+                // each time when entering a chat.
                 //fetchPolicy='network-only'
                 variables={{
                     id: this.props.navigation.state.params.matchId,
                 }}
             >
                 {({loading, error, data, subscribeToMore, fetchMore}) => {
-                    //console.log('loading: ',loading);
-                    //console.log('error: ',error);
-                    //console.log('MessengerContainer data: ',data);
-                    //console.log('id: ',this.props.navigation.state.params.otherId);
-                    //console.log('otherId: ',this.props.navigation.state.params.id);
                     if(loading) return <Spinner />
                     if(error) return <Text>Error! {error.message}</Text>
-                        //const messages = data.user.matches[0].messages
-                        //console.log('messages before refactor: ',data.user.matches[0].messages);
-                            const messages = data.messages.list.map(message => {
-                                return {
-                                    _id: message._id,
-                                    text: message.text,
-                                    createdAt: message.createdAt,
-                                    order: message.order,
-                                    user: {
-                                        name: message.name,
-                                        avatar: message.avatar,
-                                        _id: message.uid,
-                                    },
-                                }
-                            });
-                            //console.log('messages after refactor: ',messages);
+
+                    // We have to change the format of our messages in order to satisfy RN Gifted Chat
+                    const messages = data.messages.list.map(message => {
+                        return {
+                            _id: message._id,
+                            text: message.text,
+                            createdAt: message.createdAt,
+                            order: message.order,
+                            user: {
+                                name: message.name,
+                                avatar: message.avatar,
+                                _id: message.uid,
+                            },
+                        }
+                    });
+
                     return (
                         <Mutation mutation={SEND_MESSAGE} ignoreResults={false}>
                         {(newMessage,_) => {
-                            //console.log('start of mutation');
-                            //console.log('pic in mcontainer: ',this.props.navigation.state.params.pic)
                             return (
                                 <Messenger 
                                     messages={messages}
@@ -178,19 +82,20 @@ class MessengerContainer extends Component {
                                     name={this.props.navigation.state.params.name}
                                     pic={this.props.navigation.state.params.pic}
                                     navigation={this.props.navigation}
-                                    cursor={data.user.matches[0].messages.cursor}
+                                    cursor={data.messages.cursor}
                                     fetchMoreMessages={() => {
+                                        // This method is used for pagination. Our initial query only returns 20 messages. If
+                                        // more messages are needed, this function is called and 20 more are received.
                                         console.log('in fetchMoreMessages');
                                         return fetchMore({
                                             query: MORE_MESSAGES,
                                             variables: {
-                                                matchId: this.props.navigation.state.params.matchId, 
-                                                cursor: data.user.matches[0].messages.cursor,
+                                                id: this.props.navigation.state.params.matchId, 
+                                                cursor: data.messages.cursor,
                                             },
                                             updateQuery: (prev, { fetchMoreResult }) => {
                                                 console.log('fetchMore updateQuery');
-                                                console.log('fetchMore Result: ',fetchMoreResult)
-                                                console.log('prev: ',prev)
+
                                                 let newMessages = fetchMoreResult.moreMessages.list;
                                                 const newCursor = fetchMoreResult.moreMessages.cursor;
 
@@ -209,6 +114,8 @@ class MessengerContainer extends Component {
                                         })
                                     }}
                                     subscribeToNewMessages={() => {
+                                        // We are only listening to new messages from the other user. For messages
+                                        // that we send, we are using the mutation reponse along with optimisticResponse.
                                         console.log('in subscribeToNewMessages');
                                         return subscribeToMore({
                                             document: GET_NEW_MESSAGES,
@@ -216,13 +123,12 @@ class MessengerContainer extends Component {
                                                 matchId: this.props.navigation.state.params.matchId, 
                                                 id: this.props.navigation.state.params.id
                                             },
+                                            // The subscription payload is received as the second parameter to updateQuery.
+                                            // We destructure the payload and merge it with the existing query.
                                             updateQuery: (prev, { subscriptionData }) => {
                                                 if(!subscriptionData.data) return prev;
-                                                //console.log('prev: ',prev);
                                                 console.log('subscriptionData.data: ',subscriptionData.data);
                                                 const newMessage = subscriptionData.data.newMessageSub;
-                                                    
-                                                console.log('newMessage via updateQuery: ',newMessage);
 
                                                 // You must return an object that has the same structure as what the query
                                                 // component returns.

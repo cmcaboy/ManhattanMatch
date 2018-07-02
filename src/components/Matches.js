@@ -13,34 +13,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { PRIMARY_COLOR } from '../variables';
 import gql from 'graphql-tag';
 import {Query} from 'react-apollo';
-import GET_ID from '../queries/getId';
-
-const GET_MATCHES = gql`
-query user($id: String!) {
-    user(id: $id) {
-        id
-        name
-        profilePic
-        matches {
-            matchId
-            user {
-                id
-                name
-                pics
-                age
-                description
-                work
-                school
-            }
-            lastMessage {
-              	text
-                name
-                createdAt
-            }
-        }
-    }
-  }
-`;
+import {GET_ID,GET_MATCHES} from '../apollo/queries';
 
 class Matches extends Component {
     constructor(props) {

@@ -24,6 +24,11 @@ const typeDefs = `
         matches(otherId: String): [Match]
         queue: [User]
     }
+
+    type Queue {
+        list: [User]
+        cursor: String
+    }
     
     type MessageItem {
         name: String

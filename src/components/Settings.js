@@ -8,28 +8,7 @@ import { PRIMARY_COLOR, PLACEHOLDER_PHOTO } from '../variables';
 import {firebase} from '../firebase';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import GET_ID from '../queries/getId';
-
-const GET_PROFILE = gql`
-query user($id: String!) {
-    user(id: $id) {
-        id
-        name
-        work
-        school
-        pics
-    }
-}
-`
-
-// Moved to separate file
-// ----------------------
-// const GET_ID = gql`
-// query {
-//     user @client {
-//         id
-//     }
-// }`
+import {GET_ID,GET_PROFILE} from '../apollo/queries';
 
 const ICON_OPACITY = 0.75;
 const ICON_SIZE = Dimensions.get('window').height *0.05;
@@ -64,10 +43,6 @@ class Settings extends React.Component {
     renderContent(user) {
         const {work, school, name, pics } = user;
         const profilePic = !!pics[0]? pics[0] : PLACEHOLDER_PHOTO
-        //console.log('profilePic: ',profilePic);
-        //console.log('name: ',name);
-        //console.log('work: ',work);
-        //console.log('school: ',school);
         return (
             <View style={styles.settingsContainer}>
                 <View style={styles.miniProfile}> 
