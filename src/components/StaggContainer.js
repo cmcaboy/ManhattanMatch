@@ -11,7 +11,7 @@ class StaggContainer extends Component {
     render() {
         return (
             <Query query={GET_ID}>
-                {({loading, error, data}) => {
+                {({loading, error, data, fetchMore }) => {
                 //console.log('local data stagg: ',data);
                 //console.log('local error stagg: ',error);
                 //console.log('local loading stagg: ',loading);
@@ -46,6 +46,9 @@ class StaggContainer extends Component {
                                                 startSetCoords={startSetCoords}
                                                 startSetPushToken={startSetPushToken}
                                                 navigation={this.props.navigation}
+                                                fetchMoreQueue={() => {
+                                                    
+                                                }}
                                             />
                                     }}
                                     </Mutation>

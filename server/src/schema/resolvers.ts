@@ -230,12 +230,14 @@ const resolvers = {
                         .catch(e => console.log('matches error: ',e))
         },
         queue: (parentValue, args) => {
+            console.log('parentValue: 'parentValue);
+            console.log('args: 'args);
             return session
                 .run(`MATCH(a:User{id:'${parentValue.id}'}),(b:User) 
                     where NOT (a)-[:LIKES|DISLIKES]->(b) AND 
                     NOT b.id='${parentValue.id}' AND
                     NOT b.gender='${parentValue.gender}' AND
-                    distance(point(a),point(b))*0.000621371 < ${parentValue.distance}
+                    distance(point(a),point(b))*0.000621371 < a.distance
                     RETURN b, distance(point(a),point(b))*0.000621371`)
                     .then(result => result.records)
                     .then(records => records.map(record => {
