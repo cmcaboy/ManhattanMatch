@@ -91,8 +91,8 @@ class StaggCard extends Component {
                     <View>
                       <View style={styles.firstLine}>
                         <MyAppText style={styles.nameText}>{name}</MyAppText> 
-                        <MyAppText style={styles.distance}>{distanceApart} 
-                          {distanceApart === 1 ? " mile away" : " miles away"}
+                        <MyAppText style={styles.distance}>{Math.round(distanceApart)} 
+                          {Math.round(distanceApart) === 1 ? " mile away" : " miles away"}
                         </MyAppText>
                       </View>
                       {!!school && (

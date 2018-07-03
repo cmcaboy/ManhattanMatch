@@ -262,7 +262,7 @@ class Stagg extends Component {
                 work={prospect.work}
                 school={prospect.school}
                 description={prospect.description}
-                //distanceApart={prospect.distanceApart}
+                distanceApart={prospect.distanceApart}
                 cacheImages={!!cacheImages}
                 navigation={this.props.navigation}
             />
