@@ -13,7 +13,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { PRIMARY_COLOR } from '../variables';
 import gql from 'graphql-tag';
 import {Query} from 'react-apollo';
-import {GET_ID,GET_MATCHES} from '../apollo/queries';
+import {GET_MATCHES} from '../apollo/queries';
+import {GET_ID} from '../apollo/local/queries';
 
 class Matches extends Component {
     constructor(props) {

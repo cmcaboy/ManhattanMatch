@@ -8,7 +8,8 @@ import { PRIMARY_COLOR, PLACEHOLDER_PHOTO } from '../variables';
 import {firebase} from '../firebase';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import {GET_ID,GET_PROFILE} from '../apollo/queries';
+import {GET_PROFILE} from '../apollo/queries';
+import {GET_ID} from '../apollo/local/queries';
 
 const ICON_OPACITY = 0.75;
 const ICON_SIZE = Dimensions.get('window').height *0.05;
@@ -55,7 +56,7 @@ class Settings extends React.Component {
                 </View>
                 <View style={styles.options}>
                     <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate('EditSettings')}
+                        onPress={() => this.props.navigation.navigate('EditSettingsContainer')}
                         style={styles.buttons}
                     >
                         <Ionicons 

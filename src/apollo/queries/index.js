@@ -1,12 +1,5 @@
 import gql from 'graphql-tag';
 
-export const GET_ID = gql`
-query {
-    user @client {
-        id
-    }
-}`
-
 export const GET_PROFILE = gql`
 query user($id: String!) {
     user(id: $id) {
@@ -136,5 +129,17 @@ query moreMessages($id: String!, $cursor: String!) {
             _id
         }
     }
+}
+`;
+
+export const GET_SETTINGS = gql`
+query user($id: String!) {
+  user(id: $id) {
+      id
+      minAgePreference
+      maxAgePreference
+      distance
+      sendNotifications
+  }
 }
 `;

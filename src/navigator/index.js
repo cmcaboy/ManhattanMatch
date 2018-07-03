@@ -5,7 +5,7 @@ import Leaderboard from '../components/Leaderboard';
 import StaggContainer from '../components/StaggContainer';
 import Matches from '../components/Matches';
 import MessengerContainer from '../components/MessengerContainer';
-import EditSettings from '../components/EditSettings';
+import EditSettingsContainer from '../components/EditSettingsContainer';
 import EditProfile from '../components/EditProfile';
 import UserProfile from '../components/UserProfile';
 // import { FontAwesome, Ionicons, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -70,8 +70,8 @@ const MainNavigator = StackNavigator({
     MessengerContainer: {
         screen: MessengerContainer
     },
-    EditSettings: {
-        screen: EditSettings
+    EditSettingsContainer: {
+        screen: EditSettingsContainer
     },
     EditProfile: {
         screen: EditProfile

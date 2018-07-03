@@ -8,7 +8,7 @@ const typeDefs = `
         description: String
         school: String
         work: String
-        sendNotifications: String
+        sendNotifications: Boolean
         gender: String
         distance: Int
         token: String

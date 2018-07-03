@@ -1,8 +1,8 @@
-
+import gql from 'graphql-tag';
 
 export const resolvers = {
     Mutation: {
-      updateAgePreferenceLocal: (_, { minAge, maxAge }, { cache, getCacheKey }) => {
+      updateAgePreferenceLocal: (_, { minAgePreference, maxAgePreference }, { cache, getCacheKey }) => {
   
         const query = gql`
           query getAgePreferenceLocal {
@@ -20,8 +20,8 @@ export const resolvers = {
           user: {
             ...previous.user,
             //id: previous.user.id,
-            minAgePreference: minAge,
-            maxAgePreference: maxAge
+            minAgePreference,
+            maxAgePreference,
           }
         };
         

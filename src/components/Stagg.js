@@ -23,7 +23,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import StaggCard from './StaggCard';
 //import registerForNotifications from '../services/push_notifications';
-import GET_ID from '../queries/getId';
 import gql from 'graphql-tag';
 import Permissions from 'react-native-permissions';
 import BackgroundGeolocation from 'react-native-background-geolocation';
@@ -214,6 +213,7 @@ class Stagg extends Component {
         direction === 'right' ? this.onSwipeRight(item.id) : this.onSwipeLeft(item.id);
         // Reset the card's position to be in default onscreen position
 
+        // As an alternative, I could use shift on the array
         this.setState((prev) => ({index:prev.index + 1}));
 
         this.state.position.setValue({x:0,y:0});

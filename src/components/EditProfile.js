@@ -25,7 +25,7 @@ import expandArrayToFive from '../selectors/expandArrayToFive';
 import PhotoSelector from './PhotoSelector';
 import { PRIMARY_COLOR } from '../variables';
 import {Query, Mutation} from 'react-apollo';
-import GET_ID from '../queries/getId';
+import GET_ID from '../apollo/local/queries';
 import gql from 'graphql-tag';
 
 const GET_PROFILE = gql`

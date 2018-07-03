@@ -2,7 +2,8 @@ import {Text} from 'react-native';
 import {Spinner} from './common';
 import React,{Component} from 'react';
 import { Query, Mutation } from 'react-apollo';
-import {GET_ID,GET_QUEUE} from '../apollo/queries';
+import {GET_QUEUE} from '../apollo/queries';
+import {GET_ID} from '../apollo/local/queries';
 import {SET_COORDS,LIKE,DISLIKE,SET_PUSH_TOKEN} from '../apollo/mutations';
 import Stagg from './Stagg';
 import gql from 'graphql-tag';
@@ -36,8 +37,14 @@ class StaggContainer extends Component {
                                     {(setPushToken) => {
                                         const startSetCoords = (lat,lon) =>         setCoords({variables: {id,lat,lon}});
                                         const startSetPushToken = (token) =>        setPushToken({variables: {id,token}});
-                                        const startLikeUser = (likedId) =>          likeUser({variables: {id, likedId}});
                                         const startDislikeUser = (dislikedId) =>    dislikeUser({variables: {id, dislikedId}});
+                                        const startLikeUser = (likedId) => likeUser({
+                                            variables: {id, likedId},
+                                            //optimisticResponse: {},
+                                            // We can add on an update and optimistic response to this if we want to 
+                                            // check for a match
+                                            update: (store,data) => console.log('likeUser response data: ',data),
+                                        });
                                             return <Stagg 
                                                 id={id}
                                                 queue={data.user.queue} 
@@ -46,9 +53,7 @@ class StaggContainer extends Component {
                                                 startSetCoords={startSetCoords}
                                                 startSetPushToken={startSetPushToken}
                                                 navigation={this.props.navigation}
-                                                fetchMoreQueue={() => {
-                                                    
-                                                }}
+                                                fetchMoreQueue={() => {}}
                                             />
                                     }}
                                     </Mutation>

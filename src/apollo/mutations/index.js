@@ -8,7 +8,8 @@ mutation editUser($id: String!, $latitude: Float, $longtitude: Float) {
         longitude
     }
 }
-`
+`;
+
 export const SET_PUSH_TOKEN = gql`
 mutation editUser($id: String!, $token: String) {
     editUser(id: $id, token: $token) {
@@ -16,16 +17,22 @@ mutation editUser($id: String!, $token: String) {
         token
     }
 }
-`
+`;
 
 export const LIKE = gql`
 mutation likeUser($id: String!, $likedId: String!) {
     likeUser(id: $id, likedId: $likedId) {
         id
-        name
+        user {
+            id
+            name
+        }
+        match
+        matchId
     }
 }
 `;
+
 export const DISLIKE = gql`
 mutation dislikeUser($id: String!, $dislikedId: String!) {
     dislikeUser(id: $id, dislikedId: $dislikedId) {
@@ -46,6 +53,35 @@ mutation($matchId: String!, $name: String, $text: String, $createdAt: String, $a
         uid
         _id
     }
+}
+`;
+
+export const SET_AGE_PREFERENCE = gql`
+mutation editUser($id: String!, $minAgePreference: Int, $maxAgePreference: Int ) {
+  editUser(id: $id, minAgePreference: $minAgePreference, maxAgePreference: $maxAgePreference) {
+    	id
+      minAgePreference
+      maxAgePreference
+  }
+}
+`;
+
+export const SET_DISTANCE = gql`
+mutation editUser($id: String!, $distance: Int ) {
+  editUser(id: $id, distance: $distance) {
+    	id
+        distance
+  }
+}
+`;
+
+
+export const SET_NOTIFICATIONS = gql`
+mutation editUser($id: String!, $sendNotifications: Boolean ) {
+  editUser(id: $id, sendNotifications: $sendNotifications) {
+    	id
+        sendNotifications
+  }
 }
 `;
 
