@@ -32,19 +32,6 @@ class EditSettings extends Component {
       sendNotifications: this.props.sendNotifications,
     } 
   }
-
-  static navigationOptions = ({navigation}) => ({
-    title: `Settings`,
-    headerRight: (<View></View>),
-    headerTitleStyle: 
-        {
-            alignSelf: 'center',
-            textAlign: 'center',
-            fontWeight:'normal',
-            fontSize: 22,
-            color: PRIMARY_COLOR
-        }
-})
     
   notificationChange = () => {
     this.setState((prevState) => ({sendNotifications:!prevState.sendNotifications}))
@@ -68,7 +55,7 @@ class EditSettings extends Component {
               return (
                 <MultiSlider 
                   containerStyle={{height: 12}}
-                  markerOffsetX={10}
+                  markerOffsetX={0}
                   sliderLength={SLIDER_WIDTH}
                   markerStyle={styles.markerStyle}
                   step={1}
@@ -92,7 +79,7 @@ class EditSettings extends Component {
           <Text>Search Distance</Text>
           <Text>{distance}</Text>
         </View>
-        <View style={{width:SLIDER_WIDTH}}>
+        <View>
           <Mutation mutation={SET_DISTANCE}>
             {(updateDistance, { data }) => {
               return (
@@ -155,9 +142,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   markerStyle: {
-    height: 30,
-    width: 30,
-    borderRadius: 30
+    height: 12,
+    width: 12,
+    borderRadius: 12
   }
 })
 

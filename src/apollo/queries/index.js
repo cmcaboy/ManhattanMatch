@@ -143,3 +143,17 @@ query user($id: String!) {
   }
 }
 `;
+
+export const GET_EDIT_PROFILE = gql`
+query user($id: String!) {
+  user(id: $id) {
+      id
+      pics
+      name
+      age
+      school
+      work
+      description
+  }
+}
+`

@@ -24,72 +24,16 @@ import {
 import expandArrayToFive from '../selectors/expandArrayToFive';
 import PhotoSelector from './PhotoSelector';
 import { PRIMARY_COLOR } from '../variables';
-import {Query, Mutation} from 'react-apollo';
-import GET_ID from '../apollo/local/queries';
 import gql from 'graphql-tag';
-
-const GET_PROFILE = gql`
-  query user($id: String!) {
-    user(id: $id) {
-        id
-        pics
-        name
-        age
-        school
-        work
-        description
-    }
-  }
-`
-
-const SET_NAME = gql`
-mutation editUser($id: String!, $name: String ) {
-  editUser(id: $id, name: $name) {
-    	id
-      name
-  }
-}
-`
-const SET_AGE = gql`
-mutation editUser($id: String!, $age: Int ) {
-  editUser(id: $id, age: $age) {
-    	id
-      age
-  }
-}
-`
-const SET_WORK = gql`
-mutation editUser($id: String!, $work: String ) {
-  editUser(id: $id, work: $work) {
-    	id
-      work
-  }
-}
-`
-const SET_SCHOOL = gql`
-mutation editUser($id: String!, $school: String ) {
-  editUser(id: $id, school: $school) {
-    	id
-      school
-  }
-}
-`
-const SET_DESCRIPTION = gql`
-mutation editUser($id: String!, $description: String ) {
-  editUser(id: $id, description: $description) {
-    	id
-      description
-  }
-}
-`
-const SET_PICS = gql`
-mutation editUser($id: String!, $pics: [String] ) {
-  editUser(id: $id, pics: $pics) {
-    	id
-      pics
-  }
-}
-`
+import {Query, Mutation} from 'react-apollo';
+import {GET_ID} from '../apollo/local/queries';
+import {GET_EDIT_PROFILE} from '../apollo/queries';
+import {
+  SET_NAME,
+  SET_AGE,
+  SET_WORK,
+  SET_SCHOOL,
+  SET_DESCRIPTION,SET_PICS} from '../apollo/mutations';
 
 class EditProfile extends Component {
   constructor(props) {
@@ -223,7 +167,7 @@ class EditProfile extends Component {
           if(error) return <MyAppText>Error! {error.message}</MyAppText>
           const { id } = data.user;
           return (
-            <Query query={GET_PROFILE} variables={{id}}>
+            <Query query={GET_EDIT_PROFILE} variables={{id}}>
               {({loading, error, data}) => {
                 //console.log('data: ',data);
                 //console.log('error: ',error);

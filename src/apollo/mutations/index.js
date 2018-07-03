@@ -85,3 +85,52 @@ mutation editUser($id: String!, $sendNotifications: Boolean ) {
 }
 `;
 
+
+export const SET_NAME = gql`
+mutation editUser($id: String!, $name: String ) {
+  editUser(id: $id, name: $name) {
+    	id
+      name
+  }
+}
+`
+export const SET_AGE = gql`
+mutation editUser($id: String!, $age: Int ) {
+  editUser(id: $id, age: $age) {
+    	id
+      age
+  }
+}
+`
+export const SET_WORK = gql`
+mutation editUser($id: String!, $work: String ) {
+  editUser(id: $id, work: $work) {
+    	id
+      work
+  }
+}
+`
+export const SET_SCHOOL = gql`
+mutation editUser($id: String!, $school: String ) {
+  editUser(id: $id, school: $school) {
+    	id
+      school
+  }
+}
+`
+export const SET_DESCRIPTION = gql`
+mutation editUser($id: String!, $description: String ) {
+  editUser(id: $id, description: $description) {
+    	id
+      description
+  }
+}
+`
+export const SET_PICS = gql`
+mutation editUser($id: String!, $pics: [String] ) {
+  editUser(id: $id, pics: $pics) {
+    	id
+      pics
+  }
+}
+`
