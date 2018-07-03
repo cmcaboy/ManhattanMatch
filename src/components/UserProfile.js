@@ -46,7 +46,7 @@ class UserProfile extends Component {
             fontSize: 22,
             color: PRIMARY_COLOR
         },
-        headerStyle: {paddingTop:0,marginTop:0,height:35}
+        //headerStyle: {paddingTop:0,marginTop:0,height:35}
       }
     }
 
