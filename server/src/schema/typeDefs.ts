@@ -49,8 +49,9 @@ const typeDefs = `
 
     type LikeUser {
         id: String
-        name: String
+        user: User
         match: Boolean
+        matchId: String
     }
 
     type Match {

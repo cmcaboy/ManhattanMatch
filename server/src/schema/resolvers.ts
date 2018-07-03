@@ -376,6 +376,11 @@ const resolvers = {
                 .catch(e => console.log('editUser error: ',e))
         },
         likeUser: async (_,args) => {
+            // ------------------------------------------------------------------------------------------
+            // likeUser does take slightly longer to process because we are checking to see if the like
+            // is mutual. If it is, we create a new matchId in Firestore and assign both likes a matchId.
+            // ------------------------------------------------------------------------------------------
+
             // command to create like
             const mutate = `MATCH (a:User {id:'${args.id}'}), (b:User {id:'${args.likedId}'}) MERGE (a)-[r:LIKES]->(b) return b`;
             // query to check to see if like is mutual
@@ -390,6 +395,8 @@ const resolvers = {
             
             // Check to see if the like is mutual
             if(resultMatch.records.length > 0) {
+                // If the like is mutual, assign the relationship a matchId and create a match entry
+                // in Firestore
 
                 const matchId = uuid.v1();
 
@@ -404,9 +411,9 @@ const resolvers = {
                 } catch(e) {
                     console.log('likeUser error creating match: ',e)
                 }
-                return { id: args.likedId, name: user.name, match: true}
+                return { id: args.likedId, user, match: true, matchId}
             }
-            return { id: args.likedId, name: user.name, match: false}
+            return { id: args.likedId, user, match: false}
         },
         newUser: (_,args) => {
             console.log('args: ',args)
