@@ -202,7 +202,7 @@ const resolvers = {
 
             return session.run(`MATCH(a:User{id:'${args.id}'}),(b:User)<-[r]-() 
                 where NOT (a)-[:LIKES|DISLIKES]->(b) AND 
-                NOT b.id='${parentValue.id}' AND
+                NOT b.id='${args.id}' AND
                 NOT b.gender=a.gender AND
                 distance(point(a),point(b))*0.000621371 < a.distance AND
                 ((distance(point(a),point(b))*0.000621371)*(1/toFloat((COUNT(r)+1)))) > ${args.cursor}
