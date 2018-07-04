@@ -201,15 +201,16 @@ const resolvers = {
             }
 
             return session.run(`MATCH(a:User{id:'${args.id}'}),(b:User)<-[r]-() 
+                WITH a,b,
+                ((distance(point(a),point(b))*0.000621371)*(1/toFloat((COUNT(r)+1)))) as order,
+                count(r) as num_likes,
+                distance(point(a),point(b))*0.000621371 as distanceApart
                 where NOT (a)-[:LIKES|DISLIKES]->(b) AND 
-                NOT b.id='${args.id}' AND
+                NOT b.id=a.id AND
                 NOT b.gender=a.gender AND
-                distance(point(a),point(b))*0.000621371 < a.distance AND
-                ((distance(point(a),point(b))*0.000621371)*(1/toFloat((COUNT(r)+1)))) > ${args.cursor}
-                RETURN b, 
-                distance(point(a),point(b))*0.000621371 as distanceApart,
-                COUNT(r), 
-                ((distance(point(a),point(b))*0.000621371)*(1/toFloat((COUNT(r)+1)))) as order
+                distanceApart < a.distance AND
+                order > ${args.cursor}
+                RETURN b, distanceApart, num_likes, order
                 ORDER BY order`)
                 .then(result => result.records)
                 .then(records => {
@@ -290,15 +291,16 @@ const resolvers = {
             // [1/(# of likes)] x (distanceApart) x (time on platform)
             // I don't have time on platform factored in yet, but I will add it soon.
             // The query is sorted by smallest value first by default.
-            return session.run(`MATCH(a:User{id:'${parentValue.id}'}),(b:User)<-[r]-() 
+            return session.run(`MATCH(a:User{id:'${args.id}'}),(b:User)<-[r]-() 
+                WITH a,b,
+                ((distance(point(a),point(b))*0.000621371)*(1/toFloat((COUNT(r)+1)))) as order,
+                count(r) as num_likes,
+                distance(point(a),point(b))*0.000621371 as distanceApart
                 where NOT (a)-[:LIKES|DISLIKES]->(b) AND 
-                NOT b.id='${parentValue.id}' AND
-                NOT b.gender='${parentValue.gender}' AND
-                distance(point(a),point(b))*0.000621371 < a.distance
-                RETURN b, 
-                distance(point(a),point(b))*0.000621371 as distanceApart,
-                COUNT(r), 
-                ((distance(point(a),point(b))*0.000621371)*(1/toFloat((COUNT(r)+1)))) as order
+                NOT b.id=a.id AND
+                NOT b.gender=a.gender AND
+                distanceApart < a.distance
+                RETURN b, distanceApart, num_likes, order
                 ORDER BY order`)
                 .then(result => result.records)
                 .then(records => {
