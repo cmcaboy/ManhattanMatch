@@ -6,7 +6,7 @@
 	<dict>
 		<key>Base.lproj/LaunchScreen.nib</key>
 		<data>
-		1GlGKBXeyO/ldzunpbHWRKv5UHM=
+		HYL7SzQQ9sllMuwzRYQ2OovK1rw=
 		</data>
 		<key>Entypo.ttf</key>
 		<data>
@@ -69,6 +69,10 @@
 		<data>
 		4NEkyhJ9SrLJFKYhtHIBA6JBUFk=
 		</data>
+		<key>GoogleService-Info.plist</key>
+		<data>
+		mMLFwWFwdqNWKttio13oelUdWUo=
+		</data>
 		<key>Info.plist</key>
 		<data>
 		8etAjS9k0BltLLAj+IVH8dRDxfM=
@@ -111,7 +115,7 @@
 		</data>
 		<key>PlugIns/ManhattanMatchTests.xctest.dSYM/Contents/Resources/DWARF/ManhattanMatchTests</key>
 		<data>
-		94Rzjmi80m1ftXwf9B68Mpt9pjs=
+		kMdmYJI+Z4zsdNEhRLiQ0AfqgtE=
 		</data>
 		<key>PlugIns/ManhattanMatchTests.xctest/Info.plist</key>
 		<data>
@@ -119,7 +123,7 @@
 		</data>
 		<key>PlugIns/ManhattanMatchTests.xctest/ManhattanMatchTests</key>
 		<data>
-		f5nD4tsW3BMuHg70rcC+QLEjoJk=
+		+EqTEEYMTvu2+t82d0NOmqUT1y4=
 		</data>
 		<key>PlugIns/ManhattanMatchTests.xctest/_CodeSignature/CodeResources</key>
 		<data>
@@ -148,11 +152,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			1GlGKBXeyO/ldzunpbHWRKv5UHM=
+			HYL7SzQQ9sllMuwzRYQ2OovK1rw=
 			</data>
 			<key>hash2</key>
 			<data>
-			re6IwdBw3NwHzstVr8aItKMrqSYKK9JadtVCeFVUDFs=
+			MTOkxF2xKKxeg8ZzOcmBnV5ibIAiXmCZ8teupmhnv5k=
 			</data>
 		</dict>
 		<key>Entypo.ttf</key>
@@ -311,6 +315,17 @@
 			npuwVsQMT6N9VGE0YqH9a729MzPY+LnokIqdklNFhIs=
 			</data>
 		</dict>
+		<key>GoogleService-Info.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			mMLFwWFwdqNWKttio13oelUdWUo=
+			</data>
+			<key>hash2</key>
+			<data>
+			9J25OtvnEieAz3BbGgy3M6+xzR9Ff/dTGxjTA7TOLrc=
+			</data>
+		</dict>
 		<key>Ionicons.ttf</key>
 		<dict>
 			<key>hash</key>
@@ -403,11 +418,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			94Rzjmi80m1ftXwf9B68Mpt9pjs=
+			kMdmYJI+Z4zsdNEhRLiQ0AfqgtE=
 			</data>
 			<key>hash2</key>
 			<data>
-			MRtc8pJWaWRlWYoT+X4mU50QDXzbRqnzDOST5hsksW0=
+			FLI5dXzonNfo91OG843LlieP8iESdp7K2ukB3C97IHA=
 			</data>
 		</dict>
 		<key>PlugIns/ManhattanMatchTests.xctest/Info.plist</key>
@@ -425,11 +440,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			f5nD4tsW3BMuHg70rcC+QLEjoJk=
+			+EqTEEYMTvu2+t82d0NOmqUT1y4=
 			</data>
 			<key>hash2</key>
 			<data>
-			bEu3BNbrA8mr3ZQwi/nWlzBM5Qw/z3VdHdNyZ3kHYYc=
+			RHn1eAlUhiNnIPGBawDXJYHbzPzceOD827UyHUce2gk=
 			</data>
 		</dict>
 		<key>PlugIns/ManhattanMatchTests.xctest/_CodeSignature/CodeResources</key>

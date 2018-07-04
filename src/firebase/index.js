@@ -14,4 +14,4 @@
 
   const db = firebase.firestore();
   
-  export { firebase, db};
+  export { firebase, db };

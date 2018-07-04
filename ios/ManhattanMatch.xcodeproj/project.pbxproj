@@ -72,6 +72,7 @@
 		B7B1C19F20CAFE7200E7D02F /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B1C19420CAFE7100E7D02F /* EvilIcons.ttf */; };
 		B7B1C1A020CAFE7200E7D02F /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B1C19520CAFE7100E7D02F /* SimpleLineIcons.ttf */; };
 		B7B1C1A120CAFE7200E7D02F /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B1C19620CAFE7100E7D02F /* MaterialIcons.ttf */; };
+		B7EA0BA620ED105A00DA583A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B7EA0B7820ED105A00DA583A /* GoogleService-Info.plist */; };
 		C80D251E36DE45E59EC394B8 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD7A7D2028DA41F6ABE5F31D /* SimpleLineIcons.ttf */; };
 		CB22CB6958514BBBAC892C58 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D59DA7F5D0FC4A69B29DA8BA /* Ionicons.ttf */; };
 		CFF4DE65AC7D11A0BB62E474 /* libPods-ManhattanMatch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC17250B5F50A0115463052E /* libPods-ManhattanMatch.a */; };
@@ -488,6 +489,7 @@
 		B7B1C19520CAFE7100E7D02F /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SimpleLineIcons.ttf; sourceTree = "<group>"; };
 		B7B1C19620CAFE7100E7D02F /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		B7E58627A6B549E58BCC4BF9 /* libRNBackgroundGeolocation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBackgroundGeolocation.a; sourceTree = "<group>"; };
+		B7EA0B7820ED105A00DA583A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B8A26E5230FF2D64BFBCD3AB /* libPods-ManhattanMatch-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ManhattanMatch-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C107984187721221880D7E08 /* Pods-ManhattanMatch-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManhattanMatch-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ManhattanMatch-tvOSTests/Pods-ManhattanMatch-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		CBF221D467154B7EB26D9526 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
@@ -774,6 +776,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				B7EA0B7820ED105A00DA583A /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* ManhattanMatch */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ManhattanMatchTests */,
@@ -1496,6 +1499,7 @@
 				6181F129FAC447369D60FB68 /* Foundation.ttf in Resources */,
 				B7B1C19820CAFE7200E7D02F /* Feather.ttf in Resources */,
 				CB22CB6958514BBBAC892C58 /* Ionicons.ttf in Resources */,
+				B7EA0BA620ED105A00DA583A /* GoogleService-Info.plist in Resources */,
 				6C2D5FF06C5541309E8F315B /* MaterialCommunityIcons.ttf in Resources */,
 				B7B1C1A120CAFE7200E7D02F /* MaterialIcons.ttf in Resources */,
 				5BC1F7BA2E1F4570BFC9A00E /* MaterialIcons.ttf in Resources */,

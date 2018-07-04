@@ -39,11 +39,12 @@ class FBLoginButton extends Component {
 
                 // Determine if user is registered.
 
-                const provider = firebase.auth.FacebookAuthProvider;
-                const credential = provider.credential(token);
+                // const provider = firebase.auth.FacebookAuthProvider;
+                // const credential = provider.credential(token);
+                const credential = firebase.auth.FacebookAuthProvider.credential(tokenRaw.accessToken)
                 
-                console.log('credential: ',credential);
-
+                //console.log('credential: ',credential);
+                console.log('Before firebase auth');
                 const result = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
                 console.log('after firebase auth');
                 let email;
@@ -112,7 +113,7 @@ class FBLoginButton extends Component {
                   await this.props.startNewUser(newUser);
                 }
 
-                await this.props.startSetId(token);
+                await this.props.startSetId(response.email);
 
                 console.log('fb login complete');
                 
