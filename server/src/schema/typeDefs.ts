@@ -29,7 +29,7 @@ const typeDefs = `
 
     type Queue {
         list: [User]
-        cursor: String
+        cursor: Float
     }
     
     type MessageItem {
@@ -66,7 +66,7 @@ const typeDefs = `
         user(id: String!): User
         messages(id: String!): Message
         moreMessages(id: String!, cursor: String!): Message
-        moreQueue(id: String!, cursor: String): Queue
+        moreQueue(id: String!, cursor: Float!): Queue
     }
 
     type Subscription {

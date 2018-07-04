@@ -30,6 +30,29 @@ query user($id: String!) {
     user(id: $id) {
         id
         queue {
+            cursor
+            list {
+                id
+                name
+                pics
+                age
+                description
+                work
+                school
+                distanceApart
+                order
+            }
+        }
+    }
+  }
+`
+
+// Should I return an id here?
+export const MORE_QUEUE = gql`
+query moreQueue($id: String, cursor: Float!)
+    moreQueue(id: $id, cursor: $cursor) {
+        cursor
+        list {
             id
             name
             pics
@@ -38,10 +61,10 @@ query user($id: String!) {
             work
             school
             distanceApart
+            order
         }
     }
-  }
-`
+`;
 
 export const GET_MATCHES = gql`
 query user($id: String!) {
