@@ -18,12 +18,13 @@ const typeDefs = `
         maxAgePreference: Int
         match: Boolean
         distanceApart: Float
+        order: Float
         pics: [String]
         profilePic: String
         likes: [User]
         dislikes: [User]
         matches(otherId: String): [Match]
-        queue: [User]
+        queue: Queue
     }
 
     type Queue {
@@ -65,6 +66,7 @@ const typeDefs = `
         user(id: String!): User
         messages(id: String!): Message
         moreMessages(id: String!, cursor: String!): Message
+        moreQueue(id: String!, cursor: String): Queue
     }
 
     type Subscription {

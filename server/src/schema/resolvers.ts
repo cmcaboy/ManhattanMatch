@@ -185,6 +185,60 @@ const resolvers = {
                 list: messages,
                 cursor: newCursor,
             }
+        }, 
+        moreQueue: (_, args) => {
+            console.log('in Queue');
+            console.log('args: ',args);
+
+            if(!args.cursor) {
+                console.log('No cursor passed in. You must be at the end of the list. No more values to retreive.');
+                return {
+                    list: [],
+                    cursor: null,
+                }
+            } else if (!args.id) {
+                console.error('Error! No id passed in!');
+            }
+
+            return session.run(`MATCH(a:User{id:'${args.id}'}),(b:User)<-[r]-() 
+                where NOT (a)-[:LIKES|DISLIKES]->(b) AND 
+                NOT b.id='${parentValue.id}' AND
+                NOT b.gender=a.gender AND
+                distance(point(a),point(b))*0.000621371 < a.distance AND
+                ((distance(point(a),point(b))*0.000621371)*(1/toFloat((COUNT(r)+1)))) > ${args.cursor}
+                RETURN b, 
+                distance(point(a),point(b))*0.000621371 as distanceApart,
+                COUNT(r), 
+                ((distance(point(a),point(b))*0.000621371)*(1/toFloat((COUNT(r)+1)))) as order
+                ORDER BY order`)
+                .then(result => result.records)
+                .then(records => {
+                    const list = records.map(record => {
+                        console.log('queue record: ',record);
+                        console.log('field 0: ',record._fields[0]);
+                        console.log('field 1: ',record._fields[1]);
+                        console.log('field 2: ',record._fields[2]);
+                        console.log('field 3: ',record._fields[3]);
+                        return {
+                            ...record._fields[0].properties,
+                            distanceApart: record._fields[1],
+                            order: record._fields[3]
+                        }   
+                    })
+                    if(list.length === 0) {
+                        // If the list is empty, return a blank list and a null cursor
+                        return {
+                            list: [],
+                            cursor: null,
+                        }
+                    }
+                    return {
+                        list,
+                        cursor: list[list.length - 1].order,
+                    }
+                }
+                )
+                .catch(e => console.log('moreQueue error: ',e))           
         }
     },
     User: {
@@ -232,25 +286,48 @@ const resolvers = {
         queue: (parentValue, args) => {
             console.log('parentValue: ',parentValue);
             console.log('args: ',args);
-            return session
-                .run(`MATCH(a:User{id:'${parentValue.id}'}),(b:User) 
-                    where NOT (a)-[:LIKES|DISLIKES]->(b) AND 
-                    NOT b.id='${parentValue.id}' AND
-                    NOT b.gender='${parentValue.gender}' AND
-                    distance(point(a),point(b))*0.000621371 < a.distance
-                    RETURN b, distance(point(a),point(b))*0.000621371`)
-                    .then(result => result.records)
-                    .then(records => records.map(record => {
+            // for pagination, I would like to sort by the following algorithm
+            // [1/(# of likes)] x (distanceApart) x (time on platform)
+            // I don't have time on platform factored in yet, but I will add it soon.
+            // The query is sorted by smallest value first by default.
+            return session.run(`MATCH(a:User{id:'${parentValue.id}'}),(b:User)<-[r]-() 
+                where NOT (a)-[:LIKES|DISLIKES]->(b) AND 
+                NOT b.id='${parentValue.id}' AND
+                NOT b.gender='${parentValue.gender}' AND
+                distance(point(a),point(b))*0.000621371 < a.distance
+                RETURN b, 
+                distance(point(a),point(b))*0.000621371 as distanceApart,
+                COUNT(r), 
+                ((distance(point(a),point(b))*0.000621371)*(1/toFloat((COUNT(r)+1)))) as order
+                ORDER BY order`)
+                .then(result => result.records)
+                .then(records => {
+                    const list = records.map(record => {
                         console.log('queue record: ',record);
                         console.log('field 0: ',record._fields[0]);
                         console.log('field 1: ',record._fields[1]);
+                        console.log('field 2: ',record._fields[2]);
+                        console.log('field 3: ',record._fields[3]);
                         return {
                             ...record._fields[0].properties,
                             distanceApart: record._fields[1],
-                        }
+                            order: record._fields[3]
+                        }   
                     })
-                    )
-                    .catch(e => console.log('queue error: ',e))
+                    if(list.length === 0) {
+                        // If the list is empty, return a blank list and a null cursor
+                        return {
+                            list: [],
+                            cursor: null,
+                        }
+                    }
+                    return {
+                        list,
+                        cursor: list[list.length - 1].order,
+                    }
+                }
+                )
+                .catch(e => console.log('queue error: ',e))
         }
     },
     Match: {
