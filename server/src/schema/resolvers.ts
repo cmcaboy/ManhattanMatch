@@ -8,6 +8,7 @@ const session = driver.session();
 
 const NEW_MESSAGE = 'NEW_MESSAGE';
 const MESSAGE_PAGE_LENGTH = 20;
+const QUEUE_PAGE_LENGTH = 5;
 
 const resolvers = {
     Subscription: {
@@ -211,7 +212,8 @@ const resolvers = {
                 distanceApart < a.distance AND
                 order > ${args.cursor}
                 RETURN b, distanceApart, num_likes, order
-                ORDER BY order`)
+                ORDER BY order
+                LIMIT ${QUEUE_PAGE_LENGTH}`)
                 .then(result => result.records)
                 .then(records => {
                     const list = records.map(record => {
@@ -301,7 +303,8 @@ const resolvers = {
                 NOT b.gender=a.gender AND
                 distanceApart < a.distance
                 RETURN b, distanceApart, num_likes, order
-                ORDER BY order`)
+                ORDER BY order
+                LIMIT ${QUEUE_PAGE_LENGTH}`)
                 .then(result => result.records)
                 .then(records => {
                     const list = records.map(record => {
@@ -432,6 +435,7 @@ const resolvers = {
             !!args.school && (query = query+ `a.school='${args.school}',`)
             !!args.work && (query = query+ `a.work='${args.work}',`)
             !!args.token && (query = query+ `a.token='${args.token}',`)
+            !!args.registerDateTime && (query = query+ `a.registerDateTime='${args.registerDateTime}',`)
             isBoolean(args.sendNotifications) && (query = query+ `a.sendNotifications=${args.sendNotifications},`)
             !!args.distance && (query = query+ `a.distance=${args.distance},`)
             !!args.latitude && (query = query+ `a.latitude=${args.latitude},`)
@@ -507,6 +511,7 @@ const resolvers = {
             !!args.school && (query = query+ `school:'${args.school}',`)
             !!args.work && (query = query+ `work:'${args.work}',`)
             !!args.token && (query = query+ `token:'${args.token}',`)
+            !!args.registerDateTime && (query = query+ `registerDateTime:'${args.registerDateTime}',`)
             !!args.sendNotifications && (query = query+ `sendNotifications:${args.sendNotifications},`)
             !!args.distance && (query = query+ `distance:${args.distance},`)
             !!args.latitude && (query = query+ `latitude:${args.latitude},`)

@@ -217,6 +217,12 @@ class Stagg extends Component {
         this.setState((prev) => ({index:prev.index + 1}));
 
         this.state.position.setValue({x:0,y:0});
+
+        console.log(`queue length: ${this.props.queue}, index position: ${this.state.index}`)
+
+        if((this.props.queue.length -1 - this.state.index) <= 2 ) {
+            this.props.fetchMoreQueue();
+        }
         
         //console.log('queue length: ', queue.length);
         //console.log('index: ', (this.state.index + 1));
@@ -282,7 +288,7 @@ class Stagg extends Component {
                 <Text>Try again later.</Text>
 
                 <TouchableOpacity 
-                    onPress={() => this.props.startNewQueue(true)} 
+                    onPress={() => this.props.fetchMoreQueue()} 
                     style={styles.noProspectsButton}
                 >
                     <Text style={styles.noProspectsText}>

@@ -1,5 +1,14 @@
 import gql from 'graphql-tag';
 
+export const SET_ID_LOCAL = gql`
+mutation updateIdLocal($id: ID!) {
+  updateIdLocal(id: $id) @client {
+    id
+    __typename
+  }
+}
+`;
+
 export const SET_AGE_PREFERENCE_LOCAL = gql`
 mutation updateAgePreferenceLocal($id: ID!, $minAgePreference: Int!,$maxAgePreference: Int!) {
   updateAgePreferenceLocal(id: $id, minAgePreference: $minAgePreference, maxAgePreference: $maxAgePreference) @client {

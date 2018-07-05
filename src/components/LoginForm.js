@@ -6,25 +6,8 @@ import { SECONDARY_COLOR, PRIMARY_COLOR, BACKGROUND_COLOR } from '../variables';
 import { ApolloConsumer, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import FBLoginButton from '../services/FBLoginButton';
-
-const NEW_USER = gql`
-mutation newUser($id: String!, $name: String!, $active: Boolean!, $email: String!, $gender: String!, $description: String, $school: String, $work: String, $sendNotifications: Boolean, $distance: Int, $token: String, $minAgePreference: Int, $maxAgePreference: Int, $pics: [String]) {
-    newUser(id: $id, name: $name, active: $active, email: $email, gender: $gender, description: $description, school: $school, work: $work, sendNotifications: $sendNotifications, distance: $distance, token: $token, minAgePreference: $minAgePreference, maxAgePreference: $maxAgePreference, pics: $pics) {
-        id
-        name
-        email
-    }
-  }
-`
-
-const SET_ID_LOCAL = gql`
-mutation updateIdLocal($id: ID!) {
-  updateIdLocal(id: $id) @client {
-    id
-    __typename
-  }
-}
-`;
+import {NEW_USER} from '../apollo/mutations';
+import {SET_ID_LOCAL} from '../apollo/local/mutations';
 
 class LoginForm extends Component {
     constructor(props) {
@@ -66,7 +49,8 @@ class LoginForm extends Component {
                                     longitude: user.longitude,
                                     minAgePreference: user.minAgePreference,
                                     maxAgePreference: user.maxAgePreference,
-                                    pics: user.pics
+                                    pics: user.pics,
+                                    registerDateTime: Date.now(),
                                 }})
                             } 
                             return (

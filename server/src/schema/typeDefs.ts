@@ -19,6 +19,7 @@ const typeDefs = `
         match: Boolean
         distanceApart: Float
         order: Float
+        registerDateTime: String
         pics: [String]
         profilePic: String
         likes: [User]
@@ -97,6 +98,7 @@ const typeDefs = `
             token: String
             latitude: Float
             longitude: Float
+            registerDateTime: String
             minAgePreference: Int
             maxAgePreference: Int
             pics: [String]
@@ -116,6 +118,7 @@ const typeDefs = `
             token: String
             latitude: Float
             longitude: Float
+            registerDateTime: String
             minAgePreference: Int
             maxAgePreference: Int
             pics: [String]

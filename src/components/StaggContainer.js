@@ -2,7 +2,7 @@ import {Text} from 'react-native';
 import {Spinner} from './common';
 import React,{Component} from 'react';
 import { Query, Mutation } from 'react-apollo';
-import {GET_QUEUE} from '../apollo/queries';
+import {GET_QUEUE,MORE_QUEUE} from '../apollo/queries';
 import {GET_ID} from '../apollo/local/queries';
 import {SET_COORDS,LIKE,DISLIKE,SET_PUSH_TOKEN} from '../apollo/mutations';
 import Stagg from './Stagg';
@@ -27,6 +27,29 @@ class StaggContainer extends Component {
                         // console.log('loading stagg: ',loading);
                         if(loading) return <Spinner />
                         if(error) return <Text>Error! {error.message}</Text>
+                        const fetchMoreQueue = () => fetchMore({
+                            query: MORE_QUEUE,
+                            variables: {id, cursor: data.user.queue.cursor},
+                            updateQuery: (prev,fetchMoreQueue) => {
+                                console.log('fetchMore queue');
+                                console.log('new queue: ',queue);
+
+                                const newQueue = fetchMoreQueue.moreQueue.list;
+                                const newCursor = fetchMoreQueue.moreQueue.cursor;
+
+                                const result = {
+                                    user: {
+                                        ...prev.user,
+                                        queue: {
+                                            list: [...prev.user.queue.list,...newQueue],
+                                            cursor: newCursor,
+                                        }
+                                    }
+                                }
+                                console.log('moreQueue New Result: ', result);
+                                return result;
+                            }
+                        })
                         return <Mutation mutation={LIKE}>
                         {(likeUser) => {
                             return <Mutation mutation={DISLIKE}>
@@ -47,13 +70,13 @@ class StaggContainer extends Component {
                                         });
                                             return <Stagg 
                                                 id={id}
-                                                queue={data.user.queue} 
+                                                queue={data.user.queue.list} 
                                                 likeUser={startLikeUser}
                                                 dislikeUser={startDislikeUser}
                                                 startSetCoords={startSetCoords}
                                                 startSetPushToken={startSetPushToken}
                                                 navigation={this.props.navigation}
-                                                fetchMoreQueue={() => {}}
+                                                fetchMoreQueue={fetchMoreQueue}
                                             />
                                     }}
                                     </Mutation>
