@@ -293,7 +293,7 @@ const resolvers = {
             // [1/(# of likes)] x (distanceApart) x (time on platform)
             // I don't have time on platform factored in yet, but I will add it soon.
             // The query is sorted by smallest value first by default.
-            return session.run(`MATCH(a:User{id:'${args.id}'}),(b:User)<-[r]-() 
+            return session.run(`MATCH(a:User{id:'${parentValue.id}'}),(b:User)<-[r]-() 
                 WITH a,b,
                 ((distance(point(a),point(b))*0.000621371)*(1/toFloat((COUNT(r)+1)))) as order,
                 count(r) as num_likes,
