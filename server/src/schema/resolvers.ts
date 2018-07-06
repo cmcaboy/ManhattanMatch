@@ -292,9 +292,11 @@ const resolvers = {
             console.log('parentValue: ',parentValue);
             console.log('args: ',args);
             // for pagination, I would like to sort by the following algorithm
-            // [1/(# of likes)] x (distanceApart) x (time on platform)
-            // I don't have time on platform factored in yet, but I will add it soon.
+            // order = [1/(# of likes)] x (distanceApart) x (time on platform)
+            // Priority is given by the lowest order number.
+            // I don't have 'time on platform' factored in yet, but I will add it soon.
             // The query is sorted by smallest value first by default.
+            // 
             return session.run(`MATCH(a:User{id:'${parentValue.id}'}),(b:User)
                 WITH a,b, size((b)<-[:LIKES]-()) as num_likes,
                 distance(point(a),point(b))*0.000621371 as distanceApart,

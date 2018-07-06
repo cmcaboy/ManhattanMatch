@@ -12,7 +12,7 @@ class StaggContainer extends Component {
     render() {
         return (
             <Query query={GET_ID}>
-                {({loading, error, data, fetchMore }) => {
+                {({loading, error, data }) => {
                 //console.log('local data stagg: ',data);
                 //console.log('local error stagg: ',error);
                 //console.log('local loading stagg: ',loading);
@@ -21,35 +21,50 @@ class StaggContainer extends Component {
                 const { id } = data.user;
                 return (
                     <Query query={GET_QUEUE} variables={{id}}>
-                    {({loading, error, data}) => {
-                        // console.log('data stagg: ',data);
+                    {({loading, error, data, fetchMore, networkStatus }) => {
+                        //console.log('data stagg: ',data);
                         // console.log('error stagg: ',error);
                         // console.log('loading stagg: ',loading);
-                        if(loading) return <Spinner />
+                        console.log('networkStatus: ',networkStatus);
+                        if(networkStatus === 1) {
+                            return <Spinner />
+                        }
+                        //if(loading) return <Spinner />
                         if(error) return <Text>Error! {error.message}</Text>
-                        const fetchMoreQueue = () => fetchMore({
-                            query: MORE_QUEUE,
-                            variables: {id, cursor: data.user.queue.cursor},
-                            updateQuery: (prev,fetchMoreQueue) => {
-                                console.log('fetchMore queue');
-                                console.log('new queue: ',queue);
+                        const fetchMoreQueue = () => {
+                            console.log('in fetchMoreQueue');
+                            if(!data.user.queue.cursor) {
+                                // If the cursor is null, don't call refetch because
+                                // you are at the end of the queue.
+                                console.log('You are at the end of the queue. There is nothing left to fetch.');
+                                return null;
+                            }
+                            return fetchMore({
+                                query: MORE_QUEUE,
+                                variables: {id, cursor: data.user.queue.cursor},
+                                updateQuery: (prev,{fetchMoreResult}) => {
+                                    console.log('fetchMore queue');
+                                    console.log('new queue: ', fetchMoreResult);
+                                    //console.log('prev: ',prev);
 
-                                const newQueue = fetchMoreQueue.moreQueue.list;
-                                const newCursor = fetchMoreQueue.moreQueue.cursor;
+                                    const newQueue = fetchMoreResult.moreQueue.list;
+                                    const newCursor = fetchMoreResult.moreQueue.cursor;
 
-                                const result = {
-                                    user: {
-                                        ...prev.user,
-                                        queue: {
-                                            list: [...prev.user.queue.list,...newQueue],
-                                            cursor: newCursor,
+                                    const result = {
+                                        user: {
+                                            ...prev.user,
+                                            queue: {
+                                                list: [...prev.user.queue.list,...newQueue],
+                                                cursor: newCursor,
+                                                __typename: 'Queue'
+                                            }
                                         }
                                     }
+                                    console.log('moreQueue New Result: ', result);
+                                    return result;
                                 }
-                                console.log('moreQueue New Result: ', result);
-                                return result;
-                            }
-                        })
+                            })
+                        }
                         return <Mutation mutation={LIKE}>
                         {(likeUser) => {
                             return <Mutation mutation={DISLIKE}>

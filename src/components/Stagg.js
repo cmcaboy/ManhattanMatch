@@ -218,7 +218,7 @@ class Stagg extends Component {
 
         this.state.position.setValue({x:0,y:0});
 
-        console.log(`queue length: ${this.props.queue}, index position: ${this.state.index}`)
+        console.log(`queue length: ${this.props.queue.length}, index position: ${this.state.index}`)
 
         if((this.props.queue.length -1 - this.state.index) <= 2 ) {
             this.props.fetchMoreQueue();

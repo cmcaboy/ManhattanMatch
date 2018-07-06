@@ -49,7 +49,7 @@ query user($id: String!) {
 
 // Should I return an id here?
 export const MORE_QUEUE = gql`
-query moreQueue($id: String, $cursor: Float!) {
+query moreQueue($id: String!, $cursor: Float!) {
     moreQueue(id: $id, cursor: $cursor) {
         cursor
         list {
