@@ -201,10 +201,9 @@ const resolvers = {
                 console.error('Error! No id passed in!');
             }
 
-            return session.run(`MATCH(a:User{id:'${args.id}'}),(b:User)<-[r]-() 
-                WITH a,b,
-                ((distance(point(a),point(b))*0.000621371)*(1/toFloat((COUNT(r)+1)))) as order,
-                count(r) as num_likes,
+            return session.run(`MATCH(a:User{id:'${args.id}'}),(b:User) 
+                WITH a,b, size((b)<-[:LIKES]-()) as num_likes,
+                ((distance(point(a),point(b))*0.000621371)*(1/toFloat((SIZE((b)<-[:LIKES]-())+1)))) as order,
                 distance(point(a),point(b))*0.000621371 as distanceApart
                 where NOT (a)-[:LIKES|DISLIKES]->(b) AND 
                 NOT b.id=a.id AND
@@ -293,11 +292,10 @@ const resolvers = {
             // [1/(# of likes)] x (distanceApart) x (time on platform)
             // I don't have time on platform factored in yet, but I will add it soon.
             // The query is sorted by smallest value first by default.
-            return session.run(`MATCH(a:User{id:'${parentValue.id}'}),(b:User)<-[r]-() 
-                WITH a,b,
-                ((distance(point(a),point(b))*0.000621371)*(1/toFloat((COUNT(r)+1)))) as order,
-                count(r) as num_likes,
-                distance(point(a),point(b))*0.000621371 as distanceApart
+            return session.run(`MATCH(a:User{id:'${parentValue.id}'}),(b:User)
+                WITH a,b, size((b)<-[:LIKES]-()) as num_likes,
+                distance(point(a),point(b))*0.000621371 as distanceApart,
+                ((distance(point(a),point(b))*0.000621371)*(1/toFloat((SIZE((b)<-[:LIKES]-())+1)))) as order
                 where NOT (a)-[:LIKES|DISLIKES]->(b) AND 
                 NOT b.id=a.id AND
                 NOT b.gender=a.gender AND
