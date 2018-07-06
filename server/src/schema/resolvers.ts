@@ -110,7 +110,7 @@ const resolvers = {
             // Set the new cursor to the last date in the message array
             // Return a null cursor if the message array length is less than 20, indicating that their
             // are no more messages left to retreive.
-            const cursor = messages.length >= 20 ? messages[messages.length - 1].order : null;
+            const cursor = messages.length >= MESSAGE_PAGE_LENGTH ? messages[messages.length - 1].order : null;
 
             console.log('messages in moreMessages: ',messages);
             console.log('newCursor: ',cursor);
@@ -176,7 +176,7 @@ const resolvers = {
             // Set the new cursor to the last date in the message array
             // Return a null cursor if the message array length is less than 20, indicating that their
             // are no more messages left to retreive.
-            const newCursor = messages.length >= 20 ? messages[messages.length - 1].order : null;
+            const newCursor = messages.length >= MESSAGE_PAGE_LENGTH ? messages[messages.length - 1].order : null;
 
             console.log('messages in moreMessages: ',messages);
             console.log('newCursor: ',newCursor);
@@ -234,9 +234,12 @@ const resolvers = {
                             cursor: null,
                         }
                     }
+
+                    const newCursor = list.length >= QUEUE_PAGE_LENGTH ? list[list.length - 1].order : null;
+
                     return {
                         list,
-                        cursor: list[list.length - 1].order,
+                        cursor: newCursor,
                     }
                 }
                 )
@@ -324,9 +327,12 @@ const resolvers = {
                             cursor: null,
                         }
                     }
+
+                    const newCursor = list.length >= QUEUE_PAGE_LENGTH ? list[list.length - 1].order : null;
+
                     return {
                         list,
-                        cursor: list[list.length - 1].order,
+                        cursor: newCursor,
                     }
                 }
                 )
