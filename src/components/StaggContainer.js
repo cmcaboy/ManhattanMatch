@@ -21,7 +21,7 @@ class StaggContainer extends Component {
                 const { id } = data.user;
                 return (
                     <Query query={GET_QUEUE} variables={{id}}>
-                    {({loading, error, data, fetchMore, networkStatus }) => {
+                    {({loading, error, data, fetchMore, networkStatus, refetch }) => {
                         //console.log('data stagg: ',data);
                         // console.log('error stagg: ',error);
                         // console.log('loading stagg: ',loading);
@@ -31,6 +31,11 @@ class StaggContainer extends Component {
                         }
                         //if(loading) return <Spinner />
                         if(error) return <Text>Error! {error.message}</Text>
+                        const refetchQueue = async () => {
+                            console.log('in refetchQueue');
+
+                            await refetch({variables:{id}});
+                        }
                         const fetchMoreQueue = () => {
                             console.log('in fetchMoreQueue');
                             if(!data.user.queue.cursor) {
@@ -92,6 +97,7 @@ class StaggContainer extends Component {
                                                 startSetPushToken={startSetPushToken}
                                                 navigation={this.props.navigation}
                                                 fetchMoreQueue={fetchMoreQueue}
+                                                refetchQueue={refetchQueue}
                                             />
                                     }}
                                     </Mutation>

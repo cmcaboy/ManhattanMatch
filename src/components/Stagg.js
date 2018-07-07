@@ -15,7 +15,8 @@ import {
     ActivityIndicator,
     ImageBackground,
     Alert,
-    Button
+    Button,
+    RefreshControl,
 } from 'react-native';
 import {Card,Spinner,MyAppText} from './common';
 //import {Location,Notifications} from 'expo';
@@ -31,8 +32,8 @@ import {FUNCTION_PATH} from '../variables/functions';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SWIPE_THRESHOLD = (0.25 * SCREEN_WIDTH);
-const SWIPE_OUT_DURATION = 100;
-const MIN_QUEUE_LENGTH = 10;
+const SWIPE_OUT_DURATION = 20;
+const MIN_QUEUE_LENGTH = 2;
 
 class Stagg extends Component {
     constructor(props) {
@@ -64,28 +65,12 @@ class Stagg extends Component {
         this.locationTracker;
 
         this.position = position;
-        this.state = {panResponder, position,index:0, status: 'granted'}
+        this.state = {panResponder, position,index:0, status: 'granted', loading: false}
     }
 
-    componentDidMount() {
-        this.trackLocation();
-        // Ask user for notifications permissions
-        // registerForNotifications(this.props.id,this.props.startSetPushToken);
-        
-        // // Listen for notifications
-        // Notifications.addListener((notification) => {
-        //     console.log('notification: ',notification);
-        //     const { data: { message }, origin } = notification;
-        //     if(origin === 'received' && message) {
-
-        //         Alert.alert(
-        //             'New Notification',
-        //             message,
-        //             [{text: 'ok' }]
-        //         )
-        //     } 
-        // })
-    }
+    componentDidMount = () => this.trackLocation();
+    
+    ComponentWillUnmount = () => BackgroundGeolocation.removeListeners();
 
     componentWillUpdate() {
         UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -93,28 +78,6 @@ class Stagg extends Component {
         LayoutAnimation.spring();
     }
 
-    componentWillMount() {
-        // Permissions function keeps track of whether the user accepted the 
-        // permissions or not. It it has not asked, it will prompt the user.
-
-        // try {
-        //     const response = await Permissions.check('location');
-        //     console.log('Permissions Response: ',response);
-
-        //     this.setState(() => ({status: response}));
-
-        //     if(response.location === 'granted') {
-        //         this.trackLocation();
-        //     }
-        // } catch(e) {
-        //     console.warn('Error getting Location permission: ',e)
-        //     this.setState(() => ({status: 'undetermined'}))
-        // }
-
-    }
-
-    ComponentWillUnmount = () => BackgroundGeolocation.removeListeners();
-    // ComponentWillUnmount = () => this.locationTracker.remove();
 
     askPermission = async () => {
         try {
@@ -168,9 +131,6 @@ class Stagg extends Component {
               "id": this.props.id
             }
           }, (state) => {
-            //console.log("- BackgroundGeolocation is configured and ready: ", state.enabled);
-            //console.log('state: ',state)
-            //console.log('state enabled: ',state.enabled)
       
             // If we are not currently tracking, start tracking.
             if (!state.enabled) {
@@ -182,17 +142,6 @@ class Stagg extends Component {
               });
             }
           });
-
-        // this.locationTracker = Location.watchPositionAsync({
-        //     // Need to look at docs to determine parameter values
-        //     enableHighAccuracy: false,
-        //     timeInterval: 1000 * 60 * 15,
-        //     distanceInterval: 1000
-        // }, ({coords}) => {
-        //     //console.log('coords: ',coords);
-        //     this.props.startSetCoords(coords[0],coords[1]);
-        //     //this.setState({status:'granted'})
-        // })
     }
 
     forceSwipe(direction) {
@@ -220,7 +169,7 @@ class Stagg extends Component {
 
         console.log(`queue length: ${this.props.queue.length}, index position: ${this.state.index}`)
 
-        if((this.props.queue.length -1 - this.state.index) <= 2 ) {
+        if((this.props.queue.length -1 - this.state.index) <= MIN_QUEUE_LENGTH ) {
             this.props.fetchMoreQueue();
         }
         
@@ -278,30 +227,46 @@ class Stagg extends Component {
 
     noProspects() {
         return (
-            <View style={styles.noProspects}>
-                <Ionicons 
-                    name="md-sad"
-                    size={100}
-                    color="black"
-                />
-                <Text>There is no one new in your area.</Text>
-                <Text>Try again later.</Text>
+            <ScrollView
+                contentContainerStyle={styles.noProspects}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.loading}
+                        onRefresh={async () => {
+                            this.setState({loading:true});
+                            await this.props.refetchQueue();
+                            this.setState({loading:false,index:0});
+                        }}
+                    />
+                }
+            >
 
-                <TouchableOpacity 
-                    onPress={() => this.props.fetchMoreQueue()} 
-                    style={styles.noProspectsButton}
-                >
-                    <Text style={styles.noProspectsText}>
-                        Search Again
-                    </Text>
-                </TouchableOpacity>
-            </View>
+
+                    <Ionicons 
+                        name="md-sad"
+                        size={100}
+                        color="black"
+                    />
+                    <Text>There is no one new in your area.</Text>
+                    <Text>Try again later.</Text>
+
+                    <TouchableOpacity 
+                        onPress={() => this.props.refetchQueue()} 
+                        style={styles.noProspectsButton}
+                    >
+                        <Text style={styles.noProspectsText}>
+                            Search Again
+                        </Text>
+                    </TouchableOpacity>
+
+            </ScrollView>
+            
         )
     }
 
     renderGranted = () => {
         //console.log('queue: ', this.props.queue);
-        if (this.props.queue.length === 0) {
+        if ((this.props.queue.length) <= this.state.index) {
             return this.noProspects();
         }
         return (
@@ -325,7 +290,7 @@ class Stagg extends Component {
                             <Animated.View
                                 key={prospect.id}
                                 style={[styles.cardStyle]}
-                                //{...this.state.panResponder.panHandlers}
+                                {...this.state.panResponder.panHandlers}
                             >
                                 {this.renderCard(prospect)}
                             </Animated.View>
@@ -352,6 +317,7 @@ class Stagg extends Component {
             // )
         } else if (this.state.status === 'undetermined') {
             return (
+                
                 <View style={styles.center}>
                     <Foundation name='alert' size={50} />
                     <Text style={{textAlign: 'center'}}>

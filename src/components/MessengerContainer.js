@@ -53,6 +53,7 @@ class MessengerContainer extends Component {
                 {({loading, error, data, subscribeToMore, fetchMore}) => {
                     if(loading) return <Spinner />
                     if(error) return <Text>Error! {error.message}</Text>
+                    console.log('messages container data: ',data);
 
                     // We have to change the format of our messages in order to satisfy RN Gifted Chat
                     const messages = data.messages.list.map(message => {

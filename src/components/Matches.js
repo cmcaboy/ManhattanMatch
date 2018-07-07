@@ -36,8 +36,6 @@ class Matches extends Component {
     renderContent({matches,id,name,pic}) {
         const {navigation} = this.props;
 
-        console.log('pic in matches: ',pic)
-
         if (matches.length === 0) {
             return this.noMatches();
         } else {
@@ -79,7 +77,7 @@ class Matches extends Component {
                                 key={match.matchId}
                                 name={match.user.name} 
                                 picture={match.user.pics[0]}
-                                lastMessage={match.lastMessage.message}
+                                lastMessage={match.lastMessage.text}
                                 onPress={() => navigation.navigate('MessengerContainer',{
                                     matchId:match.matchId,
                                     id,
@@ -118,6 +116,7 @@ class Matches extends Component {
                     //console.log('loading: ',loading);
                     if(loading) return <Spinner />
                     if(error) return <Text>Error! {error.message}</Text>
+                    console.log('data in matches: ',data);
                     return this.renderContent({matches:data.user.matches,id,name:data.user.name,pic:data.user.profilePic})
                   }}
                   </Query>
